@@ -321,7 +321,9 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
 /* 规格按钮通用样式 - [新增] 修改字体为 Arial Narrow */
 .sku-btn {
-    font-family: "Arial Narrow", Arial, sans-serif;
+    font-family: "Arial Narrow", Arial, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
 }
 
 /* 支付方式图标 */
