@@ -707,4 +707,9 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 .input-light::-moz-placeholder { color: #ccc !important; font-size: 12px;}
 .input-light:-ms-input-placeholder { color: #ccc !important; font-size: 12px;}
 .input-light:focus {border-color: #ff5000 !important; box-shadow: none !important; outline: none !important;}
-
+/* 修改购买方式按钮的字体属性 */
+.method-btn {
+    font-family: "Arial Narrow", Arial, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
