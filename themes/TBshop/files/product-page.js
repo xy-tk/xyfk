@@ -494,7 +494,7 @@ function updateDynamicInfoDisplay() {
         rightInfo += ` + ${selectedSpecificCardInfo}`;
     }
 
-    const rightHtml = `<span style="color:#666; font-size:12px; margin-right:12px;"><i style="${redStyle}" class="fa fa-check-circle me-1"></i>已选: ${rightInfo}</span>`;
+    const rightHtml = `<span style="${redStyle}"><i style="margin-right:8px;" class="fa fa-check-circle me-1"></i>已选: ${rightInfo}</span>`;
         displayDiv.innerHTML = rightHtml + leftHtml;
 }
 
