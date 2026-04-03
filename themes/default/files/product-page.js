@@ -550,12 +550,12 @@ function updateDynamicInfoDisplay() {
             leftHtml = `<span style="${activeStyle}"><i class="fas fa-tags me-1"></i>批发优惠: ${promoText}</span>`;
         } else {
             let randomLabel = currentVariant.random_mode_text || '默认随机';
-            leftHtml = `<span style="${activeStyle}"><i class="fas fa-check-circle me-1"></i>${randomLabel}</span>`;
+            leftHtml = `<span style="${activeStyle}">${randomLabel}</span>`;
         }
     } else if (buyMethod === 'select') {
         const markup = parseFloat(currentVariant.custom_markup || 0).toFixed(2);
         let label = currentVariant.selection_label || '自选';
-        leftHtml = `<span style="${activeStyle}"><i class="fas fa-mouse-pointer me-1"></i>${label} (加价 ${markup}元)</span>`;
+        leftHtml = `<span style="${activeStyle}">${label} (加价 ${markup}元)</span>`;
     }
 
     let rightInfo = specName;
@@ -563,7 +563,7 @@ function updateDynamicInfoDisplay() {
         rightInfo += ` + ${selectedSpecificCardInfo}`;
     }
 
-    displayDiv.html(`<span style="color:#666; font-size:12px; margin-right:12px;">已选: ${rightInfo}</span> ${leftHtml}`);
+    displayDiv.html(`<span style="color:#666; font-size:12px; margin-right:12px;"><i class="fas fa-mouse-pointer me-1"></i>已选: ${rightInfo}</span> ${leftHtml}`);
 }
 
 // 选号弹窗
