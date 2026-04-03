@@ -494,8 +494,8 @@ function updateDynamicInfoDisplay() {
         rightInfo += ` + ${selectedSpecificCardInfo}`;
     }
 
-    const rightHtml = `<span style="color:#666; font-size:12px; margin-left:12px;">已选: ${rightInfo}</span>`;
-    displayDiv.innerHTML = leftHtml + rightHtml;
+    const rightHtml = `<span style="color:#666; font-size:12px; margin-right:12px;">已选: ${rightInfo}</span>`;
+        displayDiv.innerHTML = rightHtml + leftHtml;
 }
 
 function selectSku(index, btn) {
