@@ -430,9 +430,11 @@
 
         row.innerHTML = `
             <input type="hidden" class="v-id" value="${v.id || ''}">
-            ${v.id ? `<button type="button" class="btn btn-sm btn-outline-info position-absolute top-0 end-0 m-2" style="margin-right: 5rem !important; z-index: 10;" title="快速加卡" onclick="quickAddCard(${v.id}, '${v.name}')"><i class="fas fa-plus-circle"></i></button>` : ''}
-            <button type="button" class="btn btn-sm btn-outline-success position-absolute top-0 end-0 m-2" style="margin-right: 2.5rem !important; z-index: 10;" title="保存所有更改" onclick="saveProduct()"><i class="fas fa-save"></i></button>
-            <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="删除此规格" onclick="this.closest('.variant-row').remove()"></button>
+            <div class="d-flex justify-content-end gap-2 mb-2 pb-2 border-bottom">
+                ${v.id ? `<button type="button" class="btn btn-sm btn-outline-info" title="快速加卡" onclick="quickAddCard(${v.id}, '${v.name}')"><i class="fas fa-plus-circle"></i> 快速加卡</button>` : ''}
+                <button type="button" class="btn btn-sm btn-outline-success" title="保存所有更改" onclick="saveProduct()"><i class="fas fa-save"></i> 保存规格</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" title="删除此规格" onclick="this.closest('.variant-row').remove()"><i class="fas fa-trash-alt"></i></button>
+            </div>
             <div class="variant-fields-container">
                 <div class="variant-field v-name"><label class="form-label-sm">规格名称</label><input type="text" class="form-control form-control-sm v-name" value="${v.name || ''}" placeholder="月卡"></div>
                 <div class="variant-field" style="width: 60px;"><label class="form-label-sm">排序</label><input type="number" class="form-control form-control-sm v-sort" value="${v.sort || 0}" placeholder="0"></div>
