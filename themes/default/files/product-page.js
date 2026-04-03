@@ -563,7 +563,7 @@ function updateDynamicInfoDisplay() {
         rightInfo += ` + ${selectedSpecificCardInfo}`;
     }
 
-    displayDiv.html(`<span style="color:#666; font-size:12px; margin-right:12px;"><i class="fas fa-mouse-pointer me-1"></i>已选: ${rightInfo}</span> ${leftHtml}`);
+    displayDiv.html(`<span style="${activeStyle} margin-right:8px;"><i class="fas fa-mouse-pointer me-1"></i>已选: ${rightInfo}</span> ${leftHtml}`);
 }
 
 // 选号弹窗
