@@ -112,6 +112,7 @@ CREATE TABLE variants (
     sales_count      INTEGER DEFAULT 0,
     auto_delivery    INTEGER DEFAULT 1,
     created_at       INTEGER,
+    random_mode_text TEXT,
     selection_label  TEXT,
     sort             INTEGER DEFAULT 0,
     active           INTEGER DEFAULT 1,
