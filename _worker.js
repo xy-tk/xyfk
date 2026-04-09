@@ -125,7 +125,7 @@ export default {
         
         let theme = 'default';
         try {
-            const db = env.MY_XYRJ;
+            const db = env.xyfk;
             const t = await db.prepare("SELECT value FROM site_config WHERE key='theme'").first();
             if(t && t.value) theme = t.value;
         } catch(e) {}
@@ -155,7 +155,7 @@ export default {
              // 首页 SEO 注入
              if (response.status === 200) {
                  try {
-                     const db = env.MY_XYRJ;
+                     const db = env.xyfk;
                      const configRes = await db.prepare("SELECT * FROM site_config").all();
                      const config = {}; 
                      if (configRes && configRes.results) {
@@ -193,7 +193,7 @@ export default {
 
             // SEO 注入
             if (response.status === 200) {
-                const db = env.MY_XYRJ;
+                const db = env.xyfk;
 
                 // --- 情况1：商品详情页 (product.html) ---
                 if (path === '/product' || path === '/product.html') {
@@ -269,7 +269,7 @@ export default {
             }
             let conf = {};
             try {
-                const db = env.MY_XYRJ;
+                const db = env.xyfk;
                 (await db.prepare("SELECT key, value FROM site_config WHERE key IN ('gh_user','gh_repo','gh_token')").all()).results.forEach(r => conf[r.key] = r.value);
             } catch(e) {}
 
@@ -336,7 +336,7 @@ async function injectMetaTags(originalResponse, data) {
 async function handleApi(request, env, url, ctx) {
     const method = request.method;
     const path = url.pathname;
-    const db = env.MY_XYRJ; // 数据库绑定
+    const db = env.xyfk; // 数据库绑定
 
     try {
         // ===========================
