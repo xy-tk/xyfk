@@ -432,6 +432,16 @@ function renderGlobalHeaders(config) {
         const el = document.getElementById(id);
         if(el && (showName || (!showName && !showLogo))) el.classList.remove('d-none');
     });
+    if (config.custom_js) {
+        const div = document.createElement('div');
+        div.innerHTML = config.custom_js;
+        Array.from(div.querySelectorAll('script')).forEach(oldScript => {
+            const newScript = document.createElement('script');
+            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+            document.body.appendChild(newScript);
+        });
+    }
 }
 
 function renderSidebarNoticeContact(config) {
