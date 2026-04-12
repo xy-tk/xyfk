@@ -733,9 +733,9 @@ async function handleApi(request, env, url, ctx) {
                  return jsonRes(results);
             }
             if (path === '/api/admin/gateway/save' && method === 'POST') {
-                const { id, name, type, config, active } = await request.json();
-                await db.prepare("UPDATE pay_gateways SET name=?, type=?, config=?, active=? WHERE id=?")
-                   .bind(name, type, JSON.stringify(config), active, id).run();
+                const { id, name, type, config, active, remark } = await request.json();
+                await db.prepare("UPDATE pay_gateways SET name=?, type=?, config=?, active=?, remark=? WHERE id=?")
+                   .bind(name, type, JSON.stringify(config), active, remark || '', id).run();
                 return jsonRes({success: true});
             }
 
