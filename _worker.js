@@ -1027,7 +1027,7 @@ async function handleApi(request, env, url, ctx) {
             const publicKeys = [
                 'site_name', 'site_logo', 'show_site_name', 'show_site_logo', 
                 'theme', 'announce', 'contact_info', 'site_description',
-                'tg_active', 'outlook_active' 
+                'tg_active', 'outlook_active', 'custom_js'
             ];
 
             const safeConfig = {};
