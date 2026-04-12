@@ -196,6 +196,10 @@
                         必填。请在支付宝后台查看并复制“支付宝公钥”（注意：<b>不是</b>应用公钥）。
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">备注</label>
+                    <input type="text" class="form-control" id="gateway-remark" placeholder="例如：仅限内部测试使用">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">取消</button>
@@ -242,23 +246,18 @@
         }
         
         tbody.innerHTML = allGateways.map(g => {
-            const statusHtml = g.active ? '<span class="badge-active">已启用</span>' : '<span class="badge-inactive">未启用</span>';
+            const statusHtml = `
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" 
+                        ${g.active ? 'checked' : ''} 
+                        onclick="toggleGatewayStatus(${g.id}, ${g.active ? 0 : 1})">
+                </div>`;
             return `
-            <tr>
                 <td>${g.id}</td>
                 <td><span class="fw-bold">${g.name}</span></td>
                 <td><code class="text-muted">${g.type}</code></td>
-                <td>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" ${g.active ? 'checked' : ''} onchange="toggleGateway(${g.id}, this.checked)">
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group input-group-sm" style="max-width:200px;">
-                        <input type="text" class="form-control form-control-sm" id="remark-${g.id}" value="${g.remark || ''}" placeholder="备注">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="saveRemark(${g.id})">存</button>
-                    </div>
-                </td>
+                <td>${statusHtml}</td>
+                <td class="text-muted small">${g.remark || '-'}</td>
                 <td style="text-align: center;">
                     <button class="btn btn-sm btn-outline-primary" onclick="openModal(${g.id})"><i class="fas fa-cog"></i> 配置</button>
                 </td>
@@ -276,6 +275,7 @@
             document.getElementById('ali-appid').value = config.app_id || '';
             document.getElementById('ali-priv-key').value = config.private_key || '';
             document.getElementById('ali-pub-key').value = config.alipay_public_key || '';
+            document.getElementById('gateway-remark').value = gateway.remark || '';
             alipayModal.show();
         } else {
             alert('暂不支持配置此类型的支付网关');
@@ -291,7 +291,8 @@
             private_key: document.getElementById('ali-priv-key').value.trim(),
             alipay_public_key: document.getElementById('ali-pub-key').value.trim()
         };
-        
+        const remark = document.getElementById('gateway-remark').value.trim();
+
         if (!config.app_id || !config.private_key || !config.alipay_public_key) {
             return alert('请填写完整的配置信息（AppID、私钥、公钥）');
         }
@@ -301,7 +302,8 @@
             name: gateway.name,
             type: gateway.type,
             active: 1, // 保存即启用
-            config: config
+            config: config,
+            remark: remark
         };
 
         const res = await api('gateway/save', { method: 'POST', body: JSON.stringify(dataToSave) });
@@ -314,28 +316,16 @@
         }
     }
 
-    loadGateways();
-    async function toggleGateway(id, checked) {
-    const gateway = allGateways.find(g => g.id === id);
-    if (!gateway) return; // 吸收第一段的安全性
-    const res = await api('gateway/save', { method: 'POST', body: JSON.stringify({...gateway, active: checked ? 1 : 0}) });
-    if (!res.success) { 
-        alert('状态更新失败'); 
-        loadGateways(); // 失败回滚开关状态
-    }
+    async function toggleGatewayStatus(id, newStatus) {
+    const g = allGateways.find(x => x.id === id);
+    const res = await api('gateway/save', { 
+        method: 'POST', 
+        body: JSON.stringify({ ...g, active: newStatus }) 
+    });
+    if (res.success) loadGateways();
 }
 
-async function saveRemark(id) {
-    const gateway = allGateways.find(g => g.id === id);
-    if (!gateway) return; // 吸收第一段的安全性
-    const remarkValue = document.getElementById('remark-' + id).value.trim();
-    const res = await api('gateway/save', { method: 'POST', body: JSON.stringify({...gateway, remark: remarkValue}) });
-    if (res.success) {
-        alert('备注已保存');
-    } else {
-        alert('保存失败');
-    }
-}
+    loadGateways();
 
     // 移动端菜单
     const mobileBtn = document.getElementById('mobile-menu-toggle');
@@ -350,6 +340,8 @@ async function saveRemark(id) {
     mobileBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
     overlay.addEventListener('click', toggleMenu);
     document.querySelectorAll('.admin-sidebar a').forEach(link => { link.addEventListener('click', () => { if (window.innerWidth <= 800) toggleMenu(); }); });
+
+    
 </script>
 </body>
 </html>
