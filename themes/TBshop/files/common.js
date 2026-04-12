@@ -92,10 +92,6 @@ const TB_LAYOUT = {
             <i class="fas fa-book"></i>
             <span>文章</span>
         </a>
-        <a href="#" class="mbn-item" onclick="event.preventDefault(); togglePanel('mobile-contact-sheet', 'mobile-contact-overlay');">
-            <i class="fa fa-headset"></i>
-            <span>客服</span>
-        </a>
     `,
     // [新增] 移动端搜索下拉框模板
     mobileSearch: `
@@ -450,7 +446,6 @@ function renderSidebarNoticeContact(config) {
     
     const contact = config.contact_info || '<p>暂无联系方式</p>';
     setHtml('contact-box', contact);
-    setHtml('mobile-contact-content', contact);
 
     if (window.innerWidth < 992 && document.getElementById('products-list-area')) {
         const noticeModule = document.getElementById('notice-module-box');
