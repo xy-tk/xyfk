@@ -235,7 +235,7 @@
         tbody.innerHTML = '<tr><td colspan="5" class="text-center">加载中...</td></tr>';
 
         allGateways = await api('gateways/list');
-        
+        if (!Array.isArray(allGateways)) { allGateways = []; }
         if (!allGateways || allGateways.length === 0) {
              // 如果数据库为空，插入默认数据并重试
             await api('gateway/save', { 
