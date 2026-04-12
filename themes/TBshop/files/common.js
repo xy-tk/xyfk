@@ -506,7 +506,7 @@ function updateCartBadge(n) {
 document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('back-to-top-btn')) return;
     const btn = document.createElement('div');
-    btn.id = 'back-to-top-btn'; btn.className = 'back-to-top-btn'; btn.innerHTML = '<i class="fa fa-arrow-up"></i>';
+    btn.id = 'back-to-top-btn'; btn.className = 'back-to-top-btn'; btn.innerHTML = '<i class="far fa-arrow-up"></i>';
     document.body.appendChild(btn);
     btn.onclick = () => window.scrollTo({top:0, behavior:'smooth'});
     window.onscroll = () => btn.classList.toggle('show', window.scrollY > 300);
