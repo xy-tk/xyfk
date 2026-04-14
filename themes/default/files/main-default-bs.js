@@ -149,7 +149,7 @@ function generateProductCardHtml(product) {
                         ${deliveryHtml}
                     </div>
 
-                    <div class="text-muted text-center text-md-start" style="min-width: 70px; font-size: 12px; white-space: nowrap;">
+                    <div class="d-none d-md-flex text-muted text-center text-md-start" style="min-width: 70px; font-size: 12px; white-space: nowrap;">
                         库存: ${totalStock}
                     </div>
 
