@@ -157,7 +157,7 @@ function generateProductCardHtml(product) {
                          ¥ ${productPrice}
                     </div>
                     
-                    <div class="text-end" style="min-width: 70px;">
+                    <div class="text-end" style="min-width: 80px;">
                         <a href="${buttonAction}" class="btn btn-sm ${buttonClass} rounded-pill px-3 w-100">
                             ${buttonText}
                         </a>
