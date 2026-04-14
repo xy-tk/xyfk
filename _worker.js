@@ -527,13 +527,14 @@ async function handleApi(request, env, url, ctx) {
             
             // --- 订单管理 API ---
             if (path === '/api/admin/orders/list') {
-                const contact = url.searchParams.get('contact');
+                const search = url.searchParams.get('search');
                 let query;
                 let params = [];
                 
-                if (contact) {
-                    query = "SELECT * FROM orders WHERE contact LIKE ? ORDER BY created_at DESC LIMIT 100";
-                    params = [`%${contact}%`];
+                if (search) {
+                    // 同时模糊匹配联系方式和精准/模糊匹配订单号
+                    query = "SELECT * FROM orders WHERE contact LIKE ? OR id LIKE ? ORDER BY created_at DESC LIMIT 100";
+                    params = [`%${search}%`, `%${search}%`];
                 } else {
                     query = "SELECT * FROM orders ORDER BY created_at DESC LIMIT 100";
                 }
