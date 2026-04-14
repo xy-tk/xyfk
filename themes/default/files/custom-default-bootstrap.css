@@ -367,3 +367,20 @@ body {
         order: -1; 
     }
 }
+/* =========================================
+   [新增] 商品列表价格与按钮响应式宽度控制
+   ========================================= */
+/* PC 端 (中大屏幕) 保持原本的 80px 以便整齐对齐 */
+.responsive-price, .responsive-btn {
+    min-width: 80px;
+}
+
+/* 移动端 (小屏幕) 缩减宽度，防止换行 */
+@media (max-width: 767px) {
+    .responsive-price {
+        min-width: 0px;
+    }
+    .responsive-btn {
+        min-width: 50px;
+    }
+}
