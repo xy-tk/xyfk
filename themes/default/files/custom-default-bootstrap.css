@@ -26,8 +26,8 @@ body {
 
 /* 首页分类标题 */
 .goods .title-2 {
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 17px;
+    font-weight: 600;
     color: var(--luna-text-dark);
     margin-top: 0px;
     margin-bottom: 10px;
