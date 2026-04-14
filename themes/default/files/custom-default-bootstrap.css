@@ -346,38 +346,6 @@ body {
 /* =========================================
    4. 移动端适配 & 工具类
    ========================================= */
-
-/* 移动端右下角查询悬浮球 */
-.query-m {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-.query-m a {
-    display: flex;
-    align-items: center;
-    background-color: var(--luna-primary-blue);
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 50px;
-    text-decoration: none;
-    box-shadow: 0 4px 10px rgba(60, 140, 231, 0.6);
-    transition: all 0.2s;
-}
-.query-m a:hover {
-    background-color: #2b74d3;
-}
-.query-m i {
-    width: 24px;
-    height: 24px;
-    font-size: 18px;
-    margin-right: 5px;
-}
-.query-m span {
-    font-weight: 600;
-}
-
 /* 订单状态徽章 */
 .status-badge {
     font-size: 12px;
