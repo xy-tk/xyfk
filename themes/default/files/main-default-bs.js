@@ -59,7 +59,7 @@ function generateProductCardHtml(product) {
     const isAvailable = totalStock > 0;
 
     const buttonClass = isAvailable ? 'btn-primary' : 'btn-secondary disabled';
-    const buttonText = isAvailable ? '<i class="fas fa-shopping-cart d-md-none"></i><span class="d-none d-md-inline">购买</span>' : '缺货';
+    const buttonText = isAvailable ? '<i class="fal fa-shopping-cart d-md-none"></i><span class="d-none d-md-inline">购买</span>' : '<i class="fal fa-shopping-cart d-md-none"></i><span class="d-none d-md-inline">缺货</span>';
     const buttonAction = isAvailable ? `/product?id=${product.id}` : 'javascript:void(0)';
     
     // 发货方式样式逻辑
