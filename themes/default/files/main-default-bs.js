@@ -144,21 +144,21 @@ function generateProductCardHtml(product) {
                     </div>
                 </div>
 
-                <div class="product-action-area d-flex align-items-center justify-content-end gap-4 flex-wrap flex-md-nowrap">
-                    <div class="d-flex align-items-center justify-content-start" style="min-width: 90px;">
+                <div class="product-action-area d-flex flex-row align-items-center justify-content-center justify-content-md-end gap-3 gap-md-4 flex-nowrap">
+                    <div class="d-none d-md-flex align-items-center justify-content-start" style="min-width: 90px;">
                         ${deliveryHtml}
                     </div>
 
-                    <div class="text-muted text-start" style="min-width: 70px; font-size: 12px;">
+                    <div class="text-muted text-center text-md-start" style="min-width: 70px; font-size: 12px; white-space: nowrap;">
                         库存: ${totalStock}
                     </div>
 
-                    <div class="product-price text-start" style="min-width: 80px;">
+                    <div class="product-price text-center text-md-start" style="min-width: 80px; white-space: nowrap;">
                          ¥ ${productPrice}
                     </div>
                     
-                    <div class="text-end" style="min-width: 80px;">
-                        <a href="${buttonAction}" class="btn btn-sm ${buttonClass} rounded-pill px-3 w-100">
+                    <div class="text-center text-md-end" style="min-width: 80px;">
+                        <a href="${buttonAction}" class="btn btn-sm ${buttonClass} rounded-pill px-2 px-md-3 w-100">
                             ${buttonText}
                         </a>
                     </div>
