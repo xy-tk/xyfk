@@ -153,11 +153,11 @@ function generateProductCardHtml(product) {
                         库存: ${totalStock}
                     </div>
 
-                    <div class="product-price text-center text-md-start" style="min-width: 80px; white-space: nowrap;">
+                    <div class="product-price text-center text-md-start responsive-price" style="white-space: nowrap;">
                          ¥ ${productPrice}
                     </div>
                     
-                    <div class="text-center text-md-end" style="min-width: 80px;">
+                    <div class="text-center text-md-end responsive-btn">
                         <a href="${buttonAction}" class="btn btn-sm ${buttonClass} rounded-pill px-2 px-md-3 w-100">
                             ${buttonText}
                         </a>
