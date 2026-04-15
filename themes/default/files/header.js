@@ -190,7 +190,9 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
 
             /* 移动端适配 */
             @media (max-width: 991px) {
-                header.custom-header { height: auto; min-height: 60px; }
+                header.custom-header { height: auto; min-height: 52px; }
+                header.custom-header .navbar-toggler { border: none; box-shadow: none; outline: none; }
+                header.custom-header .navbar-toggler-icon { width: 1em; height: 1em; }
                 header.custom-header .navbar-collapse {
                     background: #fff;
                     padding-bottom: 15px;
