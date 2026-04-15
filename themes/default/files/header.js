@@ -132,9 +132,21 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                 display: block;
                 animation: slideDown 0.2s ease forwards;
             }
-            @keyframes slideDown {
-                from { opacity: 0; transform: translateY(-10px); }
-                to { opacity: 1; transform: translateY(0); }
+            /* --- 商品分类折叠样式 --- */
+            .category-toggle-wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+            .category-arrow { 
+                padding: 10px 20px; 
+                cursor: pointer; 
+                transition: transform 0.3s ease; 
+                color: #999;
+            }
+            /* 展开状态时箭头旋转 */
+            .nav-item.dropdown.menu-expanded .category-arrow { transform: rotate(180deg); }
+            /* 移动端侧滑状态下，带有 .menu-expanded 类的菜单强制显示 */
+            @media (max-width: 991px) {
+                header.custom-header .nav-item.dropdown.menu-expanded .dropdown-menu { 
+                    display: block !important; 
+                }
             }
             
             header.custom-header .dropdown-item {
@@ -219,7 +231,6 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                 header.custom-header .dropdown-menu {
                     position: static; box-shadow: none; border: none; padding-left: 20px; display: none; background: #fafafa;
                 }
-                header.custom-header .nav-item.dropdown:hover .dropdown-menu { display: block; }
             }
         </style>
     `;
@@ -269,10 +280,15 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                                     <i class="fas fa-home"></i>商城首页
                                 </a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="/#category-list" id="categoryDropdown" role="button" aria-expanded="false">
-                                    <i class="fas fa-list-ul"></i>商品分类
-                                </a>
+                            <li class="nav-item dropdown menu-expanded">
+                                <div class="nav-link category-toggle-wrap">
+                                    <a href="/#category-list" style="color: inherit; text-decoration: none; flex: 1;">
+                                        <i class="fas fa-list-ul"></i>商品分类
+                                    </a>
+                                    <span class="category-arrow" id="mobile-category-arrow">
+                                        <i class="fal fa-angle-down"></i>
+                                    </span>
+                                </div>
                                 <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="header-category-menu">
                                     <li><span class="dropdown-item text-muted">加载中...</span></li>
                                 </ul>
@@ -388,6 +404,22 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
 
     $('#navbarNav').on('click', function(e) {
         e.stopPropagation(); // 防止点击菜单内部导致面板关闭
+    });
+    // 新增：移动端商品分类箭头点击折叠/展开
+    $('#mobile-category-arrow').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const parentLi = $(this).closest('.nav-item.dropdown');
+        const menu = $('#header-category-menu');
+        
+        if (parentLi.hasClass('menu-expanded')) {
+            menu.slideUp(300, function() {
+                parentLi.removeClass('menu-expanded');
+            });
+        } else {
+            parentLi.addClass('menu-expanded');
+            menu.hide().slideDown(300);
+        }
     });
 }
 
