@@ -381,7 +381,7 @@ body {
         min-width: 0px;
     }
     .responsive-btn {
-        min-width: 50px;
+        min-width: 0px;
     }
 /* 移动端专属缩减 */
     .goods .title-2 { font-size: 13px; margin-bottom: 6px; }
