@@ -144,7 +144,7 @@ function generateProductCardHtml(product) {
                     </div>
                 </div>
 
-                <div class="product-action-area d-flex flex-row align-items-center justify-content-center justify-content-md-end gap-3 gap-md-4 flex-nowrap">
+                <div class="product-action-area d-flex flex-row align-items-center justify-content-center justify-content-md-end gap-2 gap-md-4 flex-nowrap">
                     <div class="d-none d-md-flex align-items-center justify-content-start" style="min-width: 90px;">
                         ${deliveryHtml}
                     </div>
