@@ -219,14 +219,33 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
         ${styleHtml}
         <header class="custom-header">
             <nav class="navbar navbar-expand-lg navbar-light">
-                <div class="container">
+                <div class="container d-flex justify-content-between align-items-center position-relative">
                     
-                    <a class="navbar-brand" href="/">
+                    <div class="header-search-form d-lg-none m-0" style="width: auto;">
+                        <i class="far fa-search header-search-icon" style="left: 0; pointer-events: auto; cursor: pointer; color: #555; z-index: 2;" onclick="$(this).next('input').focus()"></i>
+                        <input type="text" class="header-search-input bg-transparent border-0 shadow-none" placeholder="搜索商品..." style="padding-left: 25px; width: 30px; color: transparent; transition: all 0.3s; position: relative; z-index: 1;" onfocus="this.style.width='160px'; this.style.color='#333'; this.style.backgroundColor='#f8f9fa'; this.style.borderRadius='20px';" onblur="if(!this.value){this.style.width='30px'; this.style.color='transparent'; this.style.backgroundColor='transparent';}">
+                    </div>
+
+                    <a class="navbar-brand d-none d-lg-flex" href="/">
+                        ${logoHtml}
+                        ${nameHtml}
+                    </a>
+                    <a class="navbar-brand d-lg-none position-absolute start-50 translate-middle-x m-0" href="/">
                         ${logoHtml}
                         ${nameHtml}
                     </a>
 
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <div class="d-flex align-items-center d-lg-none ms-auto">
+                        <a href="/cart" class="header-cart-wrap me-2" title="购物车" style="margin-left: 0;">
+                            <i class="far fa-shopping-cart"></i>
+                            <span class="common-cart-badge" id="cart-badge-mobile">0</span>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+
+                    <button class="navbar-toggler d-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
@@ -264,12 +283,12 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                             </li>
                         </ul>
 
-                        <div class="header-search-form">
+                        <div class="header-search-form d-none d-lg-block">
                             <i class="far fa-search header-search-icon"></i>
                             <input type="text" class="header-search-input" id="top-search-input" placeholder="搜索商品...">
                         </div>
 
-                        <a href="/cart" class="header-cart-wrap" title="购物车">
+                        <a href="/cart" class="header-cart-wrap d-none d-lg-block" title="购物车">
                             <i class="far fa-shopping-cart"></i>
                             <span class="common-cart-badge" id="header-cart-badge">0</span>
                         </a>
@@ -298,7 +317,7 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
         updateCartBadge();
     }
 
-    $('#top-search-input').on('keypress', function(e) {
+    $('.header-search-input').on('keypress', function(e) {
         if (e.which == 13) {
             const kw = $(this).val().trim().toLowerCase();
             if (!kw) return;
