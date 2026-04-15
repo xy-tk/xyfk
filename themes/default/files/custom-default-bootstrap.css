@@ -383,4 +383,7 @@ body {
     .responsive-btn {
         min-width: 50px;
     }
+/* 移动端专属缩减 */
+    .goods .title-2 { font-size: 14px; margin-bottom: 6px; }
+    .badge-tag { font-size: 10px; }
 }
