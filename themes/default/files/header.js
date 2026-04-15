@@ -193,23 +193,33 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                 header.custom-header .site-logo { height: 43px; } 
                 header.custom-header .navbar-toggler { border: none; box-shadow: none; outline: none; }
                 header.custom-header .navbar-toggler-icon { width: 1em; height: 1em; }
+                /* --- 侧滑菜单样式 --- */
                 header.custom-header .navbar-collapse {
-                    background: #fff;
-                    padding-bottom: 15px;
-                    border-top: 1px solid #eee;
+                    position: fixed; top: 0; right: -280px; /* 默认隐藏在屏幕右侧外 */
+                    width: 280px; height: 100vh; background-color: #fff;
+                    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+                    transition: right 0.3s ease; z-index: 1050;
+                    padding: 0; display: block !important; /* 强制覆盖原本的隐藏属性 */
+                    overflow-y: auto;
                 }
-                header.custom-header .nav-link { height: 40px; }
-                .header-search-form { margin: 10px 15px; width: auto; }
-                .header-search-input { width: 100%; }
+                body.nav-open header.custom-header .navbar-collapse {
+                    right: 0; /* JS触发时滑出 */
+                }
+                /* 侧边栏遮罩层 */
+                #mobile-menu-overlay {
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                    background: rgba(0,0,0,0.5); z-index: 1040;
+                    opacity: 0; visibility: hidden; transition: all 0.3s ease;
+                }
+                body.nav-open #mobile-menu-overlay {
+                    opacity: 1; visibility: visible;
+                }
+                /* 菜单项样式重置 */
+                header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5; padding-left: 20px !important; }
                 header.custom-header .dropdown-menu {
-                    box-shadow: none;
-                    border: none;
-                    padding-left: 20px;
-                    display: none; 
+                    position: static; box-shadow: none; border: none; padding-left: 20px; display: none; background: #fafafa;
                 }
-                 header.custom-header .nav-item.dropdown:hover .dropdown-menu {
-                    display: block;
-                }
+                header.custom-header .nav-item.dropdown:hover .dropdown-menu { display: block; }
             }
         </style>
     `;
@@ -240,7 +250,7 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                             <i class="far fa-shopping-cart"></i>
                             <span class="common-cart-badge" id="cart-badge-mobile">0</span>
                         </a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <button class="navbar-toggler" type="button" id="mobile-menu-btn">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                     </div>
@@ -250,7 +260,9 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarNav">
-                        
+                        <div class="d-lg-none text-end p-3" id="close-menu-btn" style="cursor: pointer; font-size: 28px; color: #999; line-height: 1;">
+                            &times;
+                        </div>
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
                                 <a class="nav-link" href="/">
@@ -296,6 +308,7 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                     </div>
                 </div>
             </nav>
+            <div id="mobile-menu-overlay"></div>
         </header>
     `;
     
@@ -357,6 +370,24 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                 window.location.href = '/?search=' + encodeURIComponent(kw);
             }
         }
+    });
+    // 新增：移动端侧滑菜单交互逻辑
+    const menuBtn = $('#mobile-menu-btn');
+    const closeBtn = $('#close-menu-btn');
+    const overlay = $('#mobile-menu-overlay');
+    const body = $('body');
+
+    menuBtn.on('click', function(e) {
+        e.stopPropagation();
+        body.addClass('nav-open');
+    });
+
+    closeBtn.add(overlay).on('click', function() {
+        body.removeClass('nav-open');
+    });
+
+    $('#navbarNav').on('click', function(e) {
+        e.stopPropagation(); // 防止点击菜单内部导致面板关闭
     });
 }
 
