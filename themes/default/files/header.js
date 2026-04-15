@@ -41,7 +41,6 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
             /* 2. Navbar 调整 */
             header.custom-header .navbar {
                 height: 100%;
-                padding: 0;
             }
             
             /* 3. 店铺名称样式 */
