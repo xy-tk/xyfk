@@ -386,4 +386,7 @@ body {
 /* 移动端专属缩减 */
     .goods .title-2 { font-size: 13px; margin-bottom: 6px; }
     .badge-tag { font-size: 10px; }
+    .main-box { margin-bottom: 0px; }
+    .category-bar {gap: 10px;}
+    .my-4 { margin-top: 1rem !important; margin-bottom: 1rem !important; }
 }
