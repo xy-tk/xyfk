@@ -89,6 +89,11 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
+            .category-nav-link {
+                padding: 5px 10px;
+                font-size: 14px;
+            }
+            
             .pb-4 {
                 padding-bottom: 1.0rem !important;
             }
@@ -106,9 +111,12 @@
                 padding-left: 10px !important; /* 缩小文字区域距离左侧图片的间距 */
             }
             .blog-post-title {
-                -webkit-line-clamp: 1;
                 font-size: 0.92rem; /* 移动端标题稍微缩小一点 */
                 margin-bottom: 1px;
+                -webkit-line-clamp: 1;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
             .article-summary {
                 -webkit-line-clamp: 2; /* 移动端空间有限，摘要最多显示2行 */
