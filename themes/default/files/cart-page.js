@@ -35,17 +35,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 4. 监听输入框同步 (PC端和移动端输入框值保持一致)
     syncInputs('contact-info', 'contact-info-mobile');
     syncInputs('query-password', 'query-password-mobile');
+    loadCartGateways();
+});
 
-    // 5. 初始化侧边栏吸附 (仅在PC端有效)
+// 5. 新增：等页面和图片完全加载后再初始化侧边栏吸附 (仅在PC端有效)
+window.addEventListener('load', function() {
     if (window.innerWidth > 991 && typeof StickySidebar !== 'undefined') {
         new StickySidebar('#sidebar-wrapper', {
             topSpacing: 80,
             bottomSpacing: 20,
-            containerSelector: '.product-detail-grid', // 使用新的Grid容器
+            containerSelector: '.product-detail-grid',
             innerWrapperSelector: '.sidebar-inner'
         });
     }
-    loadCartGateways();
 });
 
 /**
