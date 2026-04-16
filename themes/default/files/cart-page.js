@@ -38,15 +38,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadCartGateways();
 });
 
-// 5. 新增：等页面和图片完全加载后再初始化侧边栏吸附 (仅在PC端有效)
+// 5. 修复：等图片加载后初始化，并彻底解决 Grid 布局下小数像素导致的移位和变小 Bug
 window.addEventListener('load', function() {
     if (window.innerWidth > 991 && typeof StickySidebar !== 'undefined') {
-        new StickySidebar('#sidebar-wrapper', {
+        var mySidebar = new StickySidebar('#sidebar-wrapper', {
             topSpacing: 80,
             bottomSpacing: 20,
             containerSelector: '.product-detail-grid',
-            innerWrapperSelector: '.sidebar-inner'
+            innerWrapperSelector: '.sidebar-inner',
+            minWidth: 991 // 防止缩放屏幕时引发异常
         });
+        
+        // 核心修复补丁：监听滚动，强制赋予精确的浮点数宽度，避免插件内部四舍五入导致“缩水”
+        window.addEventListener('scroll', function() {
+            if (mySidebar.affixedType !== 'STATIC') {
+                // getBoundingClientRect().width 会获取带小数点的真实精确宽度
+                mySidebar.sidebarInner.style.width = mySidebar.sidebar.getBoundingClientRect().width + 'px';
+            }
+        }, { passive: true });
     }
 });
 
