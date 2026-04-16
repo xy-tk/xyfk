@@ -74,7 +74,7 @@ body {
     grid-template-columns: 1.8fr 1fr; 
     gap: 15px; 
     margin-bottom: 30px;
-    /* align-items: start;  <-- 删除或注释掉这一行 */
+    align-items: start; 
 }
 
 /* 左侧内容区 */
