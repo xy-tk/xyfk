@@ -38,26 +38,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadCartGateways();
 });
 
-// 5. 终极修复：隔离内边距导致的吸附卡顿和移位
+// 5. 新增：等页面和图片完全加载后再初始化侧边栏吸附 (仅在PC端有效)
 window.addEventListener('load', function() {
     if (window.innerWidth > 991 && typeof StickySidebar !== 'undefined') {
-        
-        // 【核心修复】：StickySidebar要求 inner 容器不能有 padding/margin
-        // 动态剥离原有样式并转接到新的安全层，防止计算尺寸时发生变小、移位
-        const inner = document.querySelector('.sidebar-inner');
-        if (inner && inner.classList.contains('main-box')) {
-            inner.classList.remove('main-box', 'p-3'); 
-            const safeWrapper = document.createElement('div');
-            safeWrapper.className = 'main-box p-3'; 
-            
-            // 无损转移所有子元素（完美保留输入框事件不失效）
-            while (inner.firstChild) {
-                safeWrapper.appendChild(inner.firstChild);
-            }
-            inner.appendChild(safeWrapper);
-        }
-
-        // 初始化插件
         new StickySidebar('#sidebar-wrapper', {
             topSpacing: 80,
             bottomSpacing: 20,
