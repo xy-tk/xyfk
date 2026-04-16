@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 5. 初始化侧边栏吸附 (仅在PC端有效)
     if (window.innerWidth > 991 && typeof StickySidebar !== 'undefined') {
         new StickySidebar('#sidebar-wrapper', {
-            topSpacing: 20,
+            topSpacing: 80,
             bottomSpacing: 20,
             containerSelector: '.product-detail-grid', // 使用新的Grid容器
             innerWrapperSelector: '.sidebar-inner'
