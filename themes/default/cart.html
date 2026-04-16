@@ -6,41 +6,140 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品详情加载中...</title>
-    
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/all.min.css" rel="stylesheet">
-    
     <link href="files/custom-default-bootstrap.css" rel="stylesheet">
 </head>
 <body>
-
     <div class="container my-4">
-        
         <div class="product-detail-grid">
-            
-            <div class="detail-left main-box p-4" style="margin-bottom: 0px;">
-                <div id="detail-left-content">
+            <div class="detail-left main-box" style="margin-bottom: 0px;">
+                <h5 class="mb-4 fw-bold" style="color: var(--luna-text-dark); border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                    <i class="fa fa-shopping-cart me-2" style="color: var(--luna-primary-blue);"></i>我的购物车
+                </h5>
+
+                <div class="d-none d-lg-block">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-muted small">
+                            <tr>
+                                <th scope="col" width="40" class="ps-2">
+                                    <input class="form-check-input" type="checkbox" id="check-all-pc" onchange="toggleCheckAll(this)">
+                                </th>
+                                <th scope="col">商品信息</th>
+                                <th scope="col" width="80">单价</th>
+                                <th scope="col" width="110">数量</th>
+                                <th scope="col" width="80">小计</th>
+                                <th scope="col" width="50">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-list-pc">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="d-lg-none">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <div class="form-check mb-0">
+                            <input class="form-check-input" type="checkbox" id="check-all-mobile-top" onchange="toggleCheckAll(this)">
+                            <label class="form-check-label small text-muted" for="check-all-mobile-top">全选</label>
+                        </div>
+                        <span class="text-primary small" onclick="toggleEdit('mobile')" id="edit-btn-mobile" style="cursor:pointer;">管理</span>
                     </div>
+                    
+                    <div id="cart-list-mobile">
+                        </div>
+
+                    <div class="mt-4 pt-3 border-top">
+                        <h6 class="fw-bold mb-3">结算信息</h6>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">联系方式 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="contact-info-mobile" placeholder="请输入QQ/手机/邮箱">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">查单密码 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="query-password-mobile" placeholder="请设置查单密码">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted mb-2">支付方式</label>
+                            <div class="payment-list-container" id="cart-payment-list-mobile">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="detail-right" id="sidebar-wrapper">
-                <div class="sidebar-inner main-box p-3">
-                    <div id="detail-right-content">
+                <div class="sidebar-inner main-box p-3" style="position: relative; transform: translate3d(0px, 0px, 0px);">
+                    <h5 class="fw-bold border-bottom pb-3 mb-3" style="font-size: 16px;">订单结算</h5>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">联系方式 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="contact-info" placeholder="请输入QQ/手机/邮箱">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">查单密码 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="query-password" placeholder="请设置查单密码">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-muted mb-2">支付方式</label>
+                        <div class="payment-list-container" id="cart-payment-list-pc">
+
+                        </div>
+                    </div>
+
+                    <div class="border-top pt-3 mt-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="small text-muted">已选商品</span>
+                            <span class="text-dark fw-bold"><span id="checkout-count-pc">0</span> 件</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="small text-muted">合计金额</span>
+                            <span class="text-danger fw-bold fs-5">¥<span id="total-price-pc">0.00</span></span>
+                        </div>
+                        <button class="btn btn-primary w-100 rounded-pill fw-bold shadow-sm py-2" onclick="handleCheckout()" style="background: var(--luna-primary-blue); border:none;">
+                            立即结算
+                        </button>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+    <div class="cart-footer-bar fixed-bottom d-flex align-items-center justify-content-between d-lg-none">
+        <div class="d-flex align-items-center">
+            <div class="text-dark">
+                <span class="small">合计:</span>
+                <span class="text-danger fw-bold fs-5 ms-1">¥<span id="total-price-mobile">0.00</span></span>
+            </div>
+        </div>
+        <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" onclick="handleCheckout()" style="background: var(--luna-primary-blue); border:none;">
+            立即结算 <small>(<span id="checkout-count-mobile">0</span>)</small>
+        </button>
+    </div>
+
+    <div class="d-lg-none" style="height: 70px;"></div>
 
     <script src="/assets/jquery-3.6.0.min.js"></script>
     <script src="/assets/bootstrap.bundle.min.js"></script>
-    <script src="/assets/qrcode.min.js"></script>
-    <script src="/assets/sticky-sidebar.min.js"></script>    
+    <script src="/assets/sticky-sidebar.min.js"></script>
     <script src="files/header.js"></script>
     <script src="files/footer.js"></script>
-    
-    <script src="files/product-page.js"></script>
+    <script src="files/cart-page.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            // 强制检查并渲染 Header/Footer (兜底逻辑)
+            // 防止 main-default-bs.js 加载延迟导致页头不显示
+            if (typeof renderHeader === 'function' && $('header.custom-header').length === 0) {
+                renderHeader('我的商店');
+            }
+            if (typeof renderFooter === 'function' && $('footer').length === 0) {
+                renderFooter('我的商店');
+            }
+        });
+    </script>
 </body>
 </html>
