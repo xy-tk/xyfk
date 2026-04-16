@@ -6,24 +6,14 @@
  * @param {string} siteLogo - 网站Logo地址 (可选)
  * @param {boolean|string} showSiteName - 是否显示网站名称 (true/'1' 显示, false/'0' 隐藏)
  */
-function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = true) {
+   // 1. 将原渲染函数改名为纯骨架插入函数，移除传入参数
+function insertHeaderSkeleton() {
     // 检查是否已渲染，防止重复
-    if ($('header').length > 0) return;
+    if ($('header.custom-header').length > 0) return;
     
-    // 1. 构建 Logo 的 HTML
-    // 要求：Logo高度47px
-    const logoHtml = siteLogo 
-        ? `<img src="${siteLogo}" alt="Logo" class="site-logo">` 
-        : '';
-
-    // 2. 构建店铺名称 HTML
-    // 逻辑：默认显示，只有当明确设置为 '0' 或 false 时才隐藏
-    const shouldShowName = (showSiteName !== '0' && showSiteName !== 0 && showSiteName !== false && showSiteName !== 'false');
-    
-    let nameHtml = '';
-    if (shouldShowName) {
-        nameHtml = `<span>${siteName}</span>`;
-    }
+    // 使用固定的、带有ID的占位符，代替原先等待接口的动态变量
+    const logoHtml = `<img src="" alt="Logo" class="site-logo global-site-logo-target" style="display:none;">`;
+    const nameHtml = `<span class="global-site-name-target"></span>`;
 
     // 注入自定义 CSS 样式
     const styleHtml = `
@@ -521,3 +511,26 @@ window.updateCartBadge = function() {
         console.error('Update cart badge failed:', e);
     }
 }
+// 2. 页面 DOM 解析完毕后瞬间自动插入骨架，不等待接口
+$(document).ready(function() {
+    insertHeaderSkeleton();
+});
+
+// 3. 重写暴露给外部的 renderHeader 函数：使其仅负责后台配置返回后填充文字和图片
+window.renderHeader = function(siteName = '我的商店', siteLogo = '', showSiteName = true) {
+    insertHeaderSkeleton(); // 兜底：万一页面没有 ready 就被调用，先确保骨架存在
+    
+    const shouldShowName = (showSiteName !== '0' && showSiteName !== 0 && showSiteName !== false && showSiteName !== 'false');
+    
+    if (siteLogo) {
+        $('.global-site-logo-target').attr('src', siteLogo).show();
+    } else {
+        $('.global-site-logo-target').hide();
+    }
+    
+    if (shouldShowName) {
+        $('.global-site-name-target').text(siteName).show();
+    } else {
+        $('.global-site-name-target').hide();
+    }
+};
