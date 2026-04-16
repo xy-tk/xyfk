@@ -89,16 +89,20 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .article-item {
-                flex-direction: column; /* 上下排列 */
-            }
+            /* 删除了 flex-direction: column，让其保持默认的 flex-row（左右排列） */
             .avatar-sm {
-                width: 100%;
-                height: 180px;
-                margin-bottom: 15px;
+                width: 110px; /* 缩小图片宽度以适应屏幕 */
+                height: 75px; /* 缩小图片高度 */
+                margin-bottom: 0; /* 移除底部外边距 */
             }
             .article-content {
-                padding-left: 0 !important;
+                padding-left: 12px !important; /* 缩小文字区域距离左侧图片的间距 */
+            }
+            .blog-post-title {
+                font-size: 1rem; /* 移动端标题稍微缩小一点 */
+            }
+            .article-summary {
+                -webkit-line-clamp: 2; /* 移动端空间有限，摘要最多显示2行 */
             }
         }
     </style>
