@@ -89,20 +89,34 @@
 
         /* 移动端适配 */
         @media (max-width: 768px) {
+            .pb-4 {
+                padding-bottom: 1.0rem !important;
+            }
+            .mb-4 {
+                margin-bottom: 1.0rem !important;
+            }
             /* 删除了 flex-direction: column，让其保持默认的 flex-row（左右排列） */
             .avatar-sm {
-                width: 110px; /* 缩小图片宽度以适应屏幕 */
-                height: 75px; /* 缩小图片高度 */
+                width: 120px; /* 缩小图片宽度以适应屏幕 */
+                height: 82px; /* 缩小图片高度 */
                 margin-bottom: 0; /* 移除底部外边距 */
+                border-radius: 0.3rem;
             }
             .article-content {
-                padding-left: 12px !important; /* 缩小文字区域距离左侧图片的间距 */
+                padding-left: 10px !important; /* 缩小文字区域距离左侧图片的间距 */
             }
             .blog-post-title {
-                font-size: 1rem; /* 移动端标题稍微缩小一点 */
+                -webkit-line-clamp: 1;
+                font-size: 0.92rem; /* 移动端标题稍微缩小一点 */
+                margin-bottom: 1px;
             }
             .article-summary {
                 -webkit-line-clamp: 2; /* 移动端空间有限，摘要最多显示2行 */
+                font-size: 13px;
+            }
+            .blog-post-meta {
+                font-size: 0.6rem;
+                margin-bottom: 3px;
             }
         }
     </style>
