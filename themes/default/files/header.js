@@ -132,7 +132,7 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                 display: block;
                 animation: slideDown 0.2s ease forwards;
             }
-            /* --- 商品分类折叠样式 --- */
+            /* --- 商品分类折叠样式 (仿 xybk 逻辑) --- */
             .category-toggle-wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
             .category-arrow { 
                 padding: 10px 20px; 
@@ -140,8 +140,9 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                 transition: transform 0.3s ease; 
                 color: #999;
             }
-            /* 展开状态时箭头旋转 */
-            .nav-item.dropdown.menu-expanded .category-arrow { transform: rotate(180deg); }
+            /* PC端 Hover 或 移动端点击展开时，箭头向下(顺时针转90度) */
+            .nav-item.dropdown:hover .category-arrow,
+            .nav-item.dropdown.menu-expanded .category-arrow { transform: rotate(90deg); }
             /* 移动端侧滑状态下，带有 .menu-expanded 类的菜单强制显示 */
             @media (max-width: 991px) {
                 header.custom-header .nav-item.dropdown.menu-expanded .dropdown-menu { 
@@ -280,13 +281,13 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                                     <i class="fas fa-home"></i>商城首页
                                 </a>
                             </li>
-                            <li class="nav-item dropdown menu-expanded">
+                           <li class="nav-item dropdown">
                                 <div class="nav-link category-toggle-wrap">
                                     <a href="/#category-list" style="color: inherit; text-decoration: none; flex: 1;">
                                         <i class="fas fa-list-ul"></i>商品分类
                                     </a>
                                     <span class="category-arrow" id="mobile-category-arrow">
-                                        <i class="fal fa-angle-down"></i>
+                                        <i class="fal fa-angle-right"></i>
                                     </span>
                                 </div>
                                 <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="header-category-menu">
