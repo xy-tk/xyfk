@@ -13,7 +13,6 @@
     <style>
         /* 页面特定样式，保持与 Default 主题一致的清爽感 */
         body { background: #f4f6f9; }
-
         /* 选项卡样式微调 */
         .nav-tabs .nav-link {
             color: #6c757d;
@@ -21,6 +20,12 @@
             border-bottom: 2px solid transparent;
             font-weight: 500;
             padding: 12px 20px;
+        }
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px; /* 与商品页比例一致 */
+            gap: 20px;
+            align-items: start;
         }
         .nav-tabs .nav-link:hover {
             color: var(--luna-primary-blue);
@@ -116,84 +121,66 @@
     <div class="container my-4" style="min-height: 60vh;">
         <div class="product-detail-grid">
             
-            <div class="detail-left main-box p-4" style="margin-bottom: 0px;">
-                <h5 class="text-center mb-4" style="font-weight: 600; color: #333;">
-                    <i class="fas fa-search me-2" style="color: var(--luna-primary-blue);"></i>订单查询
-            </h5>
-
-            <ul class="nav nav-tabs mb-4 justify-content-center" id="queryTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="contact-tab" data-bs-toggle="tab" data-bs-target="#by-contact" type="button">
-                        联系方式查询
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="order-tab" data-bs-toggle="tab" data-bs-target="#by-order" type="button">
-                        订单号查询
-                    </button>
-                </li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="by-contact">
-                    
-                    <div id="local-cache-box" class="cache-hint d-none" onclick="queryByContact(true)">
-                        <div>
-                            <i class="fas fa-history me-2"></i>
-                            检测到本地记录：<strong id="cache-contact-text"></strong>
+            <div class="detail-left">
+                <div id="result-area" class="main-box p-4" style="min-height: 400px;">
+                    <h5 class="fw-bold border-bottom pb-3 mb-3">
+                        <i class="fas fa-list-ul me-2" style="color: var(--luna-primary-blue);"></i>查询结果
+                    </h5>
+                    <div id="result-content">
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-search fa-3x mb-3" style="opacity: 0.2;"></i>
+                            <p>请在右侧输入信息并点击查询</p>
                         </div>
-                        <div>
-                            <small>一键查询</small> <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label small text-muted">联系方式</label>
-                        <input type="text" class="form-control" id="input-contact" placeholder="下单时填写的QQ/手机/邮箱">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="form-label small text-muted">查单密码</label>
-                        <input type="text" class="form-control" id="input-password" placeholder="下单时设置的密码">
-                    </div>
-
-                    <button class="btn btn-primary w-100 py-2" onclick="queryByContact(false)" style="background-color: var(--luna-primary-blue); border-color: var(--luna-primary-blue);">
-                        查询订单
-                    </button>
-                    <div class="text-center mt-3 text-muted" style="font-size: 12px;">
-                        <i class="fas fa-info-circle me-1"></i> 可查询所有历史订单，支持补单和删除
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="by-order">
-                    <div class="mb-4 mt-3">
-                        <label class="form-label small text-muted">商户订单号</label>
-                        <input type="text" class="form-control" id="input-order-id" placeholder="请输入订单号 (如: 2023xxxxx)">
-                    </div>
-                    <button class="btn btn-primary w-100 py-2" onclick="queryByOrderId()" style="background-color: var(--luna-primary-blue); border-color: var(--luna-primary-blue);">
-                        立即查询
-                    </button>
-                    <div class="text-center mt-3 text-muted" style="font-size: 12px;">
-                        <i class="fas fa-exclamation-triangle me-1"></i> 仅支持查询已发货订单卡密
                     </div>
                 </div>
             </div>
-            
+
             <div class="detail-right" id="sidebar-wrapper">
-                <div class="sidebar-inner main-box p-3" id="result-area" style="display: none;">
-                    <h6 class="mb-3 border-bottom pb-3 fw-bold text-secondary">
-                        <i class="fas fa-list-ul me-2"></i> 查询结果
-                    </h6>
-                    <div id="result-content"></div>
+                <div class="sidebar-inner main-box p-3">
+                    <h6 class="fw-bold border-bottom pb-3 mb-3">订单查询</h6>
+                    
+                    <ul class="nav nav-tabs mb-4 justify-content-center" id="queryTabs" role="tablist" style="font-size: 14px;">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="contact-tab" data-bs-toggle="tab" data-bs-target="#by-contact" type="button">联系方式</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="order-tab" data-bs-toggle="tab" data-bs-target="#by-order" type="button">订单号</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="by-contact">
+                            <div id="local-cache-box" class="cache-hint d-none mb-3" onclick="queryByContact(true)">
+                                <div class="small"><i class="fas fa-history me-1"></i> 记录: <strong id="cache-contact-text"></strong></div>
+                                <i class="fas fa-chevron-right small"></i>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">联系方式</label>
+                                <input type="text" class="form-control form-control-sm" id="input-contact" placeholder="QQ/手机/邮箱">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label small text-muted">查单密码</label>
+                                <input type="password" class="form-control form-control-sm" id="input-password" placeholder="下单时的密码">
+                            </div>
+                            <button class="btn btn-primary w-100 py-2 fw-bold" onclick="queryByContact(false)" style="background-color: var(--luna-primary-blue);">立即查询</button>
+                        </div>
+
+                        <div class="tab-pane fade" id="by-order">
+                            <div class="mb-4 mt-2">
+                                <label class="form-label small text-muted">商户订单号</label>
+                                <input type="text" class="form-control form-control-sm" id="input-order-id" placeholder="2023xxxxx">
+                            </div>
+                            <button class="btn btn-primary w-100 py-2 fw-bold" onclick="queryByOrderId()" style="background-color: var(--luna-primary-blue);">立即查询</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
     <script src="/assets/jquery-3.6.0.min.js"></script>
     <script src="/assets/bootstrap.bundle.min.js"></script>  
-    <script src="/assets/sticky-sidebar.min.js"></script>
     <script src="/files/header.js"></script>
     <script src="/files/footer.js"></script>
     <script src="/files/main-default-bs.js"></script>
@@ -226,9 +213,9 @@
 
         function showResult(html) {
             $('#result-content').html(html);
-            $('#result-area').fadeIn();
+            // --- 修改处：不再操作 #result-area 的 display，因为它已在 Grid 中占位 ---
             $('html, body').animate({
-                scrollTop: $("#result-area").offset().top - 80
+                scrollTop: $("#result-area").offset().top - 20
             }, 500);
         }
 
@@ -262,7 +249,6 @@
             btn.html('<i class="fas fa-spinner fa-spin"></i> 查询中...').prop('disabled', true);
 
             $('#result-content').html('<div class="text-center py-5 text-muted"><i class="fas fa-spinner fa-spin fa-2x"></i><p class="mt-2">正在加载数据...</p></div>');
-            $('#result-area').show();
 
             try {
                 const res = await fetch('/api/shop/orders/query', {
@@ -346,10 +332,10 @@
 
             const btn = $(event.target);
             const originalText = btn.html();
-            btn.html('<i class="fas fa-spinner fa-spin"></i> 查询中...').prop('disabled', true);
+            btn.html('<i class="fas fa-spinner fa-spin"></i>').prop('disabled', true);
 
-            $('#result-content').empty();
-            $('#result-area').hide();
+            // --- 修改处：只清空内容，不隐藏容器 ---
+            $('#result-content').html('<div class="text-center py-5"><i class="fas fa-spinner fa-spin fa-2x"></i></div>');
 
             fetch(`/api/shop/order/status?order_id=${orderId}`)
                 .then(res => res.json())
