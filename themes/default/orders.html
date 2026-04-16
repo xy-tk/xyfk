@@ -189,6 +189,30 @@
             if(c && p && document.referrer.includes('product')) {
                  queryByContact(true);
             }
+            const p = localStorage.getItem('userPassword');
+            if(c && p && document.referrer.includes('product')) {
+                 queryByContact(true);
+            }
+
+            // --- 新增：强制修复选项卡切换重叠显示的问题 ---
+            $('#queryTabs .nav-link').on('click', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation(); // 阻止原有的冲突事件
+                
+                // 1. 切换上方按钮的高亮状态
+                $('#queryTabs .nav-link').removeClass('active');
+                $(this).addClass('active');
+                
+                // 2. 隐藏所有表单内容，并只显示当前点击的目标内容
+                $('#by-contact, #by-order').removeClass('show active');
+                const target = $(this).attr('data-bs-target');
+                $(target).addClass('show active');
+            });
+            // ----------------------------------------------
+            
+        });
+
+        function checkLocalCache() {
         });
 
         function checkLocalCache() {
