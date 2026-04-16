@@ -409,11 +409,9 @@ body {
 .payment-list-container { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* 覆盖特定情况下的 padding 以适应列表展示 */
-.detail-left.main-box.cart-box { padding: 20px !important; }
 .table > :not(caption) > * > * { border-bottom-width: 1px; padding: 1rem 0.5rem; }
 
 @media (max-width: 991px) {
-    .detail-left.main-box.cart-box { padding: 15px !important; }
     /* 移动端恢复 flex 布局防止 grid 挤压 (仅限购物车/订单列表) */
     .cart-grid-fallback { display: block !important; }
 }
