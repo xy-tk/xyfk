@@ -135,7 +135,6 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
             /* --- 商品分类折叠样式 (完全对齐 xybk：默认向右，展开向下) --- */
             .category-toggle-wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
             .category-arrow { 
-                padding: 10px 20px; 
                 cursor: pointer; 
                 color: #999;
             }
@@ -232,7 +231,7 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                     opacity: 1; visibility: visible;
                 }
                 /* 菜单项样式重置 */
-                header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5; }
+                header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5;font-size: 13px !important; }
                 header.custom-header .dropdown-menu {
                     position: static; box-shadow: none; border: none; padding-left: 20px; display: none; background: #fafafa;
                 }
@@ -291,7 +290,7 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                                         <i class="fas fa-list-ul"></i>商品分类
                                     </a>
                                     <span class="category-arrow" id="mobile-category-arrow">
-                                        <i class="fal fa-angle-right"></i>
+                                        <i class="far fa-angle-right" style=" margin-right: 0px;"></i>
                                     </span>
                                 </div>
                                 <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="header-category-menu">
