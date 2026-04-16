@@ -132,17 +132,21 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                 display: block;
                 animation: slideDown 0.2s ease forwards;
             }
-            /* --- 商品分类折叠样式 (仿 xybk 逻辑) --- */
+            /* --- 商品分类折叠样式 (完全对齐 xybk：默认向右，展开向下) --- */
             .category-toggle-wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
             .category-arrow { 
                 padding: 10px 20px; 
                 cursor: pointer; 
-                transition: transform 0.3s ease; 
                 color: #999;
             }
-            /* PC端 Hover 或 移动端点击展开时，箭头向下(顺时针转90度) */
-            .nav-item.dropdown:hover .category-arrow,
-            .nav-item.dropdown.menu-expanded .category-arrow { transform: rotate(90deg); }
+            /* 关键修复：动画必须加在 i 标签上，并设置为 inline-block，这样旋转才会完美在原地打转 */
+            .category-arrow i {
+                transition: transform 0.3s ease;
+                display: inline-block;
+            }
+            /* PC端 Hover 或 移动端点击展开时，箭头顺时针转90度（变成向下） */
+            .nav-item.dropdown:hover .category-arrow i,
+            .nav-item.dropdown.menu-expanded .category-arrow i { transform: rotate(90deg); }
             /* 移动端侧滑状态下，带有 .menu-expanded 类的菜单强制显示 */
             @media (max-width: 991px) {
                 header.custom-header .nav-item.dropdown.menu-expanded .dropdown-menu { 
@@ -228,7 +232,7 @@ function renderHeader(siteName = '我的商店', siteLogo = '', showSiteName = t
                     opacity: 1; visibility: visible;
                 }
                 /* 菜单项样式重置 */
-                header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5; padding-left: 20px !important; }
+                header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5; }
                 header.custom-header .dropdown-menu {
                     position: static; box-shadow: none; border: none; padding-left: 20px; display: none; background: #fafafa;
                 }
