@@ -16,7 +16,6 @@ function insertFooterSkeleton() {
 			    width:100%;
 			    text-align:center;
 			    padding:25px 0 30px;
-			    background:#2d3236;
 			    color:#868689;
 			}
 			
@@ -25,17 +24,15 @@ function insertFooterSkeleton() {
 			    margin:0 auto;
 			}
 			
-			@media (max-width:767px){
-			
-			.footer{
-			    padding:15px 0;
-			    margin-top:-20px;
-			}
-			
-			.footer .container{
-			    font-size:12px;
-			}
-			
+			@media (max-width:767px){		
+				.footer{
+				    padding:15px 0;
+				    margin-top:-20px;
+				}
+		
+				.footer .container{
+				    font-size:12px;
+				}
 			}
 		</style>
         <footer class="footer">
