@@ -197,8 +197,8 @@ function insertHeaderSkeleton() {
             @media (max-width: 991px) {
                 header.custom-header { height: auto; min-height: 52px; }
                 header.custom-header .site-logo { height: 43px; } 
-                header.custom-header .navbar-toggler { border: none; box-shadow: none; outline: none; }
-                header.custom-header .navbar-toggler-icon { width: 1em; height: 1em; }
+                header.custom-header .navbar-toggler { border: none; box-shadow: none; outline: none; padding: 8px 5px; }
+                header.custom-header .navbar-toggler-icon { width: 1.3em; height: 1em; }
                 /* --- 侧滑菜单样式 --- */
                 header.custom-header .navbar-collapse {
                     position: fixed; top: 0; right: -280px; /* 默认隐藏在屏幕右侧外 */
@@ -243,7 +243,7 @@ function insertHeaderSkeleton() {
                 <div class="container d-flex justify-content-between align-items-center position-relative">
                     
                     <div class="d-lg-none m-0" style="width: auto; z-index: 1030;">
-                        <i class="far fa-search" style="font-size: 18px; cursor: pointer; color: #555; padding: 5px;" onclick="$('#mobile-search-box').slideToggle(200);"></i>
+                        <i class="far fa-search" style="font-size: 19px; cursor: pointer; color: #555; padding: 5px;" onclick="$('#mobile-search-box').slideToggle(200);"></i>
                     </div>
 
                     <a class="navbar-brand d-none d-lg-flex" href="/">
@@ -426,8 +426,30 @@ function insertHeaderSkeleton() {
             menu.hide().slideDown(300);
         }
     });
-}
+   // === 新增：移动端搜索框点击空白处或上下滑动时自动收起 ===
+    $(document).on('click', function(e) {
+        const searchBox = $('#mobile-search-box');
+        
+        // 排除 1：如果点击的是用于展开搜索框的“放大镜图标”，不干预，交给图标自带的点击事件处理
+        if ($(e.target).closest('i[onclick*="slideToggle"]').length > 0) {
+            return;
+        }
+        
+        // 排除 2：如果点击的是页面其他地方（不是搜索框内部），且搜索框当前是打开的，就收起它
+        if (searchBox.is(':visible') && $(e.target).closest('#mobile-search-box').length === 0) {
+            searchBox.slideUp(200);
+        }
+    });
 
+    $(window).on('scroll', function() {
+        const searchBox = $('#mobile-search-box');
+        // 一旦检测到页面滑动，且搜索框是打开的，立刻收起
+        if (searchBox.is(':visible')) {
+            searchBox.slideUp(200);
+            searchBox.find('input').blur(); // 顺便让输入框失去焦点，强制收起手机自带的拼音软键盘
+        }
+    });
+}
 /**
  * 加载分类并渲染到下拉菜单
  */
