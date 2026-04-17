@@ -5,15 +5,57 @@
 function insertFooterSkeleton() {
     const currentYear = new Date().getFullYear();
     if ($('footer').length > 0) return;
-    
+    // 注入自定义 CSS 样式
+    const styleHtml = `
+        <style>
+         .footer a:hover {
+            color: #0d6efd !important;
+        }
+        
+        .footer {
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 25px 0 30px 0;
+            /* margin-top: 20px; */
+            background-color: #2d3236;
+            color: #868689;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            /* padding: 0 15px; */
+        }
+        
+        @media (max-width: 767px) {
+            .footer {
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                padding: 15px 0 15px 0;
+                margin-top: -20px;
+            }
+            
+            .container {
+                font-size: 12px;
+            }
+        }
+        </style>
+    `;
     // 将原先的 ${siteName} 替换为带 ID 的空 span 占位符
     const footerHtml = `
-        <footer class="text-center text-muted py-4">
-            <div class="container" style="font-size: 12px;color: rgb(112 118 124 / 88%);">
-                <p class="mb-0">&copy; ${currentYear} <span id="global-footer-name"></span>. All rights reserved.</p>
-                <p class="mb-0">Powered by Luna. | <a href="admin/" class="text-muted">后台管理</a></p>
-            </div>
-        </footer>
+        <footer class="footer">
+		<div class="container">
+			<div class="footer-meta">
+				<div class="footer-links">
+					<a href="" target="_blank"><i class="fab fa-qq"></i> 137222445</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fab fa-telegram-plane"></i> @gv1688</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fas fa-rss"></i> </a>
+				</div>
+				<p></p><p>Copyright @ 2025 <a href="https://github.com/Air-L/cf-pages-blog-template" target="_blank">夏雨日记 </a> - 基于  Cloudflare+Github  构建</p>
+<p></p>
+			</div>
+			</div>
+	</footer>
     `;
     
     $('body').append(footerHtml);
