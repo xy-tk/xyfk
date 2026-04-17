@@ -484,3 +484,26 @@ a:hover {
         right: calc(50% - 20px) !important;
     }
 }
+/* 强制显示底部滑动区域的横向滚动条并进行UI美化 */
+#mobile-checkout-row::-webkit-scrollbar {
+    height: 4px; /* 滚动条的粗细 */
+    display: block; /* 强制显示，覆盖原生隐藏机制 */
+}
+
+/* 滚动条底座（轨道）的样式 */
+#mobile-checkout-row::-webkit-scrollbar-track {
+    background: #f8f9fa; /* 极浅的灰色底座，看起来更干净 */
+    border-radius: 4px;
+}
+
+/* 滚动条滑块的样式 */
+#mobile-checkout-row::-webkit-scrollbar-thumb {
+    background: #c5c5c5; /* 灰色滑块，足够明显但不刺眼 */
+    border-radius: 4px;
+}
+
+/* 针对 Firefox 浏览器的兼容写法 */
+#mobile-checkout-row {
+    scrollbar-width: thin;
+    scrollbar-color: #c5c5c5 #f8f9fa;
+}
