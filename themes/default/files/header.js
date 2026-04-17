@@ -257,10 +257,6 @@ function insertHeaderSkeleton() {
                     </a>
 
                     <div class="d-flex align-items-center d-lg-none ms-auto">
-                        <a href="/cart" class="header-cart-wrap me-2" title="购物车" style="margin-left: 0;">
-                            <i class="far fa-shopping-cart"></i>
-                            <span class="common-cart-badge" id="cart-badge-mobile">0</span>
-                        </a>
                         <button class="navbar-toggler" type="button" id="mobile-menu-btn">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -534,12 +530,6 @@ window.updateCartBadge = function() {
         const prodBadge = $('#product-page-cart-badge');
         if(prodBadge.length) {
             prodBadge.text(badgeText).css('display', badgeDisplay);
-        }
-
-        // 更新移动端底部导航角标（如果有）
-        const mobileBadge = $('#cart-badge-mobile');
-        if(mobileBadge.length) {
-             mobileBadge.text(badgeText).css('display', badgeDisplay);
         }
     } catch(e) {
         console.error('Update cart badge failed:', e);
