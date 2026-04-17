@@ -126,6 +126,17 @@ window.renderFooter = function() {
                 // 否则显示默认的
                 $('#custom-footer-container').html(defaultFooterHtml);
             }
+            // --- 新增：全局执行自定义页脚代码 (支持 JS/HTML) ---
+            if (res && res.custom_js) {
+                const div = document.createElement('div');
+                div.innerHTML = res.custom_js;
+                Array.from(div.querySelectorAll('script')).forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    document.body.appendChild(newScript);
+                });
+            }
         },
         error: function() {
             // 接口请求失败时也兜底显示默认的
