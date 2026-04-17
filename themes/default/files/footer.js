@@ -45,10 +45,50 @@ function insertFooterSkeleton() {
             </div>
             <div id="back-to-top" class="back-to-top"><i class="far fa-chevron-up"></i></div>
         </footer>
+        <nav class="mobile-bottom-nav d-lg-none" id="global-mobile-nav">
+            <a href="/" class="mbn-item"><i class="fas fa-home"></i>商城</a>
+            <a href="javascript:void(0);" class="mbn-item" id="mobile-bottom-category-btn"><i class="fas fa-list-ul"></i>分类</a>
+            <a href="/orders" class="mbn-item"><i class="fas fa-search"></i>查单</a>
+            <a href="/cart" class="mbn-item position-relative">
+                <i class="fas fa-shopping-cart"></i>购物车
+                <span class="common-cart-badge footer-cart-badge" id="footer-cart-badge">0</span>
+            </a>
+            <a href="/articles" class="mbn-item"><i class="fas fa-book-open"></i>文章</a>
+        </nav>
     `;
     
     // 插入页面
     $('body').append(footerHtml);
+    // 1. 设置移动端底部导航高亮
+    const currentPath = window.location.pathname.replace(/\/$/, "");
+    $('.mobile-bottom-nav a').each(function() {
+        const href = $(this).attr('href').replace(/\/$/, "");
+        if (href === currentPath || (currentPath === '' && href === '/')) {
+            $(this).addClass('active');
+        }
+    });
+
+    // 2. 绑定底部“分类”按钮，点击触发侧边栏向左滑出（完全复用页头汉堡图标逻辑）
+    $('#mobile-bottom-category-btn').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('body').addClass('nav-open');
+    });
+
+    // 3. 同步更新底部导航的购物车角标
+    if (typeof window.updateCartBadge === 'function') {
+        const originalUpdateCartBadge = window.updateCartBadge;
+        window.updateCartBadge = function() {
+            originalUpdateCartBadge();
+            try {
+                const cartStr = localStorage.getItem('tbShopCart');
+                const cart = cartStr ? JSON.parse(cartStr) : [];
+                const count = cart.length;
+                $('#footer-cart-badge').text(count > 99 ? '99+' : count).css('display', count > 0 ? 'block' : 'none');
+            } catch(e) {}
+        };
+        setTimeout(window.updateCartBadge, 100);
+    }
 
     // --- 返回顶部逻辑绑定 ---
     $(window).scroll(function() {
