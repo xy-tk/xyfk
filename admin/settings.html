@@ -190,6 +190,11 @@
                                     <textarea class="form-control" id="contact_info" rows="4" placeholder="例如：<p>客服QQ：123456</p>"></textarea>
                                 </div>
 								<div class="mb-3">
+                                    <label class="form-label">自定义页脚内容 (支持 HTML)</label>
+                                    <textarea class="form-control" id="footer_html" rows="5" placeholder="例如：<div class=&quot;footer-meta&quot;>...</div>"></textarea>
+                                    <div class="form-text text-muted" style="font-size: 12px;">留空则前台将显示默认的页脚版权与链接信息。此处内容将渲染在页脚的 container 容器内。</div>
+                                </div>
+								<div class="mb-3">
                                     <label class="form-label">自定义页脚代码 (支持 JS/HTML)</label>
                                     <textarea class="form-control" id="custom_js" rows="3" placeholder='例如：<script src="https://xykf.qzz.io/widget.js"></script>'></textarea>
                                     <div class="form-text text-muted" style="font-size: 12px;">此处填写的代码将自动加载到前台页面，可用于添加客服插件或统计代码。</div>
@@ -351,6 +356,7 @@
             document.getElementById('theme_select').value = config.theme || 'default';
             document.getElementById('announce').value = config.announce || '';
             document.getElementById('contact_info').value = config.contact_info || '';
+			document.getElementById('footer_html').value = config.footer_html || '';
 			document.getElementById('custom_js').value = config.custom_js || '';
             
             // --- 订单推送设置回显 (管理员) ---
@@ -400,6 +406,7 @@
             theme: document.getElementById('theme_select').value,
             announce: document.getElementById('announce').value,
             contact_info: document.getElementById('contact_info').value,
+			footer_html: document.getElementById('footer_html').value,
 			custom_js: document.getElementById('custom_js').value,
             
             // --- 订单推送设置保存 (管理员) ---
