@@ -109,7 +109,7 @@ window.renderFooter = function() {
     const defaultFooterHtml = `
         <div class="footer-meta">
             <div class="footer-links">
-                <a href="" target="_blank"><i class="fab fa-qq"></i> 137222445</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fab fa-telegram-plane"></i> @gv1688</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fas fa-rss"></i> </a>
+                <a href="" target="_blank"><i class="fab fa-qq"></i> 137222445</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fab fa-telegram-plane"></i> @gv1688</a><span class="split" style="margin: 0 3px;">|</span><a href="/admin" target="_blank">登陆 </a> 
             </div>
             <p>Copyright @ 2026 <a href="/" target="_blank">XYFK </a> - 基于 Cloudflare 构建</p>
         </div>
