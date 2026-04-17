@@ -52,7 +52,7 @@ function insertFooterSkeleton() {
 
     // --- 返回顶部逻辑绑定 ---
     $(window).scroll(function() {
-        if ($(window).scrollTop() > $(window).height() * 1) {
+        if ($(window).scrollTop() > $(window).height() * 0.5) {
             $('#back-to-top').addClass('show');
         } else {
             $('#back-to-top').removeClass('show');
