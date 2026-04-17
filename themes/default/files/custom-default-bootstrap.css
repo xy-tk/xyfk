@@ -422,6 +422,12 @@ a:hover {
 @media (max-width: 991px) {
     /* 移动端恢复 flex 布局防止 grid 挤压 (仅限购物车/订单列表) */
     .cart-grid-fallback { display: block !important; }
+    .back-to-top {
+            bottom: 100px;
+            right: 12px;
+            width: 43px;
+            height: 43px;
+        }
 }
 /* 返回顶部按钮 - 匹配图片样式 */
 .back-to-top {
@@ -431,7 +437,7 @@ a:hover {
     width: 45px;
     height: 45px;
     border: 1px solid #e9e9e9;
-    /* background-color: #f1f1f1;*/
+    background-color: #fffcfcfa;
     color: #00000091;
     border-radius: 50%;
     display: flex;
