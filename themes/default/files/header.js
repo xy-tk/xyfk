@@ -141,6 +141,10 @@ function insertHeaderSkeleton() {
                 header.custom-header .nav-item.dropdown.menu-expanded .dropdown-menu { 
                     display: block !important; 
                 }
+               header.custom-header .dropdown-item {
+                font-size: 13px !important;
+                padding: 6px 0px;
+                }
             }
             
             header.custom-header .dropdown-item {
@@ -158,7 +162,7 @@ function insertHeaderSkeleton() {
                 width: 14px;  /* 要求：图标大小 14px */
                 height: 14px; /* 要求：图标大小 14px */
                 object-fit: cover;
-                margin-right: 8px;
+                margin-right: 5px;
                 border-radius: 2px;
             }
 
