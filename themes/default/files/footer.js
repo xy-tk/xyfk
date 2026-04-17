@@ -50,7 +50,7 @@ function insertFooterSkeleton() {
             <a href="javascript:void(0);" class="mbn-item" id="mobile-bottom-category-btn"><i class="fas fa-list-ul"></i>分类</a>
             <a href="/orders" class="mbn-item"><i class="fas fa-search"></i>查单</a>
             <a href="/cart" class="mbn-item position-relative">
-                <i class="fas fa-shopping-cart"></i>购物车
+                <i class="far fa-shopping-cart" style="font-weight: 500;"></i>购物车
                 <span class="common-cart-badge footer-cart-badge" id="footer-cart-badge">0</span>
             </a>
             <a href="/articles" class="mbn-item"><i class="fas fa-book-open"></i>文章</a>
