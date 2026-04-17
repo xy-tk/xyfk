@@ -466,16 +466,16 @@ a:hover {
 
     /* 移动端底栏 (Bottom Nav) 样式 */
     .mobile-bottom-nav {
-        position: fixed; bottom: 0; left: 0; width: 100%; height: 55px; 
+        position: fixed; bottom: 0; left: 0; width: 100%; height: 47px; 
         background: #fff; border-top: 1px solid #eee; z-index: 1025; /* 层级低于侧边栏以防遮挡 */
         display: flex; justify-content: space-around; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
     }
     .mbn-item {
         flex: 1; display: flex; flex-direction: column; align-items: center;
-        justify-content: center; color: #666; font-size: 11px; padding: 5px 0;
+        justify-content: center; color: #666; font-size: 10px; padding: 5px 0;
         text-decoration: none; position: relative;
     }
-    .mbn-item i { font-size: 18px; margin-bottom: 3px; line-height: 1; }
+    .mbn-item i { font-size: 14px; margin-bottom: 1px; line-height: 1; }
     .mbn-item.active, .mbn-item:hover { color: var(--luna-primary-blue); }
 
     /* 底部导航专属购物车角标定位 */
