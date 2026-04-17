@@ -4,54 +4,47 @@
 // 1. 改为骨架挂载函数
 function insertFooterSkeleton() {
     const currentYear = new Date().getFullYear();
-    if ($('footer').length > 0) return;
-    // 注入自定义 CSS 样式
-    const styleHtml = `
-        <style>
-         .footer a:hover {
-            color: #0d6efd !important;
-        }
-        
-        .footer {
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 25px 0 30px 0;
-            /* margin-top: 20px; */
-            background-color: #2d3236;
-            color: #868689;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            /* padding: 0 15px; */
-        }
-        
-        @media (max-width: 767px) {
-            .footer {
-                bottom: 0;
-                width: 100%;
-                text-align: center;
-                padding: 15px 0 15px 0;
-                margin-top: -20px;
-            }
-            
-            .container {
-                font-size: 12px;
-            }
-        }
-        </style>
-    `;
-    // 将原先的 ${siteName} 替换为带 ID 的空 span 占位符
+    if ($('footer').length > 0) return;   
+
     const footerHtml = `
+		<style>
+			.footer a:hover{
+			    color:#0d6efd !important;
+			}
+			
+			.footer{
+			    width:100%;
+			    text-align:center;
+			    padding:25px 0 30px;
+			    background:#2d3236;
+			    color:#868689;
+			}
+			
+			.footer .container{
+			    max-width:1200px;
+			    margin:0 auto;
+			}
+			
+			@media (max-width:767px){
+			
+			.footer{
+			    padding:15px 0;
+			    margin-top:-20px;
+			}
+			
+			.footer .container{
+			    font-size:12px;
+			}
+			
+			}
+		</style>
         <footer class="footer">
 		<div class="container">
 			<div class="footer-meta">
 				<div class="footer-links">
 					<a href="" target="_blank"><i class="fab fa-qq"></i> 137222445</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fab fa-telegram-plane"></i> @gv1688</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fas fa-rss"></i> </a>
 				</div>
-				<p></p><p>Copyright @ 2025 <a href="https://github.com/Air-L/cf-pages-blog-template" target="_blank">夏雨日记 </a> - 基于  Cloudflare+Github  构建</p>
+				<p></p><p>Copyright @ 2026 <a href="/" target="_blank">XYFK </a> - 基于 Cloudflare 构建</p>
 <p></p>
 			</div>
 			</div>
