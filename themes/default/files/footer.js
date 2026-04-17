@@ -35,13 +35,7 @@ function insertFooterSkeleton() {
         </style>
 
         <footer class="footer">
-            <div class="container">
-                <div class="footer-meta">
-                    <div class="footer-links">
-                        <a href="" target="_blank"><i class="fab fa-qq"></i> 137222445</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fab fa-telegram-plane"></i> @gv1688</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fas fa-rss"></i> </a>
-                    </div>
-                    <p>Copyright @ 2026 <a href="/" target="_blank">XYFK </a> - 基于 Cloudflare 构建</p>
-                </div>
+            <div class="container" id="custom-footer-container">
             </div>
             <div id="back-to-top" class="back-to-top"><i class="far fa-chevron-up"></i></div>
         </footer>
@@ -110,6 +104,32 @@ $(document).ready(function() {
 });
 
 // 3. 异步数据到达后调用的数据填充函数
-window.renderFooter = function(siteName = '我的商店') {
+window.renderFooter = function() {
     insertFooterSkeleton(); // 兜底检查
+    const defaultFooterHtml = `
+        <div class="footer-meta">
+            <div class="footer-links">
+                <a href="" target="_blank"><i class="fab fa-qq"></i> 137222445</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fab fa-telegram-plane"></i> @gv1688</a><span class="split" style="margin: 0 3px;">|</span><a href="" target="_blank"><i class="fas fa-rss"></i> </a>
+            </div>
+            <p>Copyright @ 2026 <a href="/" target="_blank">XYFK </a> - 基于 Cloudflare 构建</p>
+        </div>
+    `;
+
+    $.ajax({
+        url: '/api/shop/config',
+        method: 'GET',
+        success: function(res) {
+            // 如果后台有自定义代码，就显示自定义的
+            if (res && res.footer_html && res.footer_html.trim() !== '') {
+                $('#custom-footer-container').html(res.footer_html);
+            } else {
+                // 否则显示默认的
+                $('#custom-footer-container').html(defaultFooterHtml);
+            }
+        },
+        error: function() {
+            // 接口请求失败时也兜底显示默认的
+            $('#custom-footer-container').html(defaultFooterHtml);
+        }
+    });
 };
