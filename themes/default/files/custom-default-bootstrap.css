@@ -16,7 +16,15 @@ body {
     color: var(--luna-text-dark);
     overflow-y: scroll; /* 强制显示垂直滚动条，防止页面切换闪跳错位 */
 }
-
+a {
+    color: var(--luna-text-dark);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    color: var(--luna-primary-blue);
+    text-decoration: none;
+}
 .main-box {
     background-color: #fff;
     padding: 10px;
