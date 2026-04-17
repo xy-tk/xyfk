@@ -43,7 +43,7 @@ function insertFooterSkeleton() {
                     <p>Copyright @ 2026 <a href="/" target="_blank">XYFK </a> - 基于 Cloudflare 构建</p>
                 </div>
             </div>
-            <div id="back-to-top" class="back-to-top"><i class="fas fa-chevron-up"></i></div>
+            <div id="back-to-top" class="back-to-top"><i class="far fa-chevron-up"></i></div>
         </footer>
     `;
     
