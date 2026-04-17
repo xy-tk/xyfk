@@ -141,10 +141,6 @@ function insertHeaderSkeleton() {
                 header.custom-header .nav-item.dropdown.menu-expanded .dropdown-menu { 
                     display: block !important; 
                 }
-               header.custom-header .dropdown-item {
-                font-size: 13px !important;
-                padding: 6px 0px;
-                }
             }
             
             header.custom-header .dropdown-item {
@@ -231,6 +227,7 @@ function insertHeaderSkeleton() {
                     z-index: 1020; border-top: 1px solid #eee;
                 }
                 /* 菜单项样式重置 */
+                header.custom-header .dropdown-item { font-size: 13px !important; padding: 6px 0px; }
                 header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5;font-size: 13px !important; }
                 header.custom-header .dropdown-menu {
                     position: static; box-shadow: none; border: none; padding-left: 20px; display: none; background: #fafafa;
