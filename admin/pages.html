@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义页面管理 - 夏雨店铺系统</title>
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .admin-container { display: flex; min-height: 100vh; width: 100%; }
+        .admin-mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 50px; background-color: #ffffff; border-bottom: 1px solid #ddd; padding: 0 15px; z-index: 1001; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .admin-mobile-header .mobile-logo a { font-size: 18px; font-weight: bold; color: #333; text-decoration: none; }
+        #mobile-menu-toggle { background: none; border: none; font-size: 20px; color: #555; padding: 5px; }
+        .admin-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1001; opacity: 0; transition: opacity 0.3s ease; }
+        .admin-overlay.is-visible { display: block; opacity: 1; }
+        .admin-sidebar { width: 240px; background-color: #2c3e50; color: #ecf0f1; position: fixed; height: 100%; left: 0; top: 0; z-index: 100; box-shadow: 2px 0 5px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sidebar-header { padding: 20px; text-align: center; font-size: 20px; font-weight: bold; border-bottom: 1px solid #34495e; background-color: #2c3e50; flex-shrink: 0; }
+        .sidebar-header a { color: #ecf0f1; text-decoration: none; }
+        .sidebar-menu-container { flex: 1; overflow-y: auto; }
+        .admin-sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .admin-sidebar ul li a { display: block; color: #bdc3c7; padding: 15px 20px; text-decoration: none; border-left: 3px solid transparent; transition: all 0.3s; font-size: 14px; }
+        .admin-sidebar ul li a:hover { background-color: #34495e; color: #ffffff; }
+        .admin-sidebar ul li a.active { background-color: #e74c3c; color: #ffffff; border-left-color: #c0392b; }
+        .admin-sidebar ul li a i { margin-right: 10px; width: 20px; text-align: center; }
+        .sidebar-footer { padding: 15px; text-align: center; font-size: 12px; color: #7f8c8d; border-top: 1px solid #34495e; background-color: #2c3e50; flex-shrink: 0; }
+        .admin-content { margin-left: 240px; width: calc(100% - 240px); padding: 20px; transition: margin-left 0.3s; font-size: 14px; }
+        .admin-content h3 { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+        .logout-btn { color: #e74c3c !important; }
+        .card { border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 8px; }
+        .card-header { background-color: #fff; border-bottom: 1px solid #f0f0f0; padding: 15px 20px; font-weight: 600; border-radius: 8px 8px 0 0; }
+        @media (max-width: 800px) { .admin-mobile-header { display: flex; } .admin-sidebar { left: -240px; z-index: 1002; } .admin-sidebar.is-visible { left: 0; } .admin-content { margin-left: 0; width: 100%; padding-top: 70px; } }
+    </style>
+</head>
+<body>
+
+<div class="admin-mobile-header">
+    <div class="mobile-logo"><a href="#">夏雨店铺系统</a></div>
+    <button id="mobile-menu-toggle"><i class="fas fa-bars"></i></button>
+</div>
+<div class="admin-overlay"></div>
+
+<div class="admin-container">
+    <div class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header"><a href="/admin/dashboard.html">XYRJ Faka</a></div>
+        <div class="sidebar-menu-container">
+            <ul>
+                <li><a href="/admin/dashboard.html"><i class="fas fa-tachometer-alt"></i> 仪表盘</a></li>
+                <li><a href="/admin/categories.html"><i class="fas fa-folder"></i> 商品分类</a></li>
+                <li><a href="/admin/products.html"><i class="fas fa-box"></i> 商品管理</a></li>
+                <li><a href="/admin/cards.html"><i class="fas fa-ticket-alt"></i> 卡密管理</a></li>
+                <li><a href="/admin/orders.html"><i class="fas fa-shopping-cart"></i> 订单管理</a></li>
+                <li><a href="/admin/payments.html"><i class="fas fa-credit-card"></i> 支付设置</a></li>
+                <li><a href="/admin/article_categories.html"><i class="fas fa-tags"></i> 文章分类</a></li>
+                <li><a href="/admin/articles.html"><i class="fas fa-newspaper"></i> 文章管理</a></li>
+                <li><a href="/admin/pages.html" class="active"><i class="fas fa-file-alt"></i> 页面管理</a></li>
+                <li><a href="/admin/settings.html"><i class="fas fa-cog"></i> 系统设置</a></li>
+                <li><a href="/admin/images.html"><i class="fas fa-images"></i> 图片管理</a></li>
+                <li><a href="javascript:logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> 退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>自定义页面管理</h3>
+            <button class="btn btn-primary btn-sm" onclick="openModal()"><i class="fas fa-plus"></i> 新建单页</button>
+        </div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>标题</th>
+                                <th>路径别名 (Alias)</th>
+                                <th>最后更新时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <tr><td colspan="5" class="text-center py-4 text-muted">加载中...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">新建/编辑单页</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="page_id">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">页面标题 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="page_title" placeholder="例如：关于我们">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">路径别名 (英文字母/数字/连字符) <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="page_alias" placeholder="例如：about-us">
+                        <div class="form-text">前台访问链接将变为：/custom?alias=about-us</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">页面内容</label>
+                    <textarea id="page_content"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="savePage()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/jquery-3.6.0.min.js"></script>
+<script src="/assets/bootstrap.bundle.min.js"></script>
+<script src="/assets/tinymce/tinymce.min.js"></script>
+
+<script>
+    const TOKEN = localStorage.getItem('ADMIN_TOKEN');
+    if(!TOKEN) window.location.href = '/admin/index.html';
+    function logout() { if(confirm('确定要退出登录吗？')) { localStorage.removeItem('ADMIN_TOKEN'); window.location.href = '/admin/index.html'; } }
+    
+    async function api(path, options = {}) {
+        options.headers = { 'Authorization': `Bearer ${TOKEN}`, 'Content-Type': 'application/json', ...options.headers };
+        const res = await fetch('/api/admin/' + path, options);
+        if(res.status === 401) { logout(); return {}; }
+        return res.json();
+    }
+
+    let pagesData = [];
+    let editorInited = false;
+
+    function formatTime(ts) {
+        if (!ts) return '-';
+        return new Date(ts * 1000).toLocaleString('zh-CN', { hour12: false });
+    }
+
+    async function loadData() {
+        pagesData = await api('pages/list');
+        renderTable();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('table-body');
+        if (!pagesData || pagesData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">暂无数据</td></tr>';
+            return;
+        }
+        let html = '';
+        pagesData.forEach(item => {
+            html += `
+                <tr>
+                    <td>${item.id}</td>
+                    <td class="fw-bold">${item.title}</td>
+                    <td><a href="/custom?alias=${item.alias}" target="_blank" class="text-decoration-none">/custom?alias=${item.alias}</a></td>
+                    <td class="text-muted small">${formatTime(item.updated_at)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick='editItem(${JSON.stringify(item).replace(/'/g, "&#39;")})'><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(${item.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = html;
+    }
+
+    function initEditor() {
+        if (editorInited) return;
+        tinymce.init({
+            selector: '#page_content',
+            language: 'zh_CN',
+            height: 500,
+            plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
+            toolbar: 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | image link code fullscreen',
+            images_upload_handler: async function (blobInfo, success, failure) {
+                // 如果你有配置图床，可以将你的后台图床上传逻辑写在这，这里采用简化版Base64
+                success('data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64());
+            }
+        });
+        editorInited = true;
+    }
+
+    function openModal() {
+        document.getElementById('page_id').value = '';
+        document.getElementById('page_title').value = '';
+        document.getElementById('page_alias').value = '';
+        if(editorInited) tinymce.get('page_content').setContent('');
+        document.getElementById('modalTitle').innerText = '新建单页';
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+        initEditor();
+    }
+
+    async function editItem(item) {
+        document.getElementById('page_id').value = item.id;
+        document.getElementById('page_title').value = item.title;
+        document.getElementById('page_alias').value = item.alias;
+        document.getElementById('modalTitle').innerText = '编辑单页';
+        
+        // 由于列表中没有拉取完整的content，需要调用API重新获取（复用前台接口或修改后台接口）
+        const res = await fetch(`/api/shop/page/get?alias=${item.alias}`).then(r => r.json());
+        
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+        initEditor();
+        setTimeout(() => {
+            tinymce.get('page_content').setContent(res.content || '');
+        }, 300);
+    }
+
+    async function savePage() {
+        const id = document.getElementById('page_id').value;
+        const title = document.getElementById('page_title').value.trim();
+        const alias = document.getElementById('page_alias').value.trim();
+        const content = tinymce.get('page_content').getContent();
+
+        if (!title || !alias) return alert('标题和路径别名不能为空');
+        if (!/^[a-zA-Z0-9\-]+$/.test(alias)) return alert('路径别名只能包含字母、数字和连字符(-)');
+
+        const res = await api('page/save', { method: 'POST', body: JSON.stringify({ id, title, alias, content }) });
+        if (res.success) {
+            bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+            loadData();
+        } else {
+            alert('保存失败: ' + (res.error || '可能是别名重复'));
+        }
+    }
+
+    async function deleteItem(id) {
+        if (!confirm('确定要删除此单页吗？')) return;
+        const res = await api('page/delete', { method: 'POST', body: JSON.stringify({ id }) });
+        if (res.success) loadData(); else alert('删除失败');
+    }
+
+    // 移动端菜单逻辑
+    const mobileBtn = document.getElementById('mobile-menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.querySelector('.admin-overlay');
+    function toggleMenu() { sidebar.classList.toggle('is-visible'); overlay.classList.toggle('is-visible'); }
+    mobileBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+    overlay.addEventListener('click', toggleMenu);
+
+    loadData();
+</script>
+</body>
+</html>
