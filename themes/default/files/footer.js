@@ -8,19 +8,17 @@ function insertFooterSkeleton() {
 
     const footerHtml = `
 		<style>
-			.footer a:hover{
-			    color:#0d6efd !important;
-			}
-			
+			.footer a:hover{color:#0d6efd !important;}	
+			.footer a{color:#212529bf !important;}
 			.footer{
 			    width:100%;
 			    text-align:center;
 			    padding:25px 0 30px;
 			    color:#868689;
-			}
-			
+			}	
 			.footer .container{
 			    max-width:1200px;
+				font-size: 13px;
 			    margin:0 auto;
 			}
 			
@@ -29,7 +27,6 @@ function insertFooterSkeleton() {
 				    padding:15px 0;
 				    margin-top:-20px;
 				}
-		
 				.footer .container{
 				    font-size:12px;
 				}
