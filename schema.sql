@@ -119,6 +119,15 @@ CREATE TABLE variants (
     FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS pages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    alias TEXT UNIQUE NOT NULL,
+    content TEXT,
+    created_at INTEGER,
+    updated_at INTEGER
+);
+
 这个和
 
 
