@@ -256,6 +256,24 @@ export default {
                         image: `${url.origin}/assets/noimage.jpg`
                     });
                 }
+                // --- 情况4：自定义单页 (custom.html) ---
+                else if (path === '/custom' || path === '/custom.html') {
+                    const alias = url.searchParams.get('alias');
+                    if (alias) {
+                        try {
+                            const item = await db.prepare("SELECT title, content FROM pages WHERE alias = ?").bind(alias).first();
+                            if (item) {
+                                let desc = (item.content || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
+                                response = await injectMetaTags(response, {
+                                    url: request.url,
+                                    title: item.title,
+                                    desc: desc,
+                                    image: `${url.origin}/assets/noimage.jpg`
+                                });
+                            }
+                        } catch(e) {}
+                    }
+                }
             }
 
             return response;
@@ -790,6 +808,27 @@ async function handleApi(request, env, url, ctx) {
                 await db.prepare("DELETE FROM articles WHERE id=?").bind(id).run();
                 return jsonRes({ success: true });
             }
+            
+            // --- 页面管理 API (新增) ---
+            if (path === '/api/admin/pages/list') {
+                const { results } = await db.prepare("SELECT id, title, alias, created_at, updated_at FROM pages ORDER BY created_at DESC").all();
+                return jsonRes(results);
+            }
+            if (path === '/api/admin/page/save' && method === 'POST') {
+                const { id, title, alias, content } = await request.json();
+                const now = time();
+                if (id) {
+                    await db.prepare("UPDATE pages SET title=?, alias=?, content=?, updated_at=? WHERE id=?").bind(title, alias, content, now, id).run();
+                } else {
+                    await db.prepare("INSERT INTO pages (title, alias, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)").bind(title, alias, content, now, now).run();
+                }
+                return jsonRes({ success: true });
+            }
+            if (path === '/api/admin/page/delete' && method === 'POST') {
+                const { id } = await request.json();
+                await db.prepare("DELETE FROM pages WHERE id=?").bind(id).run();
+                return jsonRes({ success: true });
+            }
 
             // ===========================
             // --- 图片管理 API (新增) ---
@@ -1172,6 +1211,13 @@ async function handleApi(request, env, url, ctx) {
                 WHERE a.id = ?
             `).bind(id).first();
             return jsonRes(article || { error: 'Not Found' });
+        }
+
+        // [新增] 获取自定义单页内容
+        if (path === '/api/shop/page/get') {
+            const alias = url.searchParams.get('alias');
+            const page = await db.prepare("SELECT title, content, updated_at FROM pages WHERE alias = ?").bind(alias).first();
+            return jsonRes(page || { error: 'Not Found' });
         }
 
         // [新增] 获取自选卡密列表 (提取 #[] 内容)
