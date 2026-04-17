@@ -123,9 +123,9 @@ function loadCart() {
     // 空状态 HTML
     const emptyHtmlMobile = `
         <div class="text-center p-5 text-muted">
-            <i class="fa fa-shopping-basket fa-3x mb-3 text-black-50" style="opacity:0.2"></i>
+            <i class="fa fa-shopping-basket fa-2x mb-3 text-black-50" style="opacity:0.2"></i>
             <p>购物车空空如也</p>
-            <a href="/" class="btn btn-sm btn-outline-secondary mt-2">去逛逛</a>
+            <a href="/" class="btn btn-sm btn-outline-secondary">去逛逛</a>
         </div>`;
     const emptyHtmlPC = '<tr><td colspan="6" class="text-center p-5 text-muted">购物车空空如也，<a href="/">去选购</a></td></tr>';
     
