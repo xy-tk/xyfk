@@ -91,15 +91,15 @@
         </div>
     </div>
    <div class="cart-footer-bar fixed-bottom d-lg-none bg-white p-2" style="box-shadow: 0 -2px 10px rgba(0,0,0,0.05);">
-        <div class="row g-1 mb-2 align-items-center">
-            <div class="col-4">
+        <div class="d-flex flex-nowrap overflow-auto mb-2 align-items-center" id="mobile-checkout-row" style="gap: 8px;">
+            <div style="flex: 0 0 130px;">
                 <input type="text" class="form-control form-control-sm" id="contact-info-mobile" placeholder="联系方式(必填)">
             </div>
-            <div class="col-4">
+            <div style="flex: 0 0 100px;">
                 <input type="text" class="form-control form-control-sm" id="query-password-mobile" placeholder="密码(必填)">
             </div>
-            <div class="col-4">
-                <div class="payment-list-container d-flex flex-nowrap overflow-auto align-items-center" id="cart-payment-list-mobile" style="gap: 5px; height: 31px;">
+            <div style="flex: 0 0 auto;">
+                <div class="payment-list-container d-flex flex-nowrap align-items-center" id="cart-payment-list-mobile" style="gap: 5px; height: 42px;">
                 </div>
             </div>
         </div>
