@@ -266,11 +266,11 @@
                         
                         <div class="flex-shrink-0">
                             <a href="${link}" class="d-block">
-                                <img src="${coverImg}" class="avatar-sm shadow-sm" alt="${escapeHtml(article.title)}" loading="lazy">
+                                <img src="${coverImg}" class="avatar-sm shadow-sm" alt="${escapeHtml(article.title)}" loading="lazy" onerror="this.src='/assets/noimage.jpg'; this.onerror=null;">
                             </a>
                         </div>
                         
-                        <div class="article-content flex-grow-1 ps-4">
+                        <div class="article-content flex-grow-1 ps-4" style="min-width: 0;">
                             <div class="blog-post-header">
                                 <a class="blog-post-title" href="${link}">
                                     ${article.is_notice ? '<span class="badge bg-danger me-1" style="font-size:12px;vertical-align:text-bottom;">置顶</span>' : ''}
