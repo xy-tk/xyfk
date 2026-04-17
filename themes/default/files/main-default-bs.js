@@ -371,17 +371,6 @@ function loadGlobalConfig() {
                 if (typeof renderFooter === 'function') {
                     renderFooter(siteName);
                 }
-                if (config.custom_js) {
-                    const div = document.createElement('div');
-                    div.innerHTML = config.custom_js;
-                    Array.from(div.querySelectorAll('script')).forEach(oldScript => {
-                        const newScript = document.createElement('script');
-                        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-                        document.body.appendChild(newScript);
-                    });
-                }
-
                 if (config.announce && $('#site-announcement').length > 0) {
                     const announceHtml = `
                         <div class="bg-white border rounded p-3" style="border-color: #dee2e6 !important; font-size: 14px; line-height: 1.6; color: #555;">
