@@ -426,7 +426,7 @@ a:hover {
 /* 返回顶部按钮 - 匹配图片样式 */
 .back-to-top {
     position: fixed;
-    bottom: 30px;
+    bottom: 110px;
     right: 30px;
     width: 45px;
     height: 45px;
