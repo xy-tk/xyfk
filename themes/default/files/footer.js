@@ -14,7 +14,8 @@ function insertFooterSkeleton() {
 			    width:100%;
 			    text-align:center;
 			    padding:25px 0 30px;
-			    color:#868689;
+			    color:#939393;
+				line-height: 1.8;
 			}	
 			.footer .container{
 			    max-width:1200px;
