@@ -301,7 +301,7 @@ function insertHeaderSkeleton() {
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript:void(0);" onclick="alert('关于我们页面正在建设中...')">
+                                <a class="nav-link" href="custom?alias=about-us" target="_blank" rel="noopener noreferrer">
                                     <i class="fas fa-info-circle"></i>关于我们
                                 </a>
                             </li>
