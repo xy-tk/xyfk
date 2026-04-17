@@ -220,6 +220,12 @@ function insertHeaderSkeleton() {
                 body.nav-open #mobile-menu-overlay {
                     opacity: 1; visibility: visible;
                 }
+                /* --- 新增：移动端下滑搜索框容器样式 --- */
+                .mobile-search-dropdown {
+                    display: none; position: absolute; top: 100%; left: 0; width: 100%;
+                    background: #fff; padding: 12px 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+                    z-index: 1020; border-top: 1px solid #eee;
+                }
                 /* 菜单项样式重置 */
                 header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5;font-size: 13px !important; }
                 header.custom-header .dropdown-menu {
@@ -236,9 +242,8 @@ function insertHeaderSkeleton() {
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container d-flex justify-content-between align-items-center position-relative">
                     
-                    <div class="header-search-form d-lg-none m-0" style="width: auto;">
-                        <i class="far fa-search header-search-icon" style="left: 0; pointer-events: auto; cursor: pointer; color: #555; z-index: 2;" onclick="$(this).next('input').focus()"></i>
-                        <input type="text" class="header-search-input bg-transparent border-0 shadow-none" placeholder="搜索商品..." style="padding-left: 25px; width: 30px; color: transparent; transition: all 0.3s; position: relative; z-index: 1;" onfocus="this.style.width='160px'; this.style.color='#333'; this.style.backgroundColor='#f8f9fa'; this.style.borderRadius='20px';" onblur="if(!this.value){this.style.width='30px'; this.style.color='transparent'; this.style.backgroundColor='transparent';}">
+                    <div class="d-lg-none m-0" style="width: auto; z-index: 1030;">
+                        <i class="far fa-search" style="font-size: 18px; cursor: pointer; color: #555; padding: 5px;" onclick="$('#mobile-search-box').slideToggle(200);"></i>
                     </div>
 
                     <a class="navbar-brand d-none d-lg-flex" href="/">
@@ -315,6 +320,12 @@ function insertHeaderSkeleton() {
                             <span class="common-cart-badge" id="header-cart-badge">0</span>
                         </a>
 
+                    </div>
+                    <div class="mobile-search-dropdown d-lg-none" id="mobile-search-box">
+                        <div style="display: flex; border: 1px solid #ddd; border-radius: 20px; overflow: hidden; background: #fff; width: 100%;">
+                            <input type="text" class="header-search-input" placeholder="搜索商品..." style="padding: 6px 15px; border: none; outline: none; font-size: 14px; flex-grow: 1; height: 36px; background: transparent; box-shadow: none;">
+                            <button onclick="const e = $.Event('keypress'); e.which = 13; $(this).prev('input').trigger(e);" style="padding: 0 20px; background: var(--bs-primary); color: #fff; border: none; cursor: pointer; font-size: 14px; height: 36px; white-space: nowrap;">搜索</button>
+                        </div>
                     </div>
                 </div>
             </nav>
