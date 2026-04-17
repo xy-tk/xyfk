@@ -61,6 +61,25 @@
     
     <script>
         $(document).ready(function() {
+            // 封装一个去后台获取全局配置并渲染头尾的函数
+            const renderSiteLayout = function() {
+                $.ajax({
+                    url: '/api/shop/config',
+                    method: 'GET',
+                    success: function(config) {
+                        if (typeof renderHeader === 'function') {
+                            renderHeader(config.site_name || '我的商店', config.site_logo || '', config.show_site_name);
+                        }
+                        if (typeof renderFooter === 'function') renderFooter();
+                    },
+                    error: function() {
+                        if (typeof renderHeader === 'function') renderHeader('我的商店', '', true);
+                        if (typeof renderFooter === 'function') renderFooter();
+                    }
+                });
+            };
+            // 立即并发执行获取配置，不等待后续的文章请求
+            renderSiteLayout();
             // 获取 URL 参数中的 alias
             const urlParams = new URLSearchParams(window.location.search);
             const alias = urlParams.get('alias');
@@ -68,8 +87,6 @@
             if (!alias) {
                 $('#page-title').text('参数错误');
                 $('#page-content').html('<div class="alert alert-danger text-center">访问链接不完整，缺少页面标识。</div>');
-                if (typeof renderHeader === 'function') renderHeader('页面不存在');
-                if (typeof renderFooter === 'function') renderFooter();
                 return;
             }
 
@@ -84,21 +101,15 @@
                         $('#page-content').html(res.content || '<p class="text-center text-muted">本页面暂无内容</p>');
                         
                         // 渲染通用的头尾
-                        if (typeof renderHeader === 'function') renderHeader();
-                        if (typeof renderFooter === 'function') renderFooter();
                     } else {
                         document.title = '页面不存在';
                         $('#page-title').text('页面不存在');
                         $('#page-content').html('<div class="text-center py-5"><i class="far fa-file-excel fs-1 text-muted mb-3"></i><p class="text-muted">抱歉，您访问的页面不存在或已被删除。</p><a href="/" class="btn btn-primary mt-3">返回首页</a></div>');
-                        if (typeof renderHeader === 'function') renderHeader('页面不存在');
-                        if (typeof renderFooter === 'function') renderFooter();
                     }
                 },
                 error: function() {
                     $('#page-title').text('加载失败');
                     $('#page-content').html('<div class="alert alert-danger text-center">网络请求失败，请稍后重试。</div>');
-                    if (typeof renderHeader === 'function') renderHeader('加载出错');
-                    if (typeof renderFooter === 'function') renderFooter();
                 }
             });
         });
