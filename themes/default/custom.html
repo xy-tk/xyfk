@@ -84,7 +84,7 @@
                         $('#page-content').html(res.content || '<p class="text-center text-muted">本页面暂无内容</p>');
                         
                         // 渲染通用的头尾
-                        if (typeof renderHeader === 'function') renderHeader(res.title);
+                        if (typeof renderHeader === 'function') renderHeader();
                         if (typeof renderFooter === 'function') renderFooter();
                     } else {
                         document.title = '页面不存在';
