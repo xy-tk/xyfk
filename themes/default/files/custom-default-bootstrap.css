@@ -139,18 +139,6 @@ a:hover {
 }
 
 /* 详情描述内容 */
-.product-description-content {
-    color: #555;
-    line-height: 1.8;
-    font-size: 15px;
-}
-.product-description-content img {
-    max-width: 100% !important;
-    height: auto !important;
-    border-radius: 4px;
-    margin: 10px 0;
-}
-
 /* 大号价格显示 */
 .detail-price-lg {
     font-size: 24px;
