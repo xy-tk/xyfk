@@ -1003,13 +1003,18 @@ async function handleApi(request, env, url, ctx) {
                 return jsonRes({ success: true, count: batch.length });
             }
 
-            // 8. [核心功能] 扫描全站图片并入库 (升级版：URL唯一 & 标题自动合并)
-            if (path === '/api/admin/images/scan' && method === 'POST') {
-                // ... (略去原有代码以节省篇幅，保持原有 scan 逻辑不变) ...
-                // 找到原代码中 scan 逻辑结束的大括号
-                return jsonRes({ success: true, count: batch.length });
+            // ====== [核心网关] 统一智能上传分发接口 ======
+            if (path === '/api/admin/image/upload' && method === 'POST') {
+                // 读取用户在后台设置的默认图床，如果没设置，默认走 GitHub
+                const provider = (await db.prepare("SELECT value FROM site_config WHERE key='default_upload_provider'").first())?.value || 'custom';
+                // 进行无缝内部路由重定向 (直接递归调用原本写好的具体接口，性能损耗为 0)
+                if (provider === 'github') {
+                    return handleApi(request, env, new URL('/api/admin/gh/upload', request.url), ctx);
+                } else if (provider === 'custom') {
+                    return handleApi(request, env, new URL('/api/admin/image/external_upload', request.url), ctx);
+                }
+                return errRes('未知的图床提供商设置，请检查后台配置');
             }
-
             // ====== [新增] GitHub 图床接口 (上传/列表/删除) ======
             if (path.startsWith('/api/admin/gh/')) {
                 // 读取配置
