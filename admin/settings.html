@@ -284,7 +284,16 @@
                                 <div class="alert alert-info py-2 small">
                                     <i class="fas fa-info-circle"></i> 配置 GitHub 仓库作为免费图床。配置完成后，可在商品/文章编辑时直接上传图片。
                                 </div>
-
+								<h6 class="mb-3 border-bottom pb-2 mt-4"><i class="fas fa-toggle-on text-success"></i> 全局上传节点选择</h6>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">当前默认使用的图床</label>
+                                    <select class="form-select border-primary" id="default_upload_provider" style="background-color: #f8faff;">
+                                        <option value="github">GitHub 代理图床</option>
+                                        <option value="custom">通用外部图床 API</option>
+                                    </select>
+                                    <div class="form-text text-muted">全站所有图片上传（商品图、文章图、图片管理）将自动使用此处选择的接口。</div>
+                                </div>
+                                <hr class="my-4">
                                 <div class="mb-3">
                                     <label class="form-label">GitHub 用户名 (User)</label>
                                     <input type="text" class="form-control" id="gh_user" placeholder="例如：xyrjok">
@@ -401,6 +410,7 @@
             document.getElementById('gh_user').value = config.gh_user || '';
             document.getElementById('gh_repo').value = config.gh_repo || '';
             document.getElementById('gh_token').value = config.gh_token || '';
+			document.getElementById('default_upload_provider').value = config.default_upload_provider || 'custom';
             document.getElementById('custom_api_url').value = config.custom_api_url || '';
             document.getElementById('custom_api_token').value = config.custom_api_token || '';
             document.getElementById('custom_api_field').value = config.custom_api_field || '';
