@@ -313,6 +313,20 @@
                                     <input type="text" class="form-control" value="本站代理 /gh_image/ (自动适配域名)" disabled readonly>
                                     <div class="form-text text-muted">已启用后端代理模式，图片链接将自动生成为 /gh_image/xxx 格式，无需配置 CDN。</div>
                                 </div>
+								<h6 class="mb-3 border-bottom pb-2 mt-4"><i class="fas fa-cloud-upload-alt text-info"></i> 通用外部图床 API</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">图床上传接口 (API URL)</label>
+                                    <input type="text" class="form-control" id="custom_api_url" placeholder="例如：https://img.xxx.com/api/upload">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">接口密钥 (Token / API Key)</label>
+                                    <input type="password" class="form-control" id="custom_api_token" placeholder="可选，如果有 Token 请填入">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">返回 JSON 链接字段名 (选填)</label>
+                                    <input type="text" class="form-control" id="custom_api_field" placeholder="例如：url 或 data.url">
+                                    <div class="form-text text-muted">系统会自动尝试盲猜识别返回的链接。如果识别失败，请在此手动指定返回链接所在的层级字段名。</div>
+                                </div>
                             </div>
                         </div>
 
@@ -387,7 +401,9 @@
             document.getElementById('gh_user').value = config.gh_user || '';
             document.getElementById('gh_repo').value = config.gh_repo || '';
             document.getElementById('gh_token').value = config.gh_token || '';
-            
+            document.getElementById('custom_api_url').value = config.custom_api_url || '';
+            document.getElementById('custom_api_token').value = config.custom_api_token || '';
+            document.getElementById('custom_api_field').value = config.custom_api_field || '';
             // Power Automate 已删除
             // document.getElementById('pa_active').checked = (config.pa_active === '1');
             // document.getElementById('pa_url').value = config.pa_url || '';
@@ -441,6 +457,9 @@
             gh_user: document.getElementById('gh_user').value.trim(),
             gh_repo: document.getElementById('gh_repo').value.trim(),
             gh_token: document.getElementById('gh_token').value.trim(),
+			custom_api_url: document.getElementById('custom_api_url').value.trim(),
+            custom_api_token: document.getElementById('custom_api_token').value.trim(),
+            custom_api_field: document.getElementById('custom_api_field').value.trim(),
         };
         const res = await api('settings/save', { method: 'POST', body: JSON.stringify(data) });
         if (res.success) {
