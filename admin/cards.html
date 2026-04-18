@@ -174,6 +174,11 @@
                 <select class="form-select form-select-sm" id="filter-variant" style="width: 130px;" onchange="currentPage=1; loadCards()">
                     <option value="">所有规格</option>
                 </select>
+                <select class="form-select form-select-sm" id="filter-status" style="width: 110px;" onchange="currentPage=1; loadCards()">
+                    <option value="">所有状态</option>
+                    <option value="0">未售出</option>
+                    <option value="1">已售出</option>
+                </select>
                 
                 <div class="input-group input-group-sm" style="width: 200px;">
                     <input type="text" class="form-control" id="search-kw" placeholder="搜卡密/商品/规格..." onkeypress="if(event.keyCode==13) { currentPage=1; loadCards(); }">
@@ -402,6 +407,7 @@ CardABCDEF #[推荐号码]"></textarea>
         const productId = document.getElementById('filter-product').value;
         const variantId = document.getElementById('filter-variant').value;
         const kw = document.getElementById('search-kw').value;
+        const status = document.getElementById('filter-status').value;
         const pageSize = document.getElementById('page-size').value;
         const tbody = document.getElementById('card-list');
         
@@ -416,6 +422,7 @@ CardABCDEF #[推荐号码]"></textarea>
         });
         if(productId) params.append('product_id', productId); 
         if(variantId) params.append('variant_id', variantId);
+        if(status !== '') params.append('status', status);
         if(kw) params.append('kw', kw);
 
         const res = await api(`cards/list?${params.toString()}`);
