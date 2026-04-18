@@ -1046,7 +1046,64 @@ async function handleApi(request, env, url, ctx) {
                 // 2. 删除图片 (需要传入文件路径和SHA，这里简化为只从库删除或尝试API删除)
                 // 为简化操作，此处建议只做数据库清理，GitHub物理删除比较复杂需要先获取SHA
             }
-            
+            // ====== [新增] 万能外部图床通用接口 ======
+                if (path === '/api/admin/image/external_upload' && method === 'POST') {
+                    const conf = {};
+                    (await db.prepare("SELECT key, value FROM site_config WHERE key IN ('custom_api_url','custom_api_token','custom_api_field')").all()).results.forEach(r => conf[r.key] = r.value);
+                    
+                    if (!conf.custom_api_url) return errRes('未配置外部图床 API 地址');
+
+                    const formData = await request.formData();
+                    const file = formData.get('file');
+                    if (!file) return errRes('未选择文件');
+
+                    const headers = {};
+                    if (conf.custom_api_token) {
+                        headers['Authorization'] = `Bearer ${conf.custom_api_token}`;
+                        headers['Token'] = conf.custom_api_token; 
+                    }
+
+                    const uploadForm = new FormData();
+                    uploadForm.append('file', file);
+
+                    try {
+                        const upRes = await fetch(conf.custom_api_url, { method: 'POST', headers, body: uploadForm });
+                        const upText = await upRes.text();
+                        let downloadUrl = '';
+                        
+                        try {
+                            const upJson = JSON.parse(upText);
+                            if (conf.custom_api_field) {
+                                let temp = upJson;
+                                const keys = conf.custom_api_field.split('.');
+                                for (const k of keys) { temp = temp[k]; if (temp === undefined) break; }
+                                if (typeof temp === 'string') downloadUrl = temp;
+                            }
+                            
+                            if (!downloadUrl) {
+                                if (Array.isArray(upJson) && upJson[0]?.src) downloadUrl = upJson[0].src; 
+                                else if (upJson.data?.links?.url) downloadUrl = upJson.data.links.url; 
+                                else if (upJson.data?.url) downloadUrl = upJson.data.url; 
+                                else if (upJson.url) downloadUrl = upJson.url; 
+                                else if (upJson.src) downloadUrl = upJson.src; 
+                            }
+
+                            if (downloadUrl && !downloadUrl.startsWith('http')) {
+                                downloadUrl = new URL(downloadUrl, conf.custom_api_url).href;
+                            }
+                        } catch(e) {
+                            if (upText.startsWith('http')) downloadUrl = upText.trim();
+                        }
+
+                        if (!downloadUrl) return errRes('未找到图片链接，返回内容：' + upText.substring(0, 100));
+
+                        try { await db.prepare("INSERT INTO images (category_id, url, name, created_at) VALUES (1, ?, ?, ?)").bind(downloadUrl, file.name, time()).run(); } catch(e){}
+                        
+                        return jsonRes({ location: downloadUrl });
+                    } catch(e) {
+                        return errRes('外部API上传请求异常: ' + e.message);
+                    }
+                }
             // --- 系统设置 API (已修改: 支持 UPSERT) ---
             if (path === '/api/admin/settings/get') {
                 const res = await db.prepare("SELECT * FROM site_config").all();
