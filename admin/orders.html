@@ -145,6 +145,12 @@
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
             <h3>订单管理</h3>
             <div class="d-flex align-items-center gap-2 flex-wrap bg-white p-2 rounded shadow-sm w-100">
+                <select class="form-select form-select-sm" id="filter-status" style="width: 130px;" onchange="loadOrders()">
+                    <option value="">所有状态</option>
+                    <option value="0">待支付</option>
+                    <option value="1">已支付/已发货</option>
+                    <option value="2">已完成</option>
+                </select>
                 <div class="input-group input-group-sm" style="width: 250px;">
                     <input type="text" class="form-control" id="search-input" placeholder="搜索订单号/联系方式..." onkeypress="if(event.keyCode==13) loadOrders()">
                     <button class="btn btn-outline-secondary" type="button" onclick="loadOrders()"><i class="fas fa-search"></i></button>
@@ -304,7 +310,8 @@
         
         const search = document.getElementById('search-input').value;
         // 假设API分页每页50条
-        const res = await api(`orders/list?page=${page}&limit=50&search=${encodeURIComponent(search)}`);
+        const status = document.getElementById('filter-status').value;
+        const res = await api(`orders/list?page=${page}&limit=50&search=${encodeURIComponent(search)}&status=${status}`);
         
         const list = Array.isArray(res) ? res : (res.data || []);
         if (page === 1) { allOrders = list; tbody.innerHTML = ''; } 
