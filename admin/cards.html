@@ -399,6 +399,7 @@ CardABCDEF #[推荐号码]"></textarea>
     }
 
     async function loadCards() {
+        const productId = document.getElementById('filter-product').value;
         const variantId = document.getElementById('filter-variant').value;
         const kw = document.getElementById('search-kw').value;
         const pageSize = document.getElementById('page-size').value;
@@ -413,6 +414,7 @@ CardABCDEF #[推荐号码]"></textarea>
             page: currentPage,
             limit: pageSize
         });
+        if(productId) params.append('product_id', productId); 
         if(variantId) params.append('variant_id', variantId);
         if(kw) params.append('kw', kw);
 
