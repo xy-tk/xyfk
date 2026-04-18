@@ -586,15 +586,19 @@ async function handleApi(request, env, url, ctx) {
 
             // --- 卡密管理 API (升级版: 支持分页、多字段搜索、关联查询) ---
             if (path === '/api/admin/cards/list') {
+                const product_id = url.searchParams.get('product_id'); 
                 const variant_id = url.searchParams.get('variant_id');
                 const kw = url.searchParams.get('kw'); // 搜索关键字
                 const page = parseInt(url.searchParams.get('page') || 1); // 当前页码
                 const limit = parseInt(url.searchParams.get('limit') || 10); // 每页条数
                 const offset = (page - 1) * limit;
-
-                // 构建查询条件
                 let whereClauses = ["1=1"];
                 let params = [];
+
+                if (product_id) {
+                    whereClauses.push("p.id = ?");
+                    params.push(product_id);
+                }
 
                 if (variant_id) {
                     whereClauses.push("c.variant_id = ?");
