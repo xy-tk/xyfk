@@ -214,6 +214,7 @@
             </div>
         </div>
     </div>
+     </div> </div>
 
     <script src="/assets/jquery-3.6.0.min.js"></script>
     <script src="/assets/bootstrap.bundle.min.js"></script>
@@ -334,8 +335,9 @@
                         res.forEach(c => {
                             // 这里链接指向文章列表页
                             box.append(`
-                                <a href="/articles" class="list-group-item list-group-item-action border-0 px-0 py-2 text-secondary" style="font-size: 0.95rem;">
+                                <a href="/articles?category_id=${c.id}" class="list-group-item list-group-item-action border-0 px-0 py-2 text-secondary" style="font-size: 0.95rem;">
                                     <i class="fas fa-angle-right me-2 text-muted small"></i>${c.name}
+                                    
                                 </a>
                             `);
                         });
