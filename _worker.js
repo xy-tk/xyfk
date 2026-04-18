@@ -546,16 +546,19 @@ async function handleApi(request, env, url, ctx) {
             // --- 订单管理 API ---
             if (path === '/api/admin/orders/list') {
                 const search = url.searchParams.get('search');
-                let query;
+                const status = url.searchParams.get('status');
+                let whereClauses = ["1=1"];
                 let params = [];
                 
                 if (search) {
-                    // 同时模糊匹配联系方式和精准/模糊匹配订单号
-                    query = "SELECT * FROM orders WHERE contact LIKE ? OR id LIKE ? ORDER BY created_at DESC LIMIT 100";
-                    params = [`%${search}%`, `%${search}%`];
-                } else {
-                    query = "SELECT * FROM orders ORDER BY created_at DESC LIMIT 100";
+                    whereClauses.push("(contact LIKE ? OR id LIKE ?)");
+                    params.push(`%${search}%`, `%${search}%`);
                 }
+                if (status !== null && status !== '') {
+                    whereClauses.push("status = ?");
+                    params.push(parseInt(status));
+                }
+                const query = `SELECT * FROM orders WHERE ${whereClauses.join(' AND ')} ORDER BY created_at DESC LIMIT 100`;
                 
                 const { results } = await db.prepare(query).bind(...params).all();
                 return jsonRes(results);
@@ -588,6 +591,7 @@ async function handleApi(request, env, url, ctx) {
             if (path === '/api/admin/cards/list') {
                 const product_id = url.searchParams.get('product_id'); 
                 const variant_id = url.searchParams.get('variant_id');
+                const status = url.searchParams.get('status');
                 const kw = url.searchParams.get('kw'); // 搜索关键字
                 const page = parseInt(url.searchParams.get('page') || 1); // 当前页码
                 const limit = parseInt(url.searchParams.get('limit') || 10); // 每页条数
@@ -604,7 +608,10 @@ async function handleApi(request, env, url, ctx) {
                     whereClauses.push("c.variant_id = ?");
                     params.push(variant_id);
                 }
-                
+                if (status !== null && status !== '') {
+                    whereClauses.push("c.status = ?");
+                    params.push(parseInt(status));
+                }
                 // [修改] 关键字同时搜索：卡密内容 OR 商品名称 OR 规格名称
                 if (kw) {
                     whereClauses.push("(c.content LIKE ? OR p.name LIKE ? OR v.name LIKE ?)");
