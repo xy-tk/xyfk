@@ -291,10 +291,18 @@ function insertHeaderSkeleton() {
                                     <i class="fas fa-search"></i>订单查询
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="articles">
-                                    <i class="fas fa-book-open"></i>文章中心
-                                </a>
+                           <li class="nav-item dropdown">
+                                <div class="nav-link category-toggle-wrap">
+                                    <a href="articles" style="color: inherit; text-decoration: none; flex: 1;">
+                                        <i class="fas fa-book-open"></i>文章中心
+                                    </a>
+                                    <span class="category-arrow" id="mobile-article-category-arrow">
+                                        <i class="far fa-angle-right" style="margin-right: 0px;"></i>
+                                    </span>
+                                </div>
+                                <ul class="dropdown-menu" aria-labelledby="articleCategoryDropdown" id="header-article-category-menu">
+                                    <li><span class="dropdown-item text-muted">加载中...</span></li>
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="custom?alias=about-us" target="_blank" rel="noopener noreferrer">
@@ -336,9 +344,8 @@ function insertHeaderSkeleton() {
     } else {
         $(`a[href="${currentPath}"]`).addClass('active');
     }
-
-    loadHeaderCategories();
-    
+      loadHeaderCategories();
+      loadArticleCategories(); 
     // 初始化购物车角标
     if (typeof updateCartBadge === 'function') {
         updateCartBadge();
@@ -417,6 +424,19 @@ function insertHeaderSkeleton() {
             menu.slideUp(300);
         }
     });
+   $('#mobile-article-category-arrow').on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        $(this).toggleClass('active');
+        
+        const menu = $('#header-article-category-menu');
+        if ($(this).hasClass('active')) {
+            menu.hide().slideDown(300);
+        } else {
+            menu.slideUp(300);
+        }
+    });
    // === 新增：移动端搜索框点击空白处或上下滑动时自动收起 ===
     $(document).on('click', function(e) {
         const searchBox = $('#mobile-search-box');
@@ -440,6 +460,11 @@ function insertHeaderSkeleton() {
             searchBox.find('input').blur(); // 顺便让输入框失去焦点，强制收起手机自带的拼音软键盘
         }
     });
+   // === 新增：移动端默认展开“商品分类” ===
+    if ($(window).width() <= 991) {
+        $('#mobile-category-arrow').addClass('active');
+        $('#header-category-menu').show();
+    }
 }
 /**
  * 加载分类并渲染到下拉菜单
@@ -500,7 +525,46 @@ window.handleCategoryClick = function(catId) {
         window.location.href = '/?category_id=' + catId;
     }
 };
+/**
+ * 加载文章分类并渲染到下拉菜单
+ */
+function loadArticleCategories() {
+    $.ajax({
+        url: '/api/shop/article/categories',
+        method: 'GET',
+        success: function(response) {
+            let categories = [];
+            // 处理不同的返回格式
+            if (response && Array.isArray(response)) {
+                categories = response;
+            } else if (response && response.results && Array.isArray(response.results)) {
+                 categories = response.results;
+            }
 
+            const menuContainer = $('#header-article-category-menu');
+            menuContainer.empty();
+
+            if (categories.length === 0) {
+                menuContainer.append('<li><span class="dropdown-item text-muted">暂无分类</span></li>');
+                return;
+            }
+
+            categories.forEach(cat => {
+                const itemHtml = `
+                    <li>
+                        <a class="dropdown-item" href="/articles?category_id=${cat.id}">
+                            ${cat.name}
+                        </a>
+                    </li>
+                `;
+                menuContainer.append(itemHtml);
+            });
+        },
+        error: function() {
+            $('#header-article-category-menu').html('<li><span class="dropdown-item text-danger">加载失败</span></li>');
+        }
+    });
+}
 /**
  * 全局函数：更新购物车角标
  * 读取 localStorage 中的 tbShopCart
