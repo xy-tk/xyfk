@@ -122,29 +122,25 @@ function insertHeaderSkeleton() {
                 display: block;
                 animation: slideDown 0.2s ease forwards;
             }
-            /* --- 商品分类折叠样式 (完全对齐 xybk：默认向右，展开向下) --- */
             .category-toggle-wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
             .category-arrow { 
                 cursor: pointer; 
                 color: #999;
             }
-            /* 关键修复：动画必须加在 i 标签上，并设置为 inline-block，这样旋转才会完美在原地打转 */
             .category-arrow i {
                 transition: transform 0.3s ease;
                 display: inline-block;
             }
-            /* PC端 Hover 或 移动端点击展开时，箭头顺时针转90度（变成向下） */
-            .nav-item.dropdown:hover .category-arrow i,
-            .nav-item.dropdown.menu-expanded .category-arrow i { transform: rotate(90deg); }
-            /* 移动端侧滑状态下，带有 .menu-expanded 类的菜单强制显示 */
-            @media (max-width: 991px) {
-                header.custom-header .nav-item.dropdown.menu-expanded .dropdown-menu { 
-                    display: block !important; 
-                }
+            @media (min-width: 992px) {
+                .category-arrow i { transform: rotate(90deg); }
+                .nav-item.dropdown:hover .category-arrow i { transform: rotate(0deg); }
             }
-            
+            @media (max-width: 991px) {
+                .category-arrow i { transform: rotate(0deg); }
+                .category-arrow.active i { transform: rotate(90deg); }
+            }
             header.custom-header .dropdown-item {
-                font-size: 14px !important; /* 要求：下拉菜单字体 14px */
+                font-size: 14px !important; 
                 padding: 8px 15px;
                 color: #555;
                 display: flex;
@@ -155,8 +151,8 @@ function insertHeaderSkeleton() {
                 color: var(--bs-primary);
             }
             header.custom-header .category-icon-sm {
-                width: 14px;  /* 要求：图标大小 14px */
-                height: 14px; /* 要求：图标大小 14px */
+                width: 14px;  
+                height: 14px; 
                 object-fit: cover;
                 margin-right: 5px;
                 border-radius: 2px;
@@ -282,7 +278,7 @@ function insertHeaderSkeleton() {
                                         <i class="fas fa-list-ul"></i>商品分类
                                     </a>
                                     <span class="category-arrow" id="mobile-category-arrow">
-                                        <i class="far fa-angle-right" style=" margin-right: 0px;"></i>
+                                        <i class="far fa-angle-right" style="margin-right: 0px;"></i>
                                     </span>
                                 </div>
                                 <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="header-category-menu">
@@ -407,20 +403,18 @@ function insertHeaderSkeleton() {
     $('#navbarNav').on('click', function(e) {
         e.stopPropagation(); // 防止点击菜单内部导致面板关闭
     });
-    // 新增：移动端商品分类箭头点击折叠/展开
     $('#mobile-category-arrow').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        const parentLi = $(this).closest('.nav-item.dropdown');
-        const menu = $('#header-category-menu');
         
-        if (parentLi.hasClass('menu-expanded')) {
-            menu.slideUp(300, function() {
-                parentLi.removeClass('menu-expanded');
-            });
-        } else {
-            parentLi.addClass('menu-expanded');
+        // 切换箭头自身的 active 状态触发旋转
+        $(this).toggleClass('active');
+        
+        const menu = $('#header-category-menu');
+        if ($(this).hasClass('active')) {
             menu.hide().slideDown(300);
+        } else {
+            menu.slideUp(300);
         }
     });
    // === 新增：移动端搜索框点击空白处或上下滑动时自动收起 ===
