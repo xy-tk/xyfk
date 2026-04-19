@@ -109,7 +109,11 @@ function insertHeaderSkeleton() {
 
             /* 7. 下拉菜单样式 (鼠标移入向下滑出) */
             header.custom-header .dropdown-menu {
-                display: none; /* 默认隐藏 */
+                visibility: hidden;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+                display: block;
                 margin-top: 0;
                 border: none;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -117,10 +121,10 @@ function insertHeaderSkeleton() {
                 padding: 5px 0;
                 min-width: 160px;
             }
-            /* 关键：Hover 时显示并执行 slideDown 动画 */
             header.custom-header .nav-item.dropdown:hover .dropdown-menu {
-                display: block;
-                animation: slideDown 0.2s ease forwards;
+                visibility: visible;
+                opacity: 1;
+                transform: translateY(0);
             }
             .category-toggle-wrap { display: flex; align-items: center; justify-content: space-between; width: 100%; }
             .category-arrow { 
@@ -218,16 +222,20 @@ function insertHeaderSkeleton() {
                 }
                 /* --- 新增：移动端下滑搜索框容器样式 --- */
                 .mobile-search-dropdown {
-                    display: none; position: absolute; top: 100%; left: 0; width: 100%;
+                   visibility: hidden; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease;
+                    position: absolute; top: 100%; left: 0; width: 100%; display: block;
                     background: #fff; padding: 12px 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.08);
                     z-index: 1020; border-top: 1px solid #eee;
                 }
+                .mobile-search-dropdown.show { visibility: visible; opacity: 1; transform: translateY(0); }
                 /* 菜单项样式重置 */
                 header.custom-header .dropdown-item { font-size: 13px !important; padding: 6px 0px; }
                 header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5;font-size: 13px !important; }
                 header.custom-header .dropdown-menu {
-                    position: static; box-shadow: none; border: none; padding-left: 20px; display: none; background: #fafafa;
+                    position: static; box-shadow: none; border: none; padding-left: 20px; background: #fafafa;
+                    display: none; visibility: visible; opacity: 1; transform: none; transition: none;
                 }
+                header.custom-header .dropdown-menu.show { display: block; }
             }
         </style>
     `;
@@ -240,7 +248,7 @@ function insertHeaderSkeleton() {
                 <div class="container d-flex justify-content-between align-items-center position-relative">
                     
                     <div class="d-lg-none m-0" style="width: auto; z-index: 1030;">
-                        <i class="far fa-search" style="font-size: 19px; cursor: pointer; color: #555; padding: 5px;" onclick="$('#mobile-search-box').slideToggle(200);"></i>
+                        <i class="far fa-search" style="font-size: 19px; cursor: pointer; color: #555; padding: 5px;" onclick="$('#mobile-search-box').toggleClass('show');"></i>
                     </div>
 
                     <a class="navbar-brand d-none d-lg-flex" href="/">
@@ -418,11 +426,7 @@ function insertHeaderSkeleton() {
         $(this).toggleClass('active');
         
         const menu = $('#header-category-menu');
-        if ($(this).hasClass('active')) {
-            menu.hide().slideDown(300);
-        } else {
-            menu.slideUp(300);
-        }
+        menu.toggleClass('show');
     });
    $('#mobile-article-category-arrow').on('click', function(e) {
         e.preventDefault();
@@ -431,34 +435,26 @@ function insertHeaderSkeleton() {
         $(this).toggleClass('active');
         
         const menu = $('#header-article-category-menu');
-        if ($(this).hasClass('active')) {
-            menu.hide().slideDown(300);
-        } else {
-            menu.slideUp(300);
-        }
+        menu.toggleClass('show');
     });
    // === 新增：移动端搜索框点击空白处或上下滑动时自动收起 ===
     $(document).on('click', function(e) {
         const searchBox = $('#mobile-search-box');
-        
-        // 排除 1：如果点击的是用于展开搜索框的“放大镜图标”，不干预，交给图标自带的点击事件处理
-        if ($(e.target).closest('i[onclick*="slideToggle"]').length > 0) {
-            return;
-        }
-        
-        // 排除 2：如果点击的是页面其他地方（不是搜索框内部），且搜索框当前是打开的，就收起它
-        if (searchBox.is(':visible') && $(e.target).closest('#mobile-search-box').length === 0) {
-            searchBox.slideUp(200);
-        }
-    });
+            if ($(e.target).closest('i[onclick*="toggleClass"]').length > 0) {
+                return;
+            }
 
-    $(window).on('scroll', function() {
-        const searchBox = $('#mobile-search-box');
-        // 一旦检测到页面滑动，且搜索框是打开的，立刻收起
-        if (searchBox.is(':visible')) {
-            searchBox.slideUp(200);
-            searchBox.find('input').blur(); // 顺便让输入框失去焦点，强制收起手机自带的拼音软键盘
-        }
+            if (searchBox.hasClass('show') && $(e.target).closest('#mobile-search-box').length === 0) {
+                searchBox.removeClass('show');
+            }
+        });
+
+        $(window).on('scroll', function() {
+            const searchBox = $('#mobile-search-box');
+            if (searchBox.hasClass('show')) {
+                searchBox.removeClass('show');
+                searchBox.find('input').blur();
+            }
     });
    // === 新增：移动端默认展开“商品分类” ===
     if ($(window).width() <= 991) {
