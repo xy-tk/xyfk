@@ -414,7 +414,7 @@
             const oldText = btn.innerHTML; btn.innerHTML = '上传中...'; btn.disabled = true;
             
             try {
-                const res = await fetch('/api/admin/gh/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
+                const res = await fetch('/api/admin/image/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
                 if(res.location) {
                     alert('上传成功'); loadImages(1);
                 } else {
