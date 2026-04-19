@@ -569,6 +569,7 @@ async function handleApi(request, env, url, ctx) {
                 const { id } = await request.json();
                 if (!id) return errRes('未提供订单ID');
                 await db.prepare("DELETE FROM orders WHERE id = ?").bind(id).run();
+                await db.prepare("DELETE FROM site_config WHERE key=?").bind('qr_' + id).run();
                 return jsonRes({ success: true });
             }
 
@@ -582,7 +583,8 @@ async function handleApi(request, env, url, ctx) {
                 // 构建 IN 查询
                 const placeholders = ids.map(() => '?').join(',');
                 await db.prepare(`DELETE FROM orders WHERE id IN (${placeholders})`).bind(...ids).run();
-                
+                const qrKeys = ids.map(id => 'qr_' + id);
+                await db.prepare(`DELETE FROM site_config WHERE key IN (${placeholders})`).bind(...qrKeys).run();
                 return jsonRes({ success: true, deletedCount: ids.length });
             }
 
@@ -1621,7 +1623,7 @@ async function handleApi(request, env, url, ctx) {
 
             // 2. 执行删除
             await db.prepare("DELETE FROM orders WHERE id=?").bind(id).run();
-            
+            await db.prepare("DELETE FROM site_config WHERE key=?").bind('qr_' + id).run();
             return jsonRes({ success: true });
         }
 
@@ -1721,7 +1723,9 @@ async function handleApi(request, env, url, ctx) {
                 // 【修复点1】删除 BEGIN TRANSACTION，直接执行更新
                 await db.prepare("UPDATE orders SET status=1, paid_at=?, trade_no=? WHERE id=? AND status=0")
                         .bind(time(), trade_no, out_trade_no).run();
-
+                try {
+                    await db.prepare("DELETE FROM site_config WHERE key=?").bind('qr_' + out_trade_no).run();
+                } catch(e) { console.error('Clear QR cache error:', e); }
                 const order = await db.prepare("SELECT * FROM orders WHERE id=? AND status=1").bind(out_trade_no).first();
                 
                 if (order) {
