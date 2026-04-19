@@ -459,7 +459,7 @@ function insertHeaderSkeleton() {
    // === 新增：移动端默认展开“商品分类” ===
     if ($(window).width() <= 991) {
         $('#mobile-category-arrow').addClass('active');
-        $('#header-category-menu').show();
+        $('#header-category-menu').addClass('show');
     }
 }
 /**
