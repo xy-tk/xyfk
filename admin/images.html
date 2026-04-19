@@ -407,21 +407,49 @@
     async function uploadToGithub() {
         const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
         input.onchange = async e => {
-            if(!e.target.files[0]) return;
-            const formData = new FormData(); formData.append('file', e.target.files[0]);
+            const file = e.target.files[0];
+            if(!file) return;
             
-            const btn = document.querySelector('.btn-primary'); // 获取添加按钮临时变态
-            const oldText = btn.innerHTML; btn.innerHTML = '上传中...'; btn.disabled = true;
+            const btn = document.querySelector('.btn-primary'); 
+            const oldText = btn.innerHTML; 
+            btn.innerHTML = '压缩并上传中...'; 
+            btn.disabled = true;
             
-            try {
-                const res = await fetch('/api/admin/image/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
-                if(res.location) {
-                    alert('上传成功'); loadImages(1);
-                } else {
-                    alert(res.error || '上传失败，请检查系统设置中的 GitHub 配置');
-                }
-            } catch(e) { alert('上传错误'); } 
-            finally { btn.innerHTML = oldText; btn.disabled = false; }
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width; 
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    
+                    // 核心：强制将图片转为 WebP 格式，0.85 为压缩质量（画质与体积的完美平衡）
+                    canvas.toBlob(async (blob) => {
+                        const formData = new FormData();
+                        // 将原来的后缀名替换为 .webp
+                        const newName = file.name.replace(/\.[^/.]+$/, ".webp"); 
+                        formData.append('file', blob, newName);
+                        
+                        try {
+                            const res = await fetch('/api/admin/image/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
+                            if(res.location) {
+                                alert('上传成功'); loadImages(1);
+                            } else {
+                                alert(res.error || '上传失败，请检查图床配置');
+                            }
+                        } catch(err) { 
+                            alert('上传错误'); 
+                        } finally { 
+                            btn.innerHTML = oldText; 
+                            btn.disabled = false; 
+                        }
+                    }, 'image/webp', 0.85);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
         };
         input.click();
     }
