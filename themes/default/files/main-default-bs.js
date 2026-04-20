@@ -333,24 +333,6 @@ function loadCategories(callback) {
 }
 
 /**
- * 动态更新页面标题
- */
-function updatePageTitle(siteName) {
-    const currentPath = window.location.pathname.split('/').pop() || '/';
-    let title = siteName;
-    
-    if (currentPath === '/' || currentPath === '') {
-        title += ' - 首页';
-    } else if (currentPath === 'orders') {
-        title = '订单查询 - ' + siteName;
-    } else if (currentPath === 'articles') {
-        title = '文章列表 - ' + siteName;
-    }
-    
-    document.title = title;
-}
-
-/**
  * 加载网站配置 (使用 /api/shop/config 接口)
  */
 function loadGlobalConfig() {
@@ -362,9 +344,6 @@ function loadGlobalConfig() {
                 const siteName = config.site_name || '夏雨店铺'; 
                 const siteLogo = config.site_logo || ''; 
                 const showSiteName = config.show_site_name; 
-                
-                updatePageTitle(siteName);
-                
                 if (typeof renderHeader === 'function') {
                     renderHeader(siteName, siteLogo, showSiteName);
                 }
