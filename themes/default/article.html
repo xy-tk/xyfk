@@ -23,9 +23,11 @@
             max-width: 56rem; /* max-w-4xl (约896px) */
             margin: 0 auto;
             background: #fff;
+            min-height: 80vh;
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
             border-radius: 0.75rem; /* rounded-xl */
             padding: 0;
+            overflow: hidden;
             margin-top: 30px;
             margin-bottom: 30px;
         }
@@ -35,7 +37,6 @@
             padding: 2rem 1rem 0 1rem; /* 顶部增加内边距给标题 */
             position: relative;
         }
-        @media (min-width: 640px) { .article-header { padding: 2.5rem 2rem 0 2rem; } }
         
         /* === 修改：文章标题样式 === */
         .article-title-h1 {
@@ -149,6 +150,7 @@
         <div class="row">
             <div class="col-lg-9">
                 <article class="article-container flex-1 w-full" style="margin-left: 0; margin-right: 0; max-width: 100%; width: 100%;">
+            
             <div class="article-header mx-auto max-w-4xl">
                 
                 <h1 class="article-title-h1" id="article-title">
@@ -204,7 +206,8 @@
             </div>
         </div>
     </div>
-        </div>
+     </div> </div>
+
     <script src="/assets/jquery-3.6.0.min.js"></script>
     <script src="/assets/bootstrap.bundle.min.js"></script>
     <script src="/files/header.js"></script>
@@ -276,7 +279,7 @@
         }
 
         function renderArticle(data) {
-            document.title = data.title + ' - 文章教程';
+            document.title = data.title + ' - 资讯中心';
             $('#article-title').text(data.title);
 
             const catName = data.category_name || '默认分类';
