@@ -173,7 +173,7 @@
 
         $(document).ready(function() {
             loadGlobalConfig();
-            loadArticleCategories();
+            loadPageArticleCategories();
             loadArticles();
         });
 // 新增：加载全局配置并渲染页头页尾
@@ -200,7 +200,7 @@
             });
         }
         // 1. 加载分类
-        function loadArticleCategories() {
+        function loadPageArticleCategories() {
             $.ajax({
                 url: '/api/shop/article/categories',
                 method: 'GET',
