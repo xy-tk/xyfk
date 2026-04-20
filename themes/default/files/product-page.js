@@ -870,7 +870,7 @@ function initStickySidebar() {
     if (typeof StickySidebar === 'undefined') return;
     const options = {
         topSpacing: 50,
-        bottomSpacing: 0,
+        bottomSpacing: 50,
         containerSelector: '.product-detail-grid',
         innerWrapperSelector: '.sidebar-inner'
     };
