@@ -18,14 +18,12 @@ $(document).ready(function() {
         url: '/api/shop/config',
         method: 'GET',
         success: function(config) {
-            const siteName = (config && config.site_name) || '我的商店';
+            const siteName = (config && config.site_name) || '';
+            window.globalSiteName = siteName; 
             const siteLogo = (config && config.site_logo) || '';
             const showName = (config && config.show_site_name);
-
             if (typeof renderHeader === 'function') renderHeader(siteName, siteLogo, showName);
             if (typeof renderFooter === 'function') renderFooter(siteName);
-            
-            if (document.title === '商品详情加载中...') document.title = siteName;
         },
         error: function() {
             if (typeof renderHeader === 'function') renderHeader();
