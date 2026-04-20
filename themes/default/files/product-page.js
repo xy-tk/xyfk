@@ -73,6 +73,9 @@ function loadProductDetail() {
                 });
             }
             currentProduct = res;
+            if (res.name) {
+                document.title = res.name;
+            }
             renderProductPage(res);
         },
         error: function() {
