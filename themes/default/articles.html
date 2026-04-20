@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资讯中心</title>
+    <title>文章教程</title>
     
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/all.min.css" rel="stylesheet">
@@ -135,7 +135,7 @@
         <div class="main-box">
                <div class="main-box mb-3" style="box-shadow: 0px 1px 0px rgb(0 0 0 / 9%);">
                 <h5 class="mb-0" style="font-weight: 600;">
-                    <i class="far fa-newspaper me-2" style="color: var(--luna-primary-blue);"></i>资讯中心
+                    <i class="far fa-newspaper me-2" style="color: var(--luna-primary-blue);"></i>文章教程
                 </h5>
               </div>
             <div class="card-body p-0">
@@ -185,7 +185,7 @@
                     // 兼容不同的返回格式
                     let config = (res && res.data) ? res.data : (res || {});
                     
-                    const siteName = config.site_name || '资讯中心';
+                    const siteName = config.site_name || '文章教程';
                     const siteLogo = config.site_logo || '';
                     const showName = config.show_site_name;
 
@@ -195,7 +195,7 @@
                 },
                 error: function() {
                     // 即使加载配置失败，也显示默认页头
-                    if (typeof renderHeader === 'function') renderHeader('资讯中心');
+                    if (typeof renderHeader === 'function') renderHeader('文章教程');
                 }
             });
         }
