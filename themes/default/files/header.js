@@ -272,7 +272,7 @@ function insertHeaderSkeleton() {
 
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <div class="d-lg-none position-relative" style="padding: 0; border-bottom: none;">
-                            <img src="/assets/noimage.jpg" style="width: 100%; max-height: 160px; object-fit: cover; display: block;" alt="侧栏背景">
+                            <img src="/assets/noimage.jpg" class="global-mobile-sidebar-logo-target" style="width: 100%; max-height: 160px; object-fit: cover; display: block;" alt="侧栏背景">
                             <i class="fas fa-times" id="close-menu-btn" style="position: absolute; right: 15px; top: 15px; color: #555; background: rgba(255,255,255,0.8); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; z-index: 10;"></i>
                         </div>
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
