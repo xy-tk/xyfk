@@ -58,6 +58,7 @@ const TB_LAYOUT = {
     // 移动端侧滑菜单 (改为分类列表容器)
     mobileSidebar: (activePage) => `
         <div class="mobile-sidebar-header">
+        <img id="tb-mobile-sidebar-logo" class="d-none" style="width: 100%; max-height: 130px; object-fit: cover; margin-bottom: 10px; border-radius: 4px;" alt="侧栏Logo">
             <h5 class="mobile-sidebar-title">商品分类</h5>
             <i class="fa fa-times mobile-sidebar-close" onclick="togglePanel('mobile-sidebar', 'mobile-overlay')"></i>
         </div>
@@ -428,6 +429,15 @@ function renderGlobalHeaders(config) {
         const el = document.getElementById(id);
         if(el && (showName || (!showName && !showLogo))) el.classList.remove('d-none');
     });
+    if (config.site_favicon) {
+        let link = document.querySelector("link[rel~='icon']");
+        if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+        link.href = config.site_favicon;
+    }
+    if (config.mobile_sidebar_logo) {
+        const el = document.getElementById('tb-mobile-sidebar-logo');
+        if (el) { el.src = config.mobile_sidebar_logo; el.classList.remove('d-none'); }
+    }
     if (config.custom_js) {
         const div = document.createElement('div');
         div.innerHTML = config.custom_js;
