@@ -588,15 +588,21 @@ window.updateCartBadge = function() {
         }
     } catch(e) {
         console.error('Update cart badge failed:', e);
-    }
-}
-// 2. 页面 DOM 解析完毕后瞬间自动插入骨架，不等待接口
-$(document).ready(function() {
-    insertHeaderSkeleton();
-});
-
-// 3. 重写暴露给外部的 renderHeader 函数：使其仅负责后台配置返回后填充文字和图片
-window.renderHeader = function(siteName = '我的商店', siteLogo = '', showSiteName = true) {
+            }
+        }
+        $(document).ready(function() {
+            insertHeaderSkeleton();
+            $.get('/api/shop/config', function(res) {
+                if (res.site_favicon) {
+                    $('head').append('<link rel="shortcut icon" href="' + res.site_favicon + '">');
+                }
+                if (res.sidebar_bg) {
+                    $('.global-mobile-sidebar-logo-target').attr('src', res.sidebar_bg);
+                }
+            });
+        });
+        // 3. 重写暴露给外部的 renderHeader 函数：使其仅负责后台配置返回后填充文字和图片
+        window.renderHeader = function(siteName = '夏雨发卡', siteLogo = '', showSiteName = true) {
     insertHeaderSkeleton(); // 兜底：万一页面没有 ready 就被调用，先确保骨架存在
     
     const shouldShowName = (showSiteName !== '0' && showSiteName !== 0 && showSiteName !== false && showSiteName !== 'false');
