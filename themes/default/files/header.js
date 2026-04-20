@@ -596,8 +596,8 @@ window.updateCartBadge = function() {
                 if (res.site_favicon) {
                     $('head').append('<link rel="shortcut icon" href="' + res.site_favicon + '">');
                 }
-                if (res.sidebar_bg) {
-                    $('.global-mobile-sidebar-logo-target').attr('src', res.sidebar_bg);
+                if (res.mobile_sidebar_logo) {
+                    $('.global-mobile-sidebar-logo-target').attr('src', res.mobile_sidebar_logo);
                 }
             });
         });
