@@ -1137,15 +1137,10 @@ async function handleApi(request, env, url, ctx) {
             const res = await db.prepare("SELECT * FROM site_config").all();
             const publicKeys = [
                 'site_favicon', 'sidebar_bg', 
-                'site_name', 'site_logo', 'show_site_name', 'show_site_logo',
-
-            // 【安全修复】白名单机制：只允许返回这些字段，过滤掉 token/secret 等敏感信息
-            const publicKeys = [
                 'site_name', 'site_logo', 'show_site_name', 'show_site_logo', 
                 'theme', 'announce', 'contact_info', 'site_description',
                 'footer_html', 'tg_active', 'outlook_active', 'custom_js'
             ];
-
             const safeConfig = {};
             publicKeys.forEach(key => {
                 if (allConfig[key] !== undefined) {
