@@ -341,9 +341,17 @@ function loadGlobalConfig() {
         method: 'GET',
         success: function(config) {
             if (config && typeof config === 'object') {
-                const siteName = config.site_name || '夏雨店铺'; 
+                const siteName = config.site_name || '夏雨发卡'; 
                 const siteLogo = config.site_logo || ''; 
                 const showSiteName = config.show_site_name; 
+                if (config.site_favicon) {
+                    let link = document.querySelector("link[rel~='icon']");
+                    if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+                    link.href = config.site_favicon;
+                }
+                if (config.mobile_sidebar_logo) {
+                    $('.global-mobile-sidebar-logo-target').attr('src', config.mobile_sidebar_logo);
+                }
                 if (typeof renderHeader === 'function') {
                     renderHeader(siteName, siteLogo, showSiteName);
                 }
