@@ -60,12 +60,12 @@
                     method: 'GET',
                     success: function(config) {
                         if (typeof renderHeader === 'function') {
-                            renderHeader(config.site_name || '我的商店', config.site_logo || '', config.show_site_name);
+                            renderHeader(config.site_name || '', config.site_logo || '', config.show_site_name);
                         }
                         if (typeof renderFooter === 'function') renderFooter();
                     },
                     error: function() {
-                        if (typeof renderHeader === 'function') renderHeader('我的商店', '', true);
+                        if (typeof renderHeader === 'function') renderHeader('', '', true);
                         if (typeof renderFooter === 'function') renderFooter();
                     }
                 });
@@ -88,7 +88,8 @@
                 method: 'GET',
                 success: function(res) {
                     if (res && res.title) {
-                        document.title = res.title;
+                        const siteNameStr = $('.global-site-name-target').text() || '';
+                        document.title = res.title + '-' + siteNameStr;
                         $('#page-title').text(res.title);
                         $('#page-content').html(res.content || '<p class="text-center text-muted">本页面暂无内容</p>');
                         
