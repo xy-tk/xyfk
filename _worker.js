@@ -1135,8 +1135,10 @@ async function handleApi(request, env, url, ctx) {
         // ===========================
         if (path === '/api/shop/config') {
             const res = await db.prepare("SELECT * FROM site_config").all();
+            const allConfig = {}; 
+            if (res.results) res.results.forEach(r => allConfig[r.key] = r.value);
             const publicKeys = [
-                'site_favicon', 'sidebar_bg', 
+                'site_favicon', 'mobile_sidebar_logo', 
                 'site_name', 'site_logo', 'show_site_name', 'show_site_logo', 
                 'theme', 'announce', 'contact_info', 'site_description',
                 'footer_html', 'tg_active', 'outlook_active', 'custom_js'
