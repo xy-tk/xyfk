@@ -612,4 +612,14 @@ window.renderHeader = function(siteName = '我的商店', siteLogo = '', showSit
     } else {
         $('.global-site-name-target').hide();
     }
+    const path = window.location.pathname;
+    const isProductPage = path.includes('/product') && !path.includes('/products');
+    const isArticleDetailPage = path.includes('/article') && !path.includes('/articles');
+    
+    if (!isProductPage && !isArticleDetailPage) {
+        let baseTitle = document.title.split('-')[0].trim();
+        if (baseTitle) {
+            document.title = baseTitle + '-' + siteName;
+        }
+    }
 };
