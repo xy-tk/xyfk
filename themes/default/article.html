@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文章详情</title> 
+    <title>文章详情</title>
+    
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/all.min.css" rel="stylesheet">
     <link href="/files/custom-default-bootstrap.css" rel="stylesheet">
@@ -13,8 +14,8 @@
     <style>
         /* === 风格移植：模拟 Tailwind Slate 色系与 Prose 排版 === */
         body { 
-            background: #f8fafc;
-            color: #334155;
+            background: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
         }
 
         /* 布局容器限制 */
@@ -36,7 +37,7 @@
             padding: 2rem 1rem 0 1rem; /* 顶部增加内边距给标题 */
             position: relative;
         }
-        
+        @media (min-width: 640px) { .article-header { padding: 2.5rem 2rem 0 2rem; } }
         
         /* === 修改：文章标题样式 === */
         .article-title-h1 {
@@ -71,6 +72,7 @@
             position: relative;
             padding: 1rem;
         }
+        @media (min-width: 640px) { .article-main { padding: 1rem 2rem; } }
 
         /* 3. Prose 排版风格 */
         /* 内容中的标题 (h2/h3) */
@@ -116,6 +118,7 @@
             border-top: 1px solid rgba(226, 232, 240, 0.6);
             padding: 1.5rem 1rem;
         }
+        @media (min-width: 640px) { .article-footer { padding: 1.5rem 2rem; } }
 
         .back-link {
             display: inline-flex;
@@ -204,6 +207,9 @@
             </div>
         </div>
     </div>
+    </div>
+
+
     <script src="/assets/jquery-3.6.0.min.js"></script>
     <script src="/assets/bootstrap.bundle.min.js"></script>
     <script src="/files/header.js"></script>
