@@ -9,179 +9,34 @@
     <link href="/assets/css/all.min.css" rel="stylesheet">
     <link href="/files/custom-default-bootstrap.css" rel="stylesheet">
     <link href="/files/xytext.css" rel="stylesheet">
-    <style>
-        /* === 风格移植：模拟 Tailwind Slate 色系与 Prose 排版 === */
-        body { 
-            background: #f8fafc; /* slate-50 */
-            color: #334155; /* slate-700 */
-        }
-
-        /* 布局容器限制 */
-        .article-container {
-            max-width: 56rem; /* max-w-4xl (约896px) */
-            margin: 0 auto;
-            background: #fff;
-            min-height: 80vh;
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-            border-radius: 0.75rem; /* rounded-xl */
-            padding: 0;
-            overflow: hidden;
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
-
-        /* 1. 顶部区域 (包含标题和元信息) */
-        .article-header {
-            padding: 2rem 1rem 0 1rem; /* 顶部增加内边距给标题 */
-            position: relative;
-        }
-        @media (min-width: 640px) { .article-header { padding: 2.5rem 2rem 0 2rem; } }
-        
-        /* === 修改：文章标题样式 === */
-        .article-title-h1 {
-            font-size: 1.5rem !important; /* 要求：1.5rem */
-            font-weight: 700;
-            color: #1e293b; /* slate-800 */
-            margin-bottom: 1.5rem;
-            line-height: 1.4;
-            text-align: center; /* 要求：中间位置 */
-        }
-
-        /* 元信息栏 (灰色线条区域) */
-        .article-meta-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.75rem; /* text-xs */
-            color: #64748b; /* slate-500 */
-            border-top: 1px solid rgba(226, 232, 240, 0.6); /* border-slate-200/60 */
-            padding-top: 0.75rem;
-            margin-top: 0; 
-            margin-bottom: 1rem;
-        }
-        .meta-left {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* 2. 正文区域 (Main) */
-        .article-main {
-            position: relative;
-            padding: 1rem;
-        }
-        @media (min-width: 640px) { .article-main { padding: 1rem 2rem; } }
-
-        /* 3. Prose 排版风格 */
-        /* 内容中的标题 (h2/h3) */
-        #article-content h1, #article-content h2, #article-content h3 {
-            color: #1e293b; 
-            font-weight: 700;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        #article-content h1 { font-size: 1.5rem; display: none; /* 隐藏正文内可能重复的H1 */ } 
-        #article-content h2 { font-size: 1.4rem; }
-        #article-content h3 { font-size: 1.25rem; }
-
-        #article-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 0.5rem;
-            margin: 1.5rem 0;
-            display: block;
-        }
-        #article-content a {
-            color: #4f46e5;
-            text-decoration: none;
-            word-break: break-all;
-        }
-        #article-content a:hover {
-            color: #4338ca;
-            text-decoration: underline;
-        }
-        #article-content blockquote {
-            font-style: italic;
-            border-left: 4px solid #e2e8f0;
-            padding-left: 1rem;
-            margin-left: 0;
-            color: #64748b;
-        }
-
-        /* 4. 底部返回栏 */
-        .article-footer {
-            margin-top: 3rem;
-            border-top: 1px solid rgba(226, 232, 240, 0.6);
-            padding: 1.5rem 1rem;
-        }
-        @media (min-width: 640px) { .article-footer { padding: 1.5rem 2rem; } }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            font-size: 0.875rem;
-            color: #475569;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .back-link i {
-            margin-right: 0.5rem;
-            transition: transform 0.2s;
-        }
-        .back-link:hover i {
-            transform: translateX(-2px);
-        }
-        
-        .loading-skeleton {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <div class="row m-0">
             <div class="col-lg-9">
                 <article class="article-container flex-1 w-full" style="margin-left: 0; margin-right: 0; max-width: 100%; width: 100%;">           
-					<div class="article-header mx-auto max-w-4xl">       
-						<h1 class="article-title-h1" id="article-title">
-							<span class="loading-skeleton">正在加载文章...</span>
-						</h1>
-									<div class="article-meta-bar">
-										<div class="meta-left">
-										<span id="article-category">分类加载中...</span>
-										<span>·</span>
-										<span id="article-views-wrap" style="display:none;">
-											<i class="far fa-eye ms-1 me-1"></i> <span id="article-views">0</span>
-										</span>
-									</div>
-									<time id="article-time">----年--月--日</time>
-								</div>
-					</div>
-					<main class="article-main relative mx-auto max-w-4xl">
-						<div class="prose prose-slate max-w-none">				
-							<div id="article-content">
-								<div class="loading-skeleton">
-									<p style="height: 16px; background: #f1f5f9; margin-bottom: 12px; width: 100%; border-radius: 4px;"></p>
-									<p style="height: 16px; background: #f1f5f9; margin-bottom: 12px; width: 90%; border-radius: 4px;"></p>
-									<p style="height: 16px; background: #f1f5f9; margin-bottom: 12px; width: 95%; border-radius: 4px;"></p>
-								</div>
-							</div>
-						</div>
-					</main>
-					<div class="article-footer">
-						<div class="relative mx-auto max-w-4xl">
-							<a class="back-link group" href="/articles">
-								<i class="fas fa-arrow-left"></i>
-								返回文章列表
-							</a>
-						</div>
-					</div>
+					<div class="main-box my-4">
+                    <div class="text-center pb-3 border-bottom mb-4" style="padding-top: 15px;">
+                        <h3 class="fw-bold mb-3" id="article-title" style="font-size: 1.5rem; color: #1e293b;">
+                            正在加载文章...
+                        </h3>
+                        <div class="text-muted small d-flex justify-content-center align-items-center gap-3">
+                            <span><i class="fas fa-folder-open me-1"></i><span id="article-category">加载中...</span></span>
+                            <span><i class="far fa-clock me-1"></i><span id="article-time">----年--月--日</span></span>
+                            <span id="article-views-wrap" style="display:none;"><i class="far fa-eye me-1"></i><span id="article-views">0</span></span>
+                        </div>
+                    </div>
+
+                    <div id="article-content" class="px-2 px-md-3 pb-3">
+                        <p class="text-muted text-center py-5">正在加载内容...</p>
+                    </div>
+
+                    <div class="pt-3 border-top text-center mt-4">
+                        <a class="btn btn-outline-secondary btn-sm" href="/articles">
+                            <i class="fas fa-arrow-left me-1"></i> 返回文章列表
+                        </a>
+                    </div>
+                </div>
 				</article>
 			</div> 
 			<div class="col-lg-3 d-none d-lg-block">
