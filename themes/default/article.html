@@ -51,9 +51,19 @@
 		 .sidebar-sticky {
             position: -webkit-sticky;
             position: sticky;
-            top: 20px; 
+            top: 80px; 
         }
         @media (max-width: 768px) {
+            .custom-page-title { font-size: 20px; }
+        }
+		@media (max-width: 991px) {
+            .product-detail-grid {
+                display: block !important;
+            }
+            .detail-left {
+                width: 100% !important;
+                padding: 10px !important;
+            }
             .custom-page-title { font-size: 20px; }
         }
     </style>
@@ -97,8 +107,8 @@
 						</div>
 					</div>
 				</article>
-				<div class="card border-0 shadow-sm d-none d-lg-block sidebar-sticky">
-				    <div class="card-body">
+                <div class="card border-0 shadow-sm d-none d-lg-block sidebar-sticky">
+                    <div class="card-body">
 						<h5 class="card-title mb-3 fw-bold" style="font-size: 1rem; color: #1e293b; border-bottom: 1px solid #eee; padding-bottom: 10px;">
 							文章分类
 						</h5>
