@@ -443,7 +443,7 @@ a:hover {
     /* 移动端恢复 flex 布局防止 grid 挤压 (仅限购物车/订单列表) */
     .cart-grid-fallback { display: block !important; }
     .back-to-top {
-        bottom: 70px;
+        bottom: 120px;
         right: 12px;
         width: 43px;
         height: 43px;
