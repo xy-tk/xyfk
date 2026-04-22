@@ -47,6 +47,10 @@ const TB_LAYOUT = {
                     border-radius: 4px; padding: 5px 0; min-width: 140px; position: absolute; top: 100%; left: 0; z-index: 1050; background-color: #fff;
                 }
                 .tb-nav-dropdown:hover .dropdown-menu { visibility: visible; opacity: 1; transform: translateY(0); }
+                .tb-nav-dropdown .nav-link-item { display: flex; align-items: center; }
+                .category-arrow { margin-left: 5px; color: inherit; display: inline-flex; }
+                .category-arrow i { transition: transform 0.3s ease; display: inline-block; transform: rotate(90deg); font-size: 12px; }
+                .tb-nav-dropdown:hover .category-arrow i { transform: rotate(0deg); }
                 .tb-nav-dropdown .dropdown-item { font-size: 14px; padding: 8px 15px; color: #555; text-decoration: none; display: flex; align-items: center; }
                 .tb-nav-dropdown .dropdown-item:hover { background-color: #f8f9fa; color: var(--tb-orange, #ff6a00); }
                 .tb-nav-dropdown .dropdown-item img { width: 14px; height: 14px; object-fit: cover; margin-right: 5px; border-radius: 2px; }
@@ -55,7 +59,7 @@ const TB_LAYOUT = {
                 <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}"><i class="fas fa-home" style="margin-right: 5px;"></i>商城首页</a>
                 
                 <div class="tb-nav-dropdown">
-                    <a href="/#category-container" class="nav-link-item"><i class="fas fa-list-ul" style="margin-right: 5px;"></i>商品分类</a>
+                    <a href="/#category-container" class="nav-link-item"><i class="fas fa-list-ul" style="margin-right: 5px;"></i>商品分类 <span class="category-arrow"><i class="far fa-angle-right"></i></span></a>
                     <ul class="dropdown-menu" id="pc-header-category-menu">
                         <li><span class="dropdown-item text-muted">加载中...</span></li>
                     </ul>
@@ -64,7 +68,7 @@ const TB_LAYOUT = {
                 <a href="/orders" class="nav-link-item ${activePage === 'orders' ? 'active' : ''}" style="${activePage==='orders'?'color:var(--tb-orange);':''}"><i class="fas fa-search" style="margin-right: 5px;"></i>订单查询</a>
                 
                 <div class="tb-nav-dropdown">
-                    <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}"><i class="fas fa-book-open" style="margin-right: 5px;"></i>教程文章</a>
+                    <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}"><i class="fas fa-book-open" style="margin-right: 5px;"></i>教程文章 <span class="category-arrow"><i class="far fa-angle-right"></i></span></a>
                     <ul class="dropdown-menu" id="pc-header-article-category-menu">
                         <li><span class="dropdown-item text-muted">加载中...</span></li>
                     </ul>
