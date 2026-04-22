@@ -229,8 +229,10 @@ function insertHeaderSkeleton() {
                 }
                 .mobile-search-dropdown.show { visibility: visible; opacity: 1; transform: translateY(0); }
                 /* 菜单项样式重置 */
-                header.custom-header .dropdown-item { font-size: 13px !important; padding: 6px 0px; }
-                header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5;font-size: 13px !important; }
+                header.custom-header .dropdown-item { font-size: 13px !important; padding: 6px 0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                header.custom-header .nav-link { height: 45px; border-bottom: 1px solid #f5f5f5;font-size: 13px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                header.custom-header .category-arrow { position: absolute; right: 0; top: 0; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-left: 1px solid #f5f5f5; }
+                header.custom-header .category-toggle-wrap { padding-right: 45px !important; }
                 header.custom-header .dropdown-menu {
                     position: static; box-shadow: none; border: none; padding-left: 20px; background: #fafafa;
                     display: none; visibility: visible; opacity: 1; transform: none; transition: none;
