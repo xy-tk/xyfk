@@ -55,7 +55,7 @@ function insertHeaderSkeleton() {
                 color: #555 !important;
                 display: flex;
                 align-items: center;
-                padding-left: 12px !important;
+                padding-left: 10px !important;
                 padding-right: 12px !important;
                 height: 60px; /* 垂直居中 */
                 transition: color 0.2s;
@@ -234,7 +234,7 @@ function insertHeaderSkeleton() {
                 header.custom-header .category-arrow { position: absolute; right: 0; top: 0; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-left: 1px solid #f5f5f5; }
                 header.custom-header .category-toggle-wrap { padding-right: 45px !important; }
                 header.custom-header .dropdown-menu {
-                    position: static; box-shadow: none; border: none; padding-left: 20px; background: #fafafa;
+                    position: static; box-shadow: none; border: none; padding-left: 3px; background: #fafafa;
                     display: none; visibility: visible; opacity: 1; transform: none; transition: none;
                 }
                 header.custom-header .dropdown-menu.show { display: block; }
