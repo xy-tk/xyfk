@@ -43,28 +43,39 @@ const TB_LAYOUT = {
                 .tb-nav-item { position: relative; display: inline-block; height: 100%; }
                 .tb-nav-item .nav-link-item { display: flex; align-items: center; height: 100%; }
                 .tb-nav-item .nav-link-item i { margin-left: 5px; font-size: 12px; }
-                .tb-dropdown-menu { visibility: hidden; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(-10px); background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-width: 130px; z-index: 1000; border-radius: 4px; padding: 5px 0; margin: 0; list-style: none; text-align: center; }
-                .tb-nav-item:hover .tb-dropdown-menu { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+                .tb-nav-item { position: relative; display: inline-block; height: 100%; margin: 0 12px; } /* 增加间距 */
+                .tb-nav-item .nav-link-item i.menu-icon { margin-right: 6px; font-size: 14px; width: 16px; text-align: center; } /* 新增图标样式 */
+                .tb-nav-item .nav-link-item { display: flex; align-items: center; height: 100%; }
                 .tb-dropdown-menu li a { display: block; padding: 10px 15px; color: #555; text-decoration: none; font-size: 14px; white-space: nowrap; }
                 .tb-dropdown-menu li a:hover { background: #f8f9fa; color: var(--tb-orange, #ff6a00); }
             </style>
             <nav class="main-nav d-none d-md-flex align-items-center">
                 <div class="tb-nav-item">
-                    <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}">商城首页</a>
+                    <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}">
+                        <i class="fas fa-home menu-icon"></i>商城首页
+                    </a>
                 </div>
                 <div class="tb-nav-item">
-                    <a href="/#category-container" class="nav-link-item">商品分类 <i class="fa fa-angle-down"></i></a>
+                    <a href="/#category-container" class="nav-link-item">
+                        <i class="fas fa-list-ul menu-icon"></i>商品分类<i class="fa fa-angle-down" style="margin-left:5px; font-size:12px;"></i>
+                    </a>
                     <ul class="tb-dropdown-menu" id="tb-header-cat-menu"><li><a class="text-muted">加载中...</a></li></ul>
                 </div>
                 <div class="tb-nav-item">
-                    <a href="/orders" class="nav-link-item ${activePage === 'orders' ? 'active' : ''}" style="${activePage==='orders'?'color:var(--tb-orange);':''}">订单查询</a>
+                    <a href="/orders" class="nav-link-item ${activePage === 'orders' ? 'active' : ''}" style="${activePage==='orders'?'color:var(--tb-orange);':''}">
+                        <i class="fas fa-search menu-icon"></i>订单查询
+                    </a>
                 </div>
                 <div class="tb-nav-item">
-                    <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}">教程文章 <i class="fa fa-angle-down"></i></a>
+                    <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}">
+                        <i class="fas fa-book-open menu-icon"></i>教程文章<i class="fa fa-angle-down" style="margin-left:5px; font-size:12px;"></i>
+                    </a>
                     <ul class="tb-dropdown-menu" id="tb-header-art-menu"><li><a class="text-muted">加载中...</a></li></ul>
                 </div>
                 <div class="tb-nav-item">
-                    <a href="/custom?alias=about-us" class="nav-link-item">关于我们</a>
+                    <a href="/custom?alias=about-us" class="nav-link-item">
+                        <i class="fas fa-info-circle menu-icon"></i>关于我们
+                    </a>
                 </div>
             </nav>
 
