@@ -39,10 +39,33 @@ const TB_LAYOUT = {
                 </span>
             </a>
 
-            <nav class="main-nav d-none d-md-flex">
-                <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}">商城首页</a>
-                <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}">教程文章</a>
-                <a href="/orders" class="nav-link-item ${activePage === 'orders' ? 'active' : ''}" style="${activePage==='orders'?'color:var(--tb-orange);':''}">查询订单</a>
+            <style>
+                .tb-nav-item { position: relative; display: inline-block; height: 100%; }
+                .tb-nav-item .nav-link-item { display: flex; align-items: center; height: 100%; }
+                .tb-nav-item .nav-link-item i { margin-left: 5px; font-size: 12px; }
+                .tb-dropdown-menu { visibility: hidden; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(-10px); background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-width: 130px; z-index: 1000; border-radius: 4px; padding: 5px 0; margin: 0; list-style: none; text-align: center; }
+                .tb-nav-item:hover .tb-dropdown-menu { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+                .tb-dropdown-menu li a { display: block; padding: 10px 15px; color: #555; text-decoration: none; font-size: 14px; white-space: nowrap; }
+                .tb-dropdown-menu li a:hover { background: #f8f9fa; color: var(--tb-orange, #ff6a00); }
+            </style>
+            <nav class="main-nav d-none d-md-flex align-items-center">
+                <div class="tb-nav-item">
+                    <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}">商城首页</a>
+                </div>
+                <div class="tb-nav-item">
+                    <a href="/#category-container" class="nav-link-item">商品分类 <i class="fa fa-angle-down"></i></a>
+                    <ul class="tb-dropdown-menu" id="tb-header-cat-menu"><li><a class="text-muted">加载中...</a></li></ul>
+                </div>
+                <div class="tb-nav-item">
+                    <a href="/orders" class="nav-link-item ${activePage === 'orders' ? 'active' : ''}" style="${activePage==='orders'?'color:var(--tb-orange);':''}">订单查询</a>
+                </div>
+                <div class="tb-nav-item">
+                    <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}">教程文章 <i class="fa fa-angle-down"></i></a>
+                    <ul class="tb-dropdown-menu" id="tb-header-art-menu"><li><a class="text-muted">加载中...</a></li></ul>
+                </div>
+                <div class="tb-nav-item">
+                    <a href="/custom?alias=about-us" class="nav-link-item">关于我们</a>
+                </div>
             </nav>
 
             <div class="header-right">
@@ -207,7 +230,7 @@ function renderCommonLayout(activePage) {
 
     // 4. [修复] 初始化移动端分类侧边栏 (之前丢失的部分)
     initMobileSidebar();
-
+    loadTBHeaderDropdowns();
     // 5. 加载配置 & 更新角标
     loadGlobalConfig();
     loadCartBadge();
@@ -527,3 +550,64 @@ function handleTagClick(tag) {
         window.location.href = '/?q=' + encodeURIComponent(tag);
     }
 }
+
+/* === 加载PC导航栏的商品与文章分类 === */
+function loadTBHeaderDropdowns() {
+    // 1. 加载商品分类
+    fetch('/api/shop/categories').then(res => res.json()).then(res => {
+        let categories = [];
+        if (res && res.code === 0 && res.data && Array.isArray(res.data.categories)) categories = res.data.categories;
+        else if (Array.isArray(res)) categories = res;
+        
+        const catMenu = document.getElementById('tb-header-cat-menu');
+        if (!catMenu) return;
+        
+        if (categories.length === 0) {
+            catMenu.innerHTML = '<li><a class="text-muted">暂无分类</a></li>';
+            return;
+        }
+        
+        catMenu.innerHTML = categories.map(cat => 
+            `<li><a href="javascript:void(0);" onclick="handleTBNavCategoryClick(${cat.id})">${cat.name}</a></li>`
+        ).join('');
+    }).catch(() => {
+        const catMenu = document.getElementById('tb-header-cat-menu');
+        if(catMenu) catMenu.innerHTML = '<li><a class="text-danger">加载失败</a></li>';
+    });
+
+    // 2. 加载文章分类
+    fetch('/api/shop/article/categories').then(res => res.json()).then(res => {
+        let categories = Array.isArray(res) ? res : (res.results ? res.results : []);
+        const artMenu = document.getElementById('tb-header-art-menu');
+        if (!artMenu) return;
+
+        if (categories.length === 0) {
+            artMenu.innerHTML = '<li><a class="text-muted">暂无分类</a></li>';
+            return;
+        }
+
+        artMenu.innerHTML = categories.map(cat => 
+            `<li><a href="/articles?category_id=${cat.id}">${cat.name}</a></li>`
+        ).join('');
+    }).catch(() => {
+        const artMenu = document.getElementById('tb-header-art-menu');
+        if(artMenu) artMenu.innerHTML = '<li><a class="text-danger">加载失败</a></li>';
+    });
+}
+
+// 处理页头商品分类点击跳转
+window.handleTBNavCategoryClick = function(catId) {
+    const path = window.location.pathname;
+    if (path === '/' || path === '/index.html') {
+        if (typeof filterCategory === 'function') {
+            filterCategory(catId, null);
+            // 解决点击后hover菜单未立即消失的视觉体验
+            document.activeElement.blur(); 
+            window.scrollTo({top: document.getElementById('products-list-area').offsetTop - 100, behavior: 'smooth'});
+        } else {
+            window.location.href = '/?cat=' + catId;
+        }
+    } else {
+        window.location.href = '/?cat=' + catId;
+    }
+};
