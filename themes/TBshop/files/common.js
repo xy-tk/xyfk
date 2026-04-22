@@ -38,11 +38,38 @@ const TB_LAYOUT = {
                     <span id="header-site-name">TB Shop</span>
                 </span>
             </a>
+            <style>
+                /* 二级菜单悬停滑出样式 */
+                .tb-nav-dropdown { position: relative; height: 100%; display: flex; align-items: center; cursor: pointer; }
+                .tb-nav-dropdown .dropdown-menu {
+                    visibility: hidden; opacity: 0; transform: translateY(10px); transition: all 0.3s ease;
+                    display: block; margin-top: -5px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+                    border-radius: 4px; padding: 5px 0; min-width: 140px; position: absolute; top: 100%; left: 0; z-index: 1050; background-color: #fff;
+                }
+                .tb-nav-dropdown:hover .dropdown-menu { visibility: visible; opacity: 1; transform: translateY(0); }
+                .tb-nav-dropdown .dropdown-item { font-size: 14px; padding: 8px 15px; color: #555; text-decoration: none; display: flex; align-items: center; }
+                .tb-nav-dropdown .dropdown-item:hover { background-color: #f8f9fa; color: var(--tb-orange, #ff6a00); }
+                .tb-nav-dropdown .dropdown-item img { width: 14px; height: 14px; object-fit: cover; margin-right: 5px; border-radius: 2px; }
+            </style>
             <nav class="main-nav d-none d-md-flex">
                 <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}"><i class="fas fa-home" style="margin-right: 5px;"></i>商城首页</a>
-                <a href="/#category-container" class="nav-link-item"><i class="fas fa-list-ul" style="margin-right: 5px;"></i>商品分类</a>
+                
+                <div class="tb-nav-dropdown">
+                    <a href="/#category-container" class="nav-link-item"><i class="fas fa-list-ul" style="margin-right: 5px;"></i>商品分类</a>
+                    <ul class="dropdown-menu" id="pc-header-category-menu">
+                        <li><span class="dropdown-item text-muted">加载中...</span></li>
+                    </ul>
+                </div>
+
                 <a href="/orders" class="nav-link-item ${activePage === 'orders' ? 'active' : ''}" style="${activePage==='orders'?'color:var(--tb-orange);':''}"><i class="fas fa-search" style="margin-right: 5px;"></i>订单查询</a>
-                <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}"><i class="fas fa-book-open" style="margin-right: 5px;"></i>教程文章</a>
+                
+                <div class="tb-nav-dropdown">
+                    <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}"><i class="fas fa-book-open" style="margin-right: 5px;"></i>教程文章</a>
+                    <ul class="dropdown-menu" id="pc-header-article-category-menu">
+                        <li><span class="dropdown-item text-muted">加载中...</span></li>
+                    </ul>
+                </div>
+
                 <a href="/custom?alias=about-us" class="nav-link-item" target="_blank"><i class="fas fa-info-circle" style="margin-right: 5px;"></i>关于我们</a>
             </nav>
             <div class="header-right">
@@ -211,8 +238,62 @@ function renderCommonLayout(activePage) {
     // 5. 加载配置 & 更新角标
     loadGlobalConfig();
     loadCartBadge();
+// 6. 加载PC端下拉菜单数据
+    loadPcHeaderCategories();
+    loadPcHeaderArticleCategories();
 }
 
+// === 新增：加载 PC 头部商品分类下拉 ===
+async function loadPcHeaderCategories() {
+    try {
+        const res = await fetch('/api/shop/categories');
+        const data = await res.json();
+        let categories = [];
+        if (data && data.code === 0 && data.data && Array.isArray(data.data.categories)) { categories = data.data.categories; } 
+        else if (Array.isArray(data)) { categories = data; } 
+        else if (data && data.categories) { categories = data.categories; }
+        else if (data && data.results) { categories = data.results; }
+        
+        const menuContainer = document.getElementById('pc-header-category-menu');
+        if (!menuContainer) return;
+        
+        if (categories.length === 0) {
+            menuContainer.innerHTML = '<li><span class="dropdown-item text-muted">暂无分类</span></li>';
+            return;
+        }
+        menuContainer.innerHTML = categories.map(cat => {
+            const imgHtml = cat.image_url ? `<img src="${cat.image_url}" alt="icon">` : '';
+            // 复用自带的 handleMobileCategoryClick 来处理点击跳转/分类筛选
+            return `<li><a class="dropdown-item" href="javascript:void(0);" onclick="handleMobileCategoryClick(${cat.id})">${imgHtml}${cat.name}</a></li>`;
+        }).join('');
+    } catch (e) {
+        const menuContainer = document.getElementById('pc-header-category-menu');
+        if(menuContainer) menuContainer.innerHTML = '<li><span class="dropdown-item text-danger">加载失败</span></li>';
+    }
+}
+
+// === 新增：加载 PC 头部文章分类下拉 ===
+async function loadPcHeaderArticleCategories() {
+    try {
+        const res = await fetch('/api/shop/article/categories');
+        const data = await res.json();
+        let categories = Array.isArray(data) ? data : (data.results || []);
+        
+        const menuContainer = document.getElementById('pc-header-article-category-menu');
+        if (!menuContainer) return;
+        
+        if (categories.length === 0) {
+            menuContainer.innerHTML = '<li><span class="dropdown-item text-muted">暂无分类</span></li>';
+            return;
+        }
+        menuContainer.innerHTML = categories.map(cat => 
+            `<li><a class="dropdown-item" href="/articles?category_id=${cat.id}">${cat.name}</a></li>`
+        ).join('');
+    } catch (e) {
+        const menuContainer = document.getElementById('pc-header-article-category-menu');
+        if(menuContainer) menuContainer.innerHTML = '<li><span class="dropdown-item text-danger">加载失败</span></li>';
+    }
+}
 /**
  * [修复] 初始化移动端侧边栏数据 (加载分类)
  */
