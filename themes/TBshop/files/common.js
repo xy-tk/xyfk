@@ -39,11 +39,11 @@ const TB_LAYOUT = {
                 </span>
             </a>
             <nav class="main-nav d-none d-md-flex">
-                <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}">商城首页</a>
-                <a href="/#category-container" class="nav-link-item">商品分类</a>
-                <a href="/orders" class="nav-link-item ${activePage === 'orders' ? 'active' : ''}" style="${activePage==='orders'?'color:var(--tb-orange);':''}">订单查询</a>
-                <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}">教程文章</a>
-                <a href="/custom?alias=about-us" class="nav-link-item" target="_blank">关于我们</a>
+                <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}"><i class="fas fa-home" style="margin-right: 5px;"></i>商城首页</a>
+                <a href="/#category-container" class="nav-link-item"><i class="fas fa-list-ul" style="margin-right: 5px;"></i>商品分类</a>
+                <a href="/orders" class="nav-link-item ${activePage === 'orders' ? 'active' : ''}" style="${activePage==='orders'?'color:var(--tb-orange);':''}"><i class="fas fa-search" style="margin-right: 5px;"></i>订单查询</a>
+                <a href="/articles" class="nav-link-item ${activePage === 'articles' ? 'active' : ''}" style="${activePage==='articles'?'color:var(--tb-orange);':''}"><i class="fas fa-book-open" style="margin-right: 5px;"></i>教程文章</a>
+                <a href="/custom?alias=about-us" class="nav-link-item" target="_blank"><i class="fas fa-info-circle" style="margin-right: 5px;"></i>关于我们</a>
             </nav>
             <div class="header-right">
                 <div class="tb-search-group">
