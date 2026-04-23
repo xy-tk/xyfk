@@ -613,7 +613,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     .tb-info {
         flex: 1; 
         display: flex !important; flex-direction: column !important;
-        justify-content: flex-start !important; padding: 2px 0 0 0 !important;
+        justify-content: flex-start !important; padding: 0 !important;
         height: auto !important; min-width: 0; position: relative;
     }
 
