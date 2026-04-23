@@ -521,11 +521,11 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     
     #mobile-category-list a {
         display: flex; align-items: center; padding: 10px 5px;
-        font-size: 14px; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.15); 
+        font-size: 13px; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.15); 
+		overflow: hidden;
     }
     #mobile-category-list a img {
-        width: 20px; height: 20px; border-radius: 4px; margin-right: 10px;
-        object-fit: cover; background: #fff; 
+        width: 18px; height: 18px; margin-right: 10px; border-radius: 4px; object-fit: cover; background: #fff; flex-shrink: 0; 
     }
     .mobile-sidebar-footer {
         padding: 15px; border-top: 1px solid rgba(255,255,255,0.2); 
