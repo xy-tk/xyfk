@@ -115,7 +115,7 @@ const TB_LAYOUT = {
             <span>查单</span>
         </a>
         <a href="/cart" class="mbn-item ${activePage === 'cart' ? 'active' : ''}" style="position:relative;">
-            <i class="fa fa-shopping-cart"></i>
+            <i class="far fa-shopping-cart"></i>
             <span>购物车</span>
              <span id="cart-badge-mobile" class="badge bg-danger rounded-pill" 
                   style="position: absolute; top: 2px; right: 15px; font-size: 8px; padding: 2px 4px; display: none;">0</span>
@@ -593,7 +593,7 @@ function updateCartBadge(n) {
 document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('back-to-top-btn')) return;
     const btn = document.createElement('div');
-    btn.id = 'back-to-top-btn'; btn.className = 'back-to-top-btn'; btn.innerHTML = '<i class="far fa-arrow-up"></i>';
+    btn.id = 'back-to-top-btn'; btn.className = 'back-to-top-btn'; btn.innerHTML = '<i class="fal fa-arrow-up"></i>';
     document.body.appendChild(btn);
     btn.onclick = () => window.scrollTo({top:0, behavior:'smooth'});
     window.onscroll = () => btn.classList.toggle('show', window.scrollY > 300);
