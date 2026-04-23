@@ -509,15 +509,15 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     .mobile-sidebar.show { transform: translateX(0); }
     
     .mobile-sidebar-header {
-        padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); 
+        padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.2); 
         text-align: center; position: relative; 
     }
-    .mobile-sidebar-title { font-size: 18px; font-weight: bold; color: #fff; margin: 0; }
+    .mobile-sidebar-title { font-size: 15px; font-weight: bold; color: #fff; margin: 0; }
     .mobile-sidebar-close {
         position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
         font-size: 22px; color: #fff; cursor: pointer; opacity: 0.7;
     }
-    .mobile-sidebar-content { padding: 15px; flex: 1; overflow-y: auto; }
+    .mobile-sidebar-content { flex: 1; overflow-y: auto; }
     
     #mobile-category-list a {
         display: flex; align-items: center; padding: 8px 5px;
