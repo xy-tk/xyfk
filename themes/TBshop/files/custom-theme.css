@@ -169,7 +169,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     font-size: 13px; 
     height: 38px; 
     overflow: hidden; 
-    margin-bottom: 3px; 
+    /*margin-bottom: 3px; */
     line-height: 1.4; 
     color: #333; 
     display: -webkit-box; 
@@ -180,7 +180,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
 .tb-price-row { 
     display: flex; justify-content: space-between; align-items: flex-end; 
-    margin-top: auto; padding-top: 5px; flex-wrap: nowrap;
+    margin-top: auto; padding-top: 5px; flex-wrap: nowrap; line-height: 0.8;
 }
 .tb-price { color: var(--tb-orange); font-weight: bold; font-size: 20px; }
 .tb-price small { font-size: 13px; margin-right: 1px;}
@@ -190,7 +190,6 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     height: auto; 
 	min-height: 16px; 
 	overflow: hidden;
-    margin-bottom: 3px; 
 	display: flex; 
 	align-items: center; 
 	flex-wrap: wrap;
@@ -624,7 +623,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 	    height: auto !important;
 	    min-height: 0 !important;
 	    line-height: 1.4 !important;
-	    margin-bottom: 4px !important;
+	    margin-bottom: 1px !important;
 	    display: block;
 	    white-space: nowrap;
 	    overflow: hidden;
@@ -633,12 +632,14 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     
     /* 价格栏强制底部对齐 */
     .tb-price-row {
+		line-height: 0.8;
         margin-top: auto !important; /* [核心] 自动占据剩余空间 */
-        padding-top: 4px; width: 100%;
+        padding-top: 4px; 
+		width: 100%;
     }
     
     /* 标签与销量微调 */
-    .tb-tags-row { margin-bottom: 0 !important; min-height: 0 !important; flex-shrink: 0; }
+    .tb-tags-row { min-height: 0 !important; flex-shrink: 0; }
     .tb-price { font-size: 16px; }
     .tb-sales { font-size: 11px; }
 
