@@ -180,11 +180,11 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
 .tb-price-row { 
     display: flex; justify-content: space-between; align-items: flex-end; 
-    margin-top: auto; padding-top: 5px; flex-wrap: nowrap; line-height: 0.8;
+    margin-top: auto; padding-top: 8px; flex-wrap: nowrap; line-height: 0.8;
 }
 .tb-price { color: var(--tb-orange); font-weight: bold; font-size: 20px; }
 .tb-price small { font-size: 13px; margin-right: 1px;}
-.tb-sales { font-size: 12px; color: #999; text-align: right; white-space: nowrap; flex-shrink: 0; margin-bottom: 3px; }
+.tb-sales { font-size: 12px; color: #999; text-align: right; white-space: nowrap; flex-shrink: 0; }
 
 .tb-tags-row {
     height: auto; 
@@ -600,7 +600,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
     /* 图片固定宽度 */
 	.tb-img-wrap {
-        width: 75px; height: 75px !important;
+        width: 60px; height: 60px !important;
         align-self: center; border: 1px solid #eee; overflow: hidden;
         margin-right: 6px; padding-bottom: 0; border-radius: 5px;
     }
@@ -640,6 +640,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     
     /* 标签与销量微调 */
     .tb-tags-row { min-height: 0 !important; flex-shrink: 0; }
+	.dynamic-tag { font-size: 10px; }
     .tb-price { font-size: 16px; }
     .tb-sales { font-size: 11px; }
 
