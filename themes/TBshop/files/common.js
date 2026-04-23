@@ -43,7 +43,7 @@ const TB_LAYOUT = {
                 .tb-nav-dropdown { position: relative; height: 100%; display: flex; align-items: center; cursor: pointer; }
                 .tb-nav-dropdown .dropdown-menu {
                     visibility: hidden; opacity: 0; transform: translateY(10px); transition: all 0.3s ease;
-                    display: block; margin-top: -5px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+                    display: block; margin-top: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
                     border-radius: 4px; padding: 5px 0; min-width: 140px; position: absolute; top: 100%; left: 0; z-index: 1050; background-color: #fff;
                 }
                 .tb-nav-dropdown:hover .dropdown-menu { visibility: visible; opacity: 1; transform: translateY(0); }
@@ -51,7 +51,7 @@ const TB_LAYOUT = {
                 .category-arrow { margin-left: 5px; color: inherit; display: inline-flex; }
                 .category-arrow i { transition: transform 0.3s ease; display: inline-block; transform: rotate(90deg); font-size: 12px; }
                 .tb-nav-dropdown:hover .category-arrow i { transform: rotate(0deg); }
-                .tb-nav-dropdown .dropdown-item { font-size: 14px; padding: 8px 15px; color: #555; text-decoration: none; display: flex; align-items: center; }
+                .tb-nav-dropdown .dropdown-item { font-size: 14px; padding: 6px 10px; color: #555; text-decoration: none; display: flex; align-items: center; }
                 .tb-nav-dropdown .dropdown-item:hover { background-color: #f8f9fa; color: var(--tb-orange, #ff6a00); }
                 .tb-nav-dropdown .dropdown-item img { width: 14px; height: 14px; object-fit: cover; margin-right: 5px; border-radius: 2px; }
             </style>
