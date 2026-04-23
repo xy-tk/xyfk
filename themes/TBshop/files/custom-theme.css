@@ -222,7 +222,13 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
 /* 热门文章链接 */
 #hot-articles-list a {
-    font-size: 14px !important; transition: all 0.2s ease; text-decoration: none;
+    font-size: 14px !important; 
+	transition: all 0.2s ease; 
+	text-decoration: none;
+	display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #hot-articles-list a:hover {
     color: var(--tb-orange) !important; padding-left: 5px;
