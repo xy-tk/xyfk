@@ -437,8 +437,8 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
         margin-top: 10px !important; padding-left: 10px; padding-right: 10px;
     }
     .row { --bs-gutter-x: 10px; }
-    .module-box { padding: 10px; margin-bottom: 10px; border-radius: 8px; }
-    .module-title { font-size: 15px; margin-bottom: 10px; }
+    .module-box { padding: 8px; margin-bottom: 15px; border-radius: 8px; }
+    .module-title { font-size: 14px; margin-bottom: 8px; }
 
     /* --- 3.3 移动端头部 (Mobile Header) --- */
     .mobile-header {
@@ -572,7 +572,6 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
         flex-direction: row !important;
         align-items: stretch !important; /* [关键] 必须拉伸，右侧才有空间让价格沉底 */
         padding: 10px 0; /* 上下内边距 */
-        min-height: 120px; 
         border-radius: 0; 
         border: none; 
         border-bottom: 1px solid #f0f0f0;
@@ -586,9 +585,9 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
     /* 图片固定宽度 */
 	.tb-img-wrap {
-        flex: 0 0 90px; width: 90px; height: 90px !important;
+        width: 75px; height: 75px !important;
         align-self: center; border: 1px solid #eee; overflow: hidden;
-        margin-right: 10px; padding-bottom: 0; border-radius: 5px;
+        margin-right: 6px; padding-bottom: 0; border-radius: 5px;
     }
     .tb-img {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -604,12 +603,17 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     }
 
     /* 标题自适应 */
-    .tb-title {
-        font-size: 13px; height: auto !important; min-height: 0 !important;
-        line-height: 1.4 !important; margin-bottom: 4px !important;
-        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-        overflow: hidden; white-space: normal !important;
-    }
+		.tb-title {
+	    font-size: 12px;
+	    height: auto !important;
+	    min-height: 0 !important;
+	    line-height: 1.4 !important;
+	    margin-bottom: 4px !important;
+	    display: block;
+	    white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	}
     
     /* 价格栏强制底部对齐 */
     .tb-price-row {
