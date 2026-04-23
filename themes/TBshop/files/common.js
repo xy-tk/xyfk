@@ -315,11 +315,11 @@ async function initMobileSidebar() {
         }
         container.innerHTML = categories.map(c => {
             const iconHtml = c.image_url 
-                ? `<img src="${c.image_url}" style="width:20px;height:20px;margin-right:10px;border-radius:4px;object-fit:cover;background:#fff;flex-shrink:0;">` 
+                ? `<img src="${c.image_url}">`
                 : `<i class="fa fa-angle-right" style="margin-right:10px;width:20px;text-align:center;flex-shrink:0;"></i>`;
             return `
-                <a href="javascript:void(0)" onclick="handleMobileCategoryClick(${c.id})" style="padding:10px 5px; border-bottom:1px solid rgba(255,255,255,0.1); color:#fff; display:flex; align-items:center; overflow:hidden;">
-                    ${iconHtml} <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;">${c.name}</span>
+                <a href="javascript:void(0)" onclick="handleMobileCategoryClick(${c.id})">
+                    ${iconHtml} <span>${c.name}</span>
                 </a>
             `;
         }).join('');
