@@ -91,7 +91,7 @@ const TB_LAYOUT = {
         <div class="mobile-sidebar-header">
         <img id="tb-mobile-sidebar-logo" class="d-none" style="width: 100%;max-height: 130px;object-fit: cover;margin-bottom: 8px;border-radius: 6px;" alt="侧栏Logo">
             <h5 class="mobile-sidebar-title">商品分类</h5>
-            <i class="far fa-times" style="position: absolute;right: 10px;top: 10px;color: #555;background: rgb(255 255 255 / 44%);width: 25px;height: 25px;border-radius: 50%;display: flex;align-items: center;justify-content: center;font-size: 16px;cursor: pointer;z-index: 10;" onclick="document.getElementById('public-nav-categories').classList.remove('show'); document.getElementById('mobile-overlay').classList.remove('show');"></i>
+            <i class="far fa-times" style="position: absolute;right: 10px;top: 10px;color: #555;background: rgb(255 255 255 / 44%);width: 25px;height: 25px;border-radius: 50%;display: flex;align-items: center;justify-content: center;font-size: 16px;cursor: pointer;z-index: 10;" onclick="togglePanel('mobile-sidebar', 'mobile-overlay')"></i>
         </div>
         <div class="mobile-sidebar-content">
             <div id="mobile-category-list" class="d-flex flex-column">
