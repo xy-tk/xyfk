@@ -438,7 +438,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     }
     .row { --bs-gutter-x: 10px; }
     .module-box { padding: 8px; margin-bottom: 15px; border-radius: 8px; }
-    .module-title { font-size: 14px; margin-bottom: 8px; }
+    .module-title { font-size: 14px; margin-bottom: 1px; }
 
     /* --- 3.3 移动端头部 (Mobile Header) --- */
     .mobile-header {
