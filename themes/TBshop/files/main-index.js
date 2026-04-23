@@ -209,10 +209,7 @@ function renderTagsLocal(tags) {
         // 3. 解析文字颜色 #xxxxxx (放在最后)
         const c = text.match(/#([0-9a-fA-F]{3,6})$/);
         if(c) { textColor='#'+c[1]; text=text.substring(0,c.index).trim(); }
-
-        // 生成 HTML
-        // return `<span class="dynamic-tag" style="display:inline-block;margin-right:6px;margin-bottom:4px;padding:1px 5px;border:1px solid ${borderColor};background:${bgColor};color:${textColor};border-radius:3px;font-size:11px;">${text}</span>`;
-        return `<span class="dynamic-tag" style="display:inline-block;margin-bottom:2px;margin-right:3px;padding:0px 2px;border:1px solid ${borderColor};background:${bgColor};color:${textColor};border-radius:2px;font-size:11px;">${text}</span>`;
+        return `<span class="dynamic-tag" style="border-color:${borderColor}; background-color:${bgColor}; color:${textColor};">${text}</span>`;
     }).join('');
 }
 
