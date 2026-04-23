@@ -163,14 +163,14 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 }
 
 /* 信息区域 */
-.tb-info { padding: 10px; display: flex; flex-direction: column; flex-grow: 1; }
+.tb-info { padding: 0 10px 10px; display: flex; flex-direction: column; flex-grow: 1; }
 
 .tb-title { 
-    font-size: 13px; 
+    font-size: 14px; 
     height: 38px; 
     overflow: hidden; 
-    /*margin-bottom: 3px; */
-    line-height: 1.4; 
+    margin-bottom: 1px;
+    line-height: 1.3; 
     color: #333; 
     display: -webkit-box; 
     -webkit-line-clamp: 2; 
@@ -214,7 +214,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     border: 1px solid #eee; margin-right: 10px; 
 }
 .top-info { flex: 1; overflow: hidden; }
-.top-title { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+.top-title { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
 .top-price { color: var(--tb-orange); font-weight: bold; font-size: 14px; }
 
 .hot-article-item {
@@ -619,7 +619,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
     /* 标题自适应 */
 		.tb-title {
-	    font-size: 12px;
+	    font-size: 13px;
 	    height: auto !important;
 	    min-height: 0 !important;
 	    line-height: 1.4 !important;
@@ -641,7 +641,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     /* 标签与销量微调 */
     .tb-tags-row { min-height: 0 !important; flex-shrink: 0; }
 	.dynamic-tag { font-size: 10px; }
-    .tb-price { font-size: 16px; }
+    .tb-price { font-size: 15px; }
     .tb-sales { font-size: 11px; }
 	.hot-article-title { font-size: 13px; }
 
