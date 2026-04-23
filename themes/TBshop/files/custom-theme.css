@@ -643,6 +643,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 	.dynamic-tag { font-size: 10px; }
     .tb-price { font-size: 16px; }
     .tb-sales { font-size: 11px; }
+	.hot-article-title { font-size: 13px; }
 
     /* --- 3.9 其他移动端组件微调 --- */
     .cat-pill {
