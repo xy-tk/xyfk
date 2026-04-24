@@ -231,7 +231,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
 /* 热门文章链接 */
 #hot-articles-list a {
-    font-size: 13px !important; 
+    font-size: 14px !important; 
 	transition: all 0.2s ease; 
 	text-decoration: none;
 	display: block;
@@ -649,7 +649,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 	.dynamic-tag { font-size: 10px; }
     .tb-price { font-size: 15px; }
     .tb-sales { font-size: 11px; }
-	.hot-article-title { font-size: 13px; }
+	#hot-articles-list a { font-size: 13px; }
 
     /* --- 3.9 其他移动端组件微调 --- */
     .cat-pill {
