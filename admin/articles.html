@@ -466,12 +466,28 @@
         btn.type = 'button'; btn.className = 'btn btn-outline-secondary'; btn.innerHTML = '<i class="fas fa-upload"></i>';
         btn.onclick = () => {
             const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
-            input.onchange = async e => {
-                const formData = new FormData(); formData.append('file', e.target.files[0]);
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if(!file) return;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                const res = await fetch('/api/admin/gh/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
-                if(res.location) imgInput.value = res.location; else alert(res.error||'失败');
-                btn.innerHTML = '<i class="fas fa-upload"></i>';
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width; canvas.height = img.height;
+                        canvas.getContext('2d').drawImage(img, 0, 0);
+                        canvas.toBlob(async blob => {
+                            const formData = new FormData(); 
+                            formData.append('file', blob, file.name.replace(/\.[^/.]+$/, ".webp"));
+                            const res = await fetch('/api/admin/gh/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
+                            if(res.location) imgInput.value = res.location; else alert(res.error||'上传失败');
+                            btn.innerHTML = '<i class="fas fa-upload"></i>';
+                        }, 'image/webp', 0.85);
+                    };
+                    img.src = ev.target.result;
+                };
+                reader.readAsDataURL(file);
             };
             input.click();
         };
@@ -522,17 +538,25 @@
         },
         branding: false,
         promotion: false,
-        // [新增] 编辑器上传支持
         images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
-            const formData = new FormData();
-            formData.append('file', blobInfo.blob(), blobInfo.filename());
-            fetch('/api/admin/gh/upload', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('ADMIN_TOKEN')}` },
-                body: formData
-            }).then(r => r.json()).then(res => {
-                if (res.location) resolve(res.location); else reject(res.error || '上传失败');
-            }).catch(e => reject(e));
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width; canvas.height = img.height;
+                canvas.getContext('2d').drawImage(img, 0, 0);
+                canvas.toBlob(blob => {
+                    const formData = new FormData();
+                    formData.append('file', blob, blobInfo.filename().replace(/\.[^/.]+$/, ".webp"));
+                    fetch('/api/admin/gh/upload', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('ADMIN_TOKEN')}` },
+                        body: formData
+                    }).then(r => r.json()).then(res => {
+                        if (res.location) resolve(res.location); else reject(res.error || '上传失败');
+                    }).catch(e => reject(e));
+                }, 'image/webp', 0.85);
+            };
+            img.src = 'data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64();
         }),
         paste_data_images: true,
         setup: function (editor) {
