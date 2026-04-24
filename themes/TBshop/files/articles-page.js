@@ -9,29 +9,24 @@ let currentCat = 'all';
 // 初始化
 async function initArticlesPage() {
     const urlParams = new URLSearchParams(window.location.search);
-    const catParam = urlParams.get('cat');
-    
+    const catParam = urlParams.get('cat') || urlParams.get('category_id') || urlParams.get('categoryId') || urlParams.get('id');
     await loadArticles();
-    
     if (catParam) {
         const decodedCat = decodeURIComponent(catParam);
-        setTimeout(() => {
-            const pills = document.querySelectorAll('.cat-pill');
-            let found = false;
-            pills.forEach(p => {
-                if (p.textContent.trim() === decodedCat) {
-                    filterArticles(decodedCat, p);
-                    found = true;
-                }
-            });
-            if (!found) {
-                currentCat = decodedCat;
-                renderArticles();
-            }
-        }, 500);
+        const matchedArticle = allArticles.find(a => a.category_name === decodedCat || a.category_id == decodedCat);  
+        if (matchedArticle) {
+            currentCat = matchedArticle.category_name || '默认分类';
+        } else {
+            currentCat = decodedCat;
+        }
+        const pills = document.querySelectorAll('.cat-pill');
+        pills.forEach(p => {
+            p.classList.remove('active');
+            if (p.textContent.trim() === currentCat) p.classList.add('active');
+        });
+        renderArticles();
     }
 }
-
 document.addEventListener('DOMContentLoaded', initArticlesPage);
 
 // 加载文章数据
@@ -68,10 +63,9 @@ function renderCategoryBar() {
     let html = '';
     cats.forEach(c => {
         const label = c === 'all' ? '全部文章' : c;
-        const activeClass = (c === 'all') ? 'active' : '';
+        const activeClass = (c === currentCat) ? 'active' : '';
         html += `<div class="cat-pill ${activeClass}" onclick="filterArticles('${c}', this)">${label}</div>`;
     });
-    
     catContainer.innerHTML = html;
 }
 
