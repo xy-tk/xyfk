@@ -122,12 +122,15 @@
         </div>
     </div>
 </div>
-
 <script src="/assets/jquery-3.6.0.min.js"></script>
 <script src="/assets/bootstrap.bundle.min.js"></script>
 <script src="/assets/tinymce/tinymce.min.js"></script>
-
 <script>
+    document.addEventListener('focusin', (e) => {
+        if (e.target.closest('.tox-tinymce-aux, .moxman-window, .tam-assetmanager-root') !== null) {
+            e.stopImmediatePropagation();
+        }
+    });
     const TOKEN = localStorage.getItem('ADMIN_TOKEN');
     if(!TOKEN) window.location.href = '/admin/index.html';
     function logout() { if(confirm('确定要退出登录吗？')) { localStorage.removeItem('ADMIN_TOKEN'); window.location.href = '/admin/index.html'; } }
