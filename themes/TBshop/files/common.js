@@ -139,13 +139,7 @@ const TB_LAYOUT = {
     footer: `
         <div class="container">
             <div class="footer-links">
-                <a href="/">商城首页</a>
-                <a href="/articles">教程文章</a>
-                <a href="/orders">查询订单</a>
-                <a href="#" onclick="event.preventDefault(); togglePanel('mobile-contact-sheet', 'mobile-contact-overlay');">联系客服</a>
-            </div>
-            <div class="copyright">
-                &copy; <span id="year">${new Date().getFullYear()}</span> <span id="footer-name">TB Shop</span>. All Rights Reserved.
+                <a href="/">商城首页</a> <a href="/articles">教程文章</a> <a href="/orders">查询订单</a>
             </div>
         </div>
     `,
@@ -498,8 +492,6 @@ function renderGlobalHeaders(config) {
     const setText = (id, txt) => { const el = document.getElementById(id); if(el) el.innerText = txt; };
     setText('header-site-name', config.site_name);
     setText('mobile-header-site-name', config.site_name);
-    setText('footer-name', config.site_name);
-
     const showName = config.show_site_name === '1';
     const showLogo = config.show_site_logo === '1';
     
