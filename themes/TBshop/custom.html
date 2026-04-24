@@ -37,7 +37,38 @@
     <script src="/assets/sticky-sidebar.min.js"></script>
     <script src="/assets/bootstrap.bundle.min.js"></script>
     <script>
-       
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取 URL 参数中的 alias
+            const urlParams = new URLSearchParams(window.location.search);
+            const alias = urlParams.get('alias');
+            const titleEl = document.getElementById('article-title');
+            const contentEl = document.getElementById('article-content');
+
+            if (!alias) {
+                titleEl.innerText = '参数错误';
+                contentEl.innerHTML = '<div class="alert alert-danger text-center mt-4">访问链接不完整，缺少页面标识。</div>';
+                return;
+            }
+
+            // 发起数据请求
+            fetch(`/api/shop/page/get?alias=${encodeURIComponent(alias)}`)
+                .then(res => res.json())
+                .then(res => {
+                    if (res && res.title) {
+                        document.title = res.title;
+                        titleEl.innerText = res.title;
+                        contentEl.innerHTML = res.content || '<p class="text-center text-muted mt-5">本页面暂无内容</p>';
+                    } else {
+                        document.title = '页面不存在';
+                        titleEl.innerText = '页面不存在';
+                        contentEl.innerHTML = '<div class="text-center py-5"><i class="fa fa-file-excel fs-1 text-muted mb-3"></i><p class="text-muted">抱歉，您访问的页面不存在或已被删除。</p><a href="/" class="btn btn-primary mt-3">返回首页</a></div>';
+                    }
+                })
+                .catch(err => {
+                    titleEl.innerText = '加载失败';
+                    contentEl.innerHTML = '<div class="alert alert-danger text-center mt-4">网络请求失败，请稍后重试。</div>';
+                });
+        });
     </script>
 </body>
 </html>
