@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文章详情 - TB Shop</title>
+    <title></title>
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/all.min.css" rel="stylesheet">
     <link href="/themes/TBshop/files/custom-theme.css" rel="stylesheet">
@@ -11,12 +11,10 @@
     <script src="/themes/TBshop/files/common.js" defer></script>
 </head>
 <body>
-
     <header class="mobile-header d-lg-none" id="global-mobile-header"></header>
     <div class="mobile-sidebar d-lg-none" id="mobile-sidebar"></div>
     <div class="mobile-overlay d-lg-none" id="mobile-overlay" onclick="togglePanel('mobile-sidebar', 'mobile-overlay')"></div>
     <header class="tb-header d-none d-lg-block" id="global-pc-header"></header>
-
     <div class="container mt-4">
         <div class="row gx-3" id="main-content-row">
             <div class="col-lg">
@@ -34,60 +32,12 @@
             </div>
         </div>
     </div>
-
     <footer class="site-footer" id="global-footer"></footer>
     <nav class="mobile-bottom-nav d-lg-none" id="global-mobile-nav"></nav>
-
     <script src="/assets/sticky-sidebar.min.js"></script>
     <script src="/assets/bootstrap.bundle.min.js"></script>
-    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof renderCommonLayout === 'function') {
-                renderCommonLayout('article');
-            }
-            loadArticle();
-        });
-
-        async function loadArticle() {
-            const id = new URLSearchParams(window.location.search).get('id');
-            if (!id) {
-                document.getElementById('article-title').innerText = '参数错误';
-                return;
-            }
-            try {
-                const res = await fetch(`/api/shop/article/get?id=${id}`);
-                const data = await res.json();
-
-                if (data.error) {
-                     document.getElementById('article-title').innerText = '文章不存在';
-                     document.getElementById('article-content').innerHTML = `<div class="text-center py-5 text-muted">${data.error}</div>`;
-                     return;
-                }
-
-                // 填充左上角分类路径
-                const catName = data.category_name || '默认分类';
-                const pathCatEl = document.getElementById('article-path-cat');
-                if (pathCatEl) {
-                    pathCatEl.innerText = catName;
-                }
-
-                document.title = data.title + ' - TB Shop';
-                document.getElementById('article-title').innerText = data.title;
-                document.getElementById('article-time').innerText = new Date(data.created_at * 1000).toLocaleDateString();
-                document.getElementById('article-cat').innerText = catName;
-                document.getElementById('article-views').innerText = data.view_count;
-                document.getElementById('article-content').innerHTML = data.content; // 注入富文本 HTML
-
-                document.querySelectorAll('#article-content img').forEach(img => {
-                    img.classList.add('img-fluid'); 
-                });
-
-            } catch (e) {
-                document.getElementById('article-title').innerText = '加载失败';
-                console.error(e);
-            }
-        }
+       
     </script>
 </body>
 </html>
