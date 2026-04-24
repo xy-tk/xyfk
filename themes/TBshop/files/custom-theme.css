@@ -277,9 +277,9 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 .site-footer {
     background: #fff; padding: 30px 0 20px; text-align: center; margin-top: 30px;
 }
-.footer-links { margin-bottom: 15px; }
-.footer-links a { margin: 0 10px; font-size: 14px; color: #666; }
-.copyright { color: #999; font-size: 12px; }
+.footer-links { margin-bottom: 15px; font-size: 14px; color: #666; }
+.footer-links a { margin: 0 10px; }
+.footer-links p { margin-top: 6px; }
 
 /* --- 2.8 交互组件与按钮 --- */
 
@@ -657,9 +657,10 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     }
     .cat-pill img { width: 16px; height: 16px; }
     
-    .site-footer { padding: 20px 0 10px; margin-top: 10px; }
-    .footer-links a { margin: 0 5px; font-size: 12px; }
-    .copyright { font-size: 11px; }
+    .site-footer { padding: 20px 0 10px; margin-top: 10px; ont-size: 12px; color: #666; }
+    .footer-links a { margin: 0 5px; }
+	.footer-links p { margin-top: 6px; }
+
 
     .back-to-top-btn {
         width: 40px; height: 40px; line-height: 40px; font-size: 16px;
