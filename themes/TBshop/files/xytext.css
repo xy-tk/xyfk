@@ -25,7 +25,9 @@
 .product-description-content ol, .product-desc ol, .custom-page-content ol, #article-content ol, .prose ol { padding-left: 2em; margin-bottom: 1em; list-style-type: decimal; }
 .product-description-content table, .product-desc table, .custom-page-content table, #article-content table, .prose table { width: 100%; border-collapse: collapse; border: 1px solid #dee2e6; margin-bottom: 1rem; }
 .product-description-content table td, .product-desc table td, .custom-page-content table td, #article-content table td, .prose table td { padding: 0.75rem; border: 1px solid #dee2e6; }
-.product-description-content blockquote, .product-desc blockquote, .custom-page-content blockquote, #article-content blockquote, .prose blockquote { border-left: 5px solid #0d6efd; padding: 1rem 1.5rem; background: #f8f9fa; margin: 1.5rem 0; }
+.product-description-content blockquote, .product-desc blockquote, .custom-page-content blockquote,.prose blockquote { border-left: 5px solid #0d6efd; padding: 1rem 1.5rem; background: #f8f9fa; margin: 1.5rem 0; }
+#article-content blockquote { border-left: 5px solid #ffc800; padding: 0.1rem 0.6rem; background: #e7e9eb; margin: 0 0 1.8rem; }
+#article-content blockquote p { margin-top: 0.6em; margin-bottom: 0.6em; }
 /* 标题比例 */
 .product-description-content h1, .product-desc h1, #article-content h1 { font-size: 2em; }
 .product-description-content h2, .product-desc h2, #article-content h2 { font-size: 1.5em; border-bottom: 1px solid #eee; padding-bottom: 10px; }
