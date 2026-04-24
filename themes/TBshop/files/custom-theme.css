@@ -657,7 +657,8 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     }
     .cat-pill img { width: 16px; height: 16px; }
     
-    .site-footer { padding: 20px 0 10px; margin-top: 10px; ont-size: 12px; color: #666; }
+    .site-footer { padding: 20px 0 10px; margin-top: 10px;}
+	.footer-links { margin-bottom: 15px; font-size: 12px; color: #666; }
     .footer-links a { margin: 0 5px; }
 	.footer-links p { margin-top: 6px; }
 
