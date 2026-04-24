@@ -140,7 +140,7 @@ const TB_LAYOUT = {
         <div class="container">
             <div class="footer-links">
                 <a href="/custom?alias=terms" target="_blank">服务条款</a> <a href="/custom?alias=privacy" target="_blank">隐私政策</a> <a href="/custom?alias=about-us" target="_blank">关于我们</a>
-                <p>Copyright @ 2026 <a href="/" target="_blank">XYFK </a> - 基于 Cloudflare 构建</p>
+                <p>Copyright @ 2026<a href="/" target="_blank">XYFK</a> - 基于 Cloudflare 构建</p>
             </div>
         </div>
     `,
