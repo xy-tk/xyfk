@@ -480,7 +480,7 @@
                         canvas.toBlob(async blob => {
                             const formData = new FormData(); 
                             formData.append('file', blob, file.name.replace(/\.[^/.]+$/, ".webp"));
-                            const res = await fetch('/api/admin/gh/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
+                            const res = await fetch('/api/admin/image/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
                             if(res.location) imgInput.value = res.location; else alert(res.error||'上传失败');
                             btn.innerHTML = '<i class="fas fa-upload"></i>';
                         }, 'image/webp', 0.85);
@@ -547,7 +547,7 @@
                 canvas.toBlob(blob => {
                     const formData = new FormData();
                     formData.append('file', blob, blobInfo.filename().replace(/\.[^/.]+$/, ".webp"));
-                    fetch('/api/admin/gh/upload', {
+                    fetch('/api/admin/image/upload', {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('ADMIN_TOKEN')}` },
                         body: formData
