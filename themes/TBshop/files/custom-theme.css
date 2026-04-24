@@ -456,7 +456,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     .module-title { font-size: 14px; margin-bottom: 1px; }
     .product-showcase .main-img-wrap {
         width: 75% !important;
-        padding-bottom: 75% !important;
+        padding-bottom: 65% !important;
         margin: 0 auto !important;
 		overflow: visible !important;
     }
