@@ -190,7 +190,6 @@ function renderCommonLayout(activePage) {
         'global-mobile-header': TB_LAYOUT.mobileHeader,
         'mobile-sidebar': TB_LAYOUT.mobileSidebar(activePage),
         'global-mobile-nav': TB_LAYOUT.mobileBottomNav(activePage),
-        'global-footer': TB_LAYOUT.footer,
         'global-sidebar-right': TB_LAYOUT.pcSidebarStandard
     };
 
@@ -383,8 +382,16 @@ function loadGlobalConfig() {
         .then(config => {
             renderGlobalHeaders(config);
             renderSidebarNoticeContact(config);
+            const footerEl = document.getElementById('global-footer');
+            if (footerEl) {
+                footerEl.innerHTML = config.custom_footer || config.footer_content || config.footer || TB_LAYOUT.footer;
+            }
         })
-        .catch(e => console.warn('Config load failed:', e));
+        .catch(e => {
+            console.warn('Config load failed:', e);
+            const footerEl = document.getElementById('global-footer');
+            if (footerEl) footerEl.innerHTML = TB_LAYOUT.footer; 
+        });
 }
 
 // =============================================
