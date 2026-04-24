@@ -300,6 +300,7 @@
                                     <select class="form-select border-primary" id="default_upload_provider" style="background-color: #f8faff;">
                                         <option value="github">GitHub 代理图床</option>
                                         <option value="custom">通用外部图床 API</option>
+										<option value="telegram">Telegram 官方图床</option>
                                     </select>
                                     <div class="form-text text-muted">全站所有图片上传（商品图、文章图、图片管理）将自动使用此处选择的接口。</div>
                                 </div>
@@ -331,6 +332,20 @@
                                     <label class="form-label">图片访问方式</label>
                                     <input type="text" class="form-control" value="本站代理 /gh_image/ (自动适配域名)" disabled readonly>
                                     <div class="form-text text-muted">已启用后端代理模式，图片链接将自动生成为 /gh_image/xxx 格式，无需配置 CDN。</div>
+                                </div>
+								<h6 class="mb-3 border-bottom pb-2 mt-4"><i class="fab fa-telegram text-primary"></i> Telegram 图床</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Bot Token (上传用)</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="tg_upload_bot_token" placeholder="123456:ABC-DEF...">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="togglePass('tg_upload_bot_token')"><i class="fas fa-eye"></i></button>
+                                    </div>
+                                    <div class="form-text text-muted">如果与推送通知使用同一个Bot，也可直接填入相同的Token。</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Chat ID (存储频道的 ID)</label>
+                                    <input type="text" class="form-control" id="tg_upload_chat_id" placeholder="例如：-100123456789">
+                                    <div class="form-text text-muted">建议创建一个私密频道用于专门存放图片，并填入该频道的 ID。</div>
                                 </div>
 								<h6 class="mb-3 border-bottom pb-2 mt-4"><i class="fas fa-cloud-upload-alt text-info"></i> 通用外部图床 API</h6>
                                 <div class="mb-3">
@@ -423,6 +438,8 @@
             document.getElementById('gh_repo').value = config.gh_repo || '';
             document.getElementById('gh_token').value = config.gh_token || '';
 			document.getElementById('default_upload_provider').value = config.default_upload_provider || 'custom';
+			document.getElementById('tg_upload_bot_token').value = config.tg_upload_bot_token || '';
+            document.getElementById('tg_upload_chat_id').value = config.tg_upload_chat_id || '';
             document.getElementById('custom_api_url').value = config.custom_api_url || '';
             document.getElementById('custom_api_token').value = config.custom_api_token || '';
             document.getElementById('custom_api_field').value = config.custom_api_field || '';
@@ -482,6 +499,8 @@
             gh_user: document.getElementById('gh_user').value.trim(),
             gh_repo: document.getElementById('gh_repo').value.trim(),
             gh_token: document.getElementById('gh_token').value.trim(),
+			tg_upload_bot_token: document.getElementById('tg_upload_bot_token').value.trim(),
+            tg_upload_chat_id: document.getElementById('tg_upload_chat_id').value.trim(),
 			custom_api_url: document.getElementById('custom_api_url').value.trim(),
             custom_api_token: document.getElementById('custom_api_token').value.trim(),
             custom_api_field: document.getElementById('custom_api_field').value.trim(),
