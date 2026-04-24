@@ -458,6 +458,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
         width: 75% !important;
         padding-bottom: 75% !important;
         margin: 0 auto !important;
+		overflow: visible !important;
     }
     /* --- 3.3 移动端头部 (Mobile Header) --- */
     .mobile-header {
