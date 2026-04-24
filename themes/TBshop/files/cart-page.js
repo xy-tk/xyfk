@@ -7,21 +7,9 @@ let cart = [];
 let isEditing = false;
 let cartPaymentMethod = 'alipay_f2f'; // 默认选中支付宝
 
-/**
- * 页面加载
- */
+/** 页面加载 **/
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. 加载配置
-    try {
-        const configRes = await fetch('/api/shop/config');
-        const siteConfig = await configRes.json();
-        if (typeof renderCommonLayout === 'function') {
-            renderCommonLayout('cart');
-        } else if (typeof renderGlobalHeaders === 'function') {
-            renderGlobalHeaders(siteConfig);
-        }
-    } catch (e) { console.error('Config load error', e); }
-
     // 2. 加载购物车
     loadCart();
 
