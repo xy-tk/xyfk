@@ -615,7 +615,7 @@
         height: 500,
         menubar: true,
         plugins: 'lists link image charmap preview code searchreplace wordcount',
-        fontsize_formats: '12px 14px 16px 18px 20px 24px 28px 36px 48px',
+        fontsize_formats: '12px 13px 14px 15px 16px 17px 18px 19px 20px 24px 28px 36px 48px',
         content_style: "body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif; font-size: 14px; line-height: 1.8; }",
         toolbar: 'undo redo blocks fontselect fontsizeselect bold italic underline strikethrough alignleft aligncenter alignright alignjustify bullist numlist lineheight forecolor backcolor link image code removeformat toggle-vertical-bar',
         toolbar_mode: 'wrap',
@@ -625,7 +625,7 @@
         },
         branding: false,
         promotion: false,
-        images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+        images_upload_handler: function (blobInfo, success, failure) {
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
@@ -639,12 +639,13 @@
                         headers: { 'Authorization': `Bearer ${localStorage.getItem('ADMIN_TOKEN')}` },
                         body: formData
                     }).then(r => r.json()).then(res => {
-                        if (res.location) resolve(res.location); else reject(res.error || '上传失败');
-                    }).catch(e => reject(e));
+                        if (res.location) success(res.location); else failure(res.error || '上传失败');
+                    }).catch(e => failure(e.message || '网络请求异常'));
                 }, 'image/webp', 0.85);
             };
+            img.onerror = () => failure('图片格式读取失败');
             img.src = 'data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64();
-        }),
+        },
         paste_data_images: true, // 允许粘贴图片
 
         setup: function (editor) {
