@@ -38,7 +38,12 @@
     <script src="/assets/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 获取 URL 参数中的 alias
+            // 1. 渲染公共页头、页尾和移动端导航
+            if (typeof renderCommonLayout === 'function') {
+                renderCommonLayout('custom'); 
+            }
+
+            // 2. 获取 URL 参数中的 alias 并请求内容数据
             const urlParams = new URLSearchParams(window.location.search);
             const alias = urlParams.get('alias');
             const titleEl = document.getElementById('article-title');
@@ -50,12 +55,15 @@
                 return;
             }
 
-            // 发起数据请求
+            // 3. 发起数据请求
             fetch(`/api/shop/page/get?alias=${encodeURIComponent(alias)}`)
                 .then(res => res.json())
                 .then(res => {
                     if (res && res.title) {
-                        document.title = res.title;
+                        // 如果有全局站点名称配置，可以在这里拼接
+                        const siteNameStr = document.getElementById('header-site-name') ? '-' + document.getElementById('header-site-name').innerText : '';
+                        document.title = res.title + siteNameStr;
+                        
                         titleEl.innerText = res.title;
                         contentEl.innerHTML = res.content || '<p class="text-center text-muted mt-5">本页面暂无内容</p>';
                     } else {
