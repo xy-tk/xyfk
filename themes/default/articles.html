@@ -211,8 +211,14 @@
                 
                 if (res && Array.isArray(res)) {
                     g_articleCategories = res;
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const targetCatId = urlParams.get('category_id');
+                    if (targetCatId) {
+                        $('.category-nav-link').removeClass('active'); 
+                    }
                     res.forEach(cat => {
-                        const html = `<a class="category-nav-link" href="javascript:void(0);" onclick="filterArticles(${cat.id}, this)">${cat.name}</a>`;
+                        const isActive = (targetCatId && cat.id == targetCatId) ? 'active' : '';
+                        const html = `<a class="category-nav-link ${isActive}" href="javascript:void(0);" onclick="filterArticles(${cat.id}, this)">${cat.name}</a>`;
                         nav.append(html);
                     });
                 }
@@ -231,8 +237,14 @@
             success: function(res) {
                 if (res && Array.isArray(res)) {
                     g_allArticles = res;
-                    // 【修正点】：首次加载时，初始化列表和页码
-                    currentList = res;
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const targetCatId = urlParams.get('category_id');
+                    
+                    if (targetCatId) {
+                        currentList = g_allArticles.filter(item => item.category_id == targetCatId);
+                    } else {
+                        currentList = res;
+                    }
                     currentPage = 1;
                     renderArticles(currentList, currentPage);
                 } else {
