@@ -287,7 +287,7 @@ function insertHeaderSkeleton() {
                             </li>
                            <li class="nav-item dropdown">
                                 <div class="nav-link category-toggle-wrap">
-                                    <a href="/#category-list" style="color: inherit; text-decoration: none; flex: 1;">
+                                    <a href="javascript:void(0);" onclick="handleCategoryClick('all')" style="color: inherit; text-decoration: none; flex: 1;">
                                         <i class="fas fa-list-ul"></i>商品分类
                                     </a>
                                     <span class="category-arrow" id="mobile-category-arrow">
