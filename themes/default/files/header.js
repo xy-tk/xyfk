@@ -274,7 +274,9 @@ function insertHeaderSkeleton() {
 
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <div class="d-lg-none position-relative" style="padding: 0; border-bottom: none;">
-                            <img src="/assets/noimage.jpg" class="global-mobile-sidebar-logo-target" style="width: 100%; max-height: 160px; object-fit: cover; display: block;" alt="侧栏背景">
+                            <a id="mobile-sidebar-logo-link" style="display: block; text-decoration: none;">
+                                <img src="/assets/noimage.jpg" class="global-mobile-sidebar-logo-target" style="width: 100%; max-height: 160px; object-fit: cover; display: block;" alt="侧栏背景">
+                            </a>
                             <i class="fas fa-times" id="close-menu-btn" style="position: absolute; right: 15px; top: 15px; color: #555; background: rgba(255,255,255,0.8); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; z-index: 10;"></i>
                         </div>
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -598,6 +600,9 @@ window.updateCartBadge = function() {
                 }
                 if (res.mobile_sidebar_logo) {
                     $('.global-mobile-sidebar-logo-target').attr('src', res.mobile_sidebar_logo);
+                }
+                if (res.mobile_sidebar_logo_link) {
+                    $('#mobile-sidebar-logo-link').attr('href', res.mobile_sidebar_logo_link);
                 }
             });
         });
