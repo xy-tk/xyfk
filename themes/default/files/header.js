@@ -494,10 +494,9 @@ function loadHeaderCategories() {
                 const imgHtml = (cat.image_url && cat.image_url !== '') 
                     ? `<img src="${cat.image_url}" class="category-icon-sm" alt="icon">` 
                     : '';
-                
-                const itemHtml = `
+               const itemHtml = `
                     <li>
-                        <a class="dropdown-item" href="javascript:void(0);" onclick="handleCategoryClick(${cat.id})">
+                        <a class="dropdown-item" href="javascript:void(0);" onclick="handleCategoryClick('${cat.id}')">
                             ${imgHtml}${cat.name}
                         </a>
                     </li>
