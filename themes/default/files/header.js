@@ -604,17 +604,14 @@ window.updateCartBadge = function() {
             });
         });
         // 3. 重写暴露给外部的 renderHeader 函数：使其仅负责后台配置返回后填充文字和图片
-        window.renderHeader = function(siteName = '夏雨发卡', siteLogo = '', showSiteName = true) {
-    insertHeaderSkeleton(); // 兜底：万一页面没有 ready 就被调用，先确保骨架存在
-    
-    const shouldShowName = (showSiteName !== '0' && showSiteName !== 0 && showSiteName !== false && showSiteName !== 'false');
-    
+        window.renderHeader = function(siteName = 'XYRJ夏雨发卡', siteLogo = '', showSiteName = true) {
+    insertHeaderSkeleton();
+    const shouldShowName = (showSiteName == '1' || showSiteName === true);
     if (siteLogo) {
         $('.global-site-logo-target').attr('src', siteLogo).show();
     } else {
         $('.global-site-logo-target').hide();
     }
-    
     if (shouldShowName) {
         $('.global-site-name-target').text(siteName).show();
     } else {
@@ -623,7 +620,6 @@ window.updateCartBadge = function() {
     const path = window.location.pathname;
     const isProductPage = path.includes('/product') && !path.includes('/products');
     const isArticleDetailPage = path.includes('/article') && !path.includes('/articles');
-    
     if (!isProductPage && !isArticleDetailPage) {
         let baseTitle = document.title.split('-')[0].trim();
         if (baseTitle) {
