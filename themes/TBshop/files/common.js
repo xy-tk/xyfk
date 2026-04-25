@@ -516,7 +516,17 @@ function renderGlobalHeaders(config) {
     }
     if (config.mobile_sidebar_logo) {
         const el = document.getElementById('tb-mobile-sidebar-logo');
-        if (el) { el.src = config.mobile_sidebar_logo; el.classList.remove('d-none'); }
+        if (el) { 
+            el.src = config.mobile_sidebar_logo; 
+            el.classList.remove('d-none'); 
+            if (config.mobile_sidebar_logo_link) {
+                el.style.cursor = 'pointer';
+                el.onclick = function() { window.location.href = config.mobile_sidebar_logo_link; };
+            } else {
+                el.style.cursor = 'default';
+                el.onclick = null;
+            }
+        }
     }
     if (config.custom_js) {
         const div = document.createElement('div');
