@@ -519,7 +519,7 @@ window.handleCategoryClick = function(catId) {
              $('#category-list button').removeClass('btn-primary shadow-sm').addClass('btn-light text-dark');
              $(`#category-list button[data-id="${catId}"]`).removeClass('btn-light text-dark').addClass('btn-primary shadow-sm');
         }
-        $('html, body').animate({ scrollTop: $("#product-list").offset().top - 100 }, 300);
+        $('html, body').animate({ scrollTop: $("#goods-container").offset().top - 100 }, 300);
     } else {
         window.location.href = '/?category_id=' + catId;
     }
