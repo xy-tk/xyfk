@@ -45,7 +45,7 @@
 <div id="login-wrapper">
     <div class="login-container">
         <div class="login-header">
-            <h1>XYRJ 后台登录</h1>
+            <h1>XYRJFK后台登录</h1>
         </div>
         <div class="form-group">
             <input type="text" id="user" class="form-control" placeholder="请输入用户名" required>
@@ -63,7 +63,14 @@
 <script>
     // 检查 Token
     if(localStorage.getItem('ADMIN_TOKEN')) window.location.href = '/admin/dashboard.html';
-
+    fetch('/api/shop/config').then(res => res.json()).then(config => {
+        const header = document.querySelector('.login-header');
+        if (config.site_logo) {
+            header.innerHTML = `<img src="${config.site_logo}" alt="Logo" style="max-height: 55px; max-width: 100%; margin-bottom: 5px;">`;
+        } else if (config.site_name) {
+            header.innerHTML = `<h1 style="margin: 0; font-size: 24px; color: #333;">${config.site_name}</h1>`;
+        }
+    }).catch(e => console.error('获取网站配置失败', e));
     async function login() {
         const user = document.getElementById('user').value;
         const pass = document.getElementById('pass').value;
