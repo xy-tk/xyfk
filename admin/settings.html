@@ -191,6 +191,11 @@
                                     <input type="text" class="form-control" id="mobile_sidebar_logo" placeholder="例如：/assets/mobile-logo.png">
                                     <div class="form-text text-muted" style="font-size: 12px;">移动端展开左侧边栏时顶部显示的独立 Logo 图片。</div>
                                 </div>
+								<div class="mb-3">
+                                    <label class="form-label">移动端侧滑栏 Logo 跳转链接</label>
+                                    <input type="text" class="form-control" id="mobile_sidebar_logo_link" placeholder="例如：/ 或 https://xxx.com">
+                                    <div class="form-text text-muted" style="font-size: 12px;">点击移动端侧滑栏顶部 Logo 后的跳转地址，留空则默认跳转首页。</div>
+                                </div>
 								<h6 class="mb-3 border-bottom pb-2 mt-4"><i class="fas fa-shield-alt text-danger"></i> 后台登录安全验证</h6>
                                 <div class="mb-3 form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="admin_captcha_active">
@@ -448,6 +453,7 @@
             document.getElementById('theme_select').value = config.theme || 'default';
 			document.getElementById('site_favicon').value = config.site_favicon || '';
             document.getElementById('mobile_sidebar_logo').value = config.mobile_sidebar_logo || '';
+			document.getElementById('mobile_sidebar_logo_link').value = config.mobile_sidebar_logo_link || '';
             document.getElementById('announce').value = config.announce || '';
             document.getElementById('contact_info').value = config.contact_info || '';
 			document.getElementById('admin_captcha_active').checked = (config.admin_captcha_active === '1');
@@ -511,6 +517,7 @@
             contact_info: document.getElementById('contact_info').value,
 			site_favicon: document.getElementById('site_favicon').value,
             mobile_sidebar_logo: document.getElementById('mobile_sidebar_logo').value,
+			mobile_sidebar_logo_link: document.getElementById('mobile_sidebar_logo_link').value.trim(),
 			footer_html: document.getElementById('footer_html').value,
 			admin_captcha_active: document.getElementById('admin_captcha_active').checked ? '1' : '0',
             admin_turnstile_active: document.getElementById('admin_turnstile_active').checked ? '1' : '0',
