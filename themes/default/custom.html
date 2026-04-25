@@ -59,8 +59,10 @@
                     url: '/api/shop/config',
                     method: 'GET',
                     success: function(config) {
+                        const showSiteLogo = (config.show_site_logo == '1' || config.show_site_logo === true);
+                        const siteLogo = showSiteLogo ? (config.site_logo || '') : '';
                         if (typeof renderHeader === 'function') {
-                            renderHeader(config.site_name || '', config.site_logo || '', config.show_site_name);
+                            renderHeader(config.site_name || '', siteLogo, config.show_site_name);
                         }
                         if (typeof renderFooter === 'function') renderFooter();
                     },
