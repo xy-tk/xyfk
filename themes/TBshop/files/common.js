@@ -18,7 +18,6 @@ const TB_LAYOUT = {
             <a href="/" class="d-flex align-items-center justify-content-center h-100">
                 <img id="mobile-logo-img" class="d-none" alt="Logo" style="height: 43px;">
                 <span id="mobile-site-name-wrap" class="d-none">
-                    <i class="fa fa-shopping-bag"></i>
                     <span id="mobile-header-site-name">TB Shop</span>
                 </span>
             </a>
@@ -34,7 +33,6 @@ const TB_LAYOUT = {
             <a href="/" class="site-brand">
                 <img id="site-logo" class="d-none" style="max-height: 45px; width: auto; margin-right: 10px;" alt="Logo">
                 <span id="site-name-wrap" class="d-flex align-items-center d-none">
-                    <i class="fa fa-shopping-bag"></i>
                     <span id="header-site-name">TB Shop</span>
                 </span>
             </a>
