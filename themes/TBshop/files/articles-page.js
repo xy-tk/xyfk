@@ -72,6 +72,7 @@ function renderCategoryBar() {
 // 筛选逻辑
 function filterArticles(catName, el) {
     currentCat = catName;
+    window.currentArticlePage = 1; // 切换分类时重置为第一页
     if (el) {
         document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
         el.classList.add('active');
@@ -97,6 +98,10 @@ function renderArticles() {
         if (noticeA !== noticeB) return noticeB - noticeA;
         return (b.created_at || 0) - (a.created_at || 0);
     });
+    const pageSize = 10; // 每页显示10个
+    const currentPage = window.currentArticlePage || 1;
+    const totalPages = Math.ceil(list.length / pageSize);
+    list = list.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     if (list.length === 0) {
         container.innerHTML = '<div class="text-center py-5 text-muted">暂无相关文章</div>';
@@ -104,20 +109,12 @@ function renderArticles() {
     }
 
     // 3. 生成 HTML
-    const html = list.map(article => {
+    let html = list.map(article => {
         const date = new Date((article.created_at || 0) * 1000).toLocaleDateString();
         const cat = article.category_name || '默认';
-        
-        // 【修复点1】直接使用后端返回的 snippet 作为摘要
-        // 因为后端 API 不返回完整的 content，所以之前自己截取的逻辑会失效变为空白
         const summary = article.snippet || '暂无介绍';
-        
-        // 【修复点2】直接使用后端返回的 cover_image
-        // 后端逻辑已经处理过：如果后台设置了封面图就用后台的，否则用文章首图，再没有就返回 null
         const imgUrl = article.cover_image || '/assets/noimage.jpg';
-
         const pinnedHtml = article.is_notice ? '<span class="label-pinned">置顶</span>' : '';
-
         const imageSection = `
             <div class="article-item-image">
                 <div class="image-category">${cat}</div>
@@ -126,7 +123,6 @@ function renderArticles() {
                 </a>
             </div>
         `;
-
         return `
         <div class="article-item-box">
             ${imageSection}
@@ -146,6 +142,14 @@ function renderArticles() {
         </div>
         `;
     }).join('');
-
+    if (totalPages > 1) {
+        let pageHtml = '<div class="d-flex justify-content-center mt-4">';
+        for (let i = 1; i <= totalPages; i++) {
+            const btnStyle = i === currentPage ? 'background:var(--Maincolor);color:#fff;border:none;' : 'background:#fff;border:1px solid #ddd;color:#333;';
+            pageHtml += `<button style="margin:0 5px;padding:5px 12px;border-radius:3px;cursor:pointer;${btnStyle}" onclick="window.currentArticlePage=${i}; renderArticles(); window.scrollTo(0,0);">${i}</button>`;
+        }
+        pageHtml += '</div>';
+        html += pageHtml;
+    }
     container.innerHTML = html;
 }
