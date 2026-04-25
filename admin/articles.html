@@ -119,6 +119,7 @@
         if(!localStorage.getItem('ADMIN_TOKEN')) {
             window.location.replace('/admin/index.html');
         }
+    </script>
 </head>
 <body>
 
@@ -253,7 +254,6 @@
 <script>
     // 权限与配置
     const TOKEN = localStorage.getItem('ADMIN_TOKEN');
-    if(!TOKEN) window.location.href = '/admin/index.html';
     if (window.SITE_CONFIG && window.SITE_CONFIG.version) {
         document.getElementById('app-version').innerText = window.SITE_CONFIG.version;
     } else {
