@@ -19,7 +19,7 @@
             background-color: #fff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border-radius: 8px; text-align: center;
         }
-        .login-header { margin-bottom: 30px; }
+        .login-header { margin-bottom: 10px; }
         .login-header h1 { margin: 0; font-size: 24px; color: #333; }
         .form-group { margin-bottom: 20px; text-align: left; }
         .form-control {
@@ -45,7 +45,6 @@
 <div id="login-wrapper">
     <div class="login-container">
         <div class="login-header">
-            <h1>XYRJFK后台登录</h1>
         </div>
         <div class="form-group">
             <input type="text" id="user" class="form-control" placeholder="请输入用户名" required>
@@ -66,11 +65,14 @@
     fetch('/api/shop/config').then(res => res.json()).then(config => {
         const header = document.querySelector('.login-header');
         if (config.site_logo) {
-            header.innerHTML = `<img src="${config.site_logo}" alt="Logo" style="max-height: 55px; max-width: 100%; margin-bottom: 5px;">`;
-        } else if (config.site_name) {
-            header.innerHTML = `<h1 style="margin: 0; font-size: 24px; color: #333;">${config.site_name}</h1>`;
+            header.innerHTML = `<img src="${config.site_logo}" alt="Logo" style="max-height: 47px; max-width: 100%; ">`;
+        } else {
+            const title = config.site_name || 'XYRJFK后台登录';
+            header.innerHTML = `<h1 style="margin: 0; font-size: 24px; color: #333;">${title}</h1>`;
         }
-    }).catch(e => console.error('获取网站配置失败', e));
+    }).catch(e => {
+        document.querySelector('.login-header').innerHTML = `<h1 style="margin: 0; font-size: 24px; color: #333;">XYRJFK后台登录</h1>`;
+    });
     async function login() {
         const user = document.getElementById('user').value;
         const pass = document.getElementById('pass').value;
