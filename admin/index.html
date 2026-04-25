@@ -51,6 +51,11 @@
         <div class="form-group">
             <input type="password" id="pass" class="form-control" placeholder="请输入密码" required>
         </div>
+        <div id="captcha-container" class="form-group" style="display: none; align-items: center; justify-content: space-between;">
+            <input type="text" id="captcha" class="form-control" placeholder="请输入右侧验证码" style="width: 55%;" autocomplete="off">
+            <div id="captcha-img" style="cursor: pointer; width: 40%; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 4px; overflow: hidden;" title="看不清？点击刷新"></div>
+        </div>
+        <div id="turnstile-container" class="form-group" style="display: none; justify-content: center;"></div>
         <button onclick="login()" class="xyrj-primary xyrj-login">登录</button>
         <div class="footer-link">
             Powered by XYRJ-Faka
@@ -69,12 +74,38 @@
             const title = config.site_name || 'XYRJFK后台登录';
             header.innerHTML = `<h1 style="margin: 0; font-size: 24px; color: #333;">${title}</h1>`;
         }
+        // --- 渲染验证码和 Turnstile 模块 ---
+        if (config.admin_turnstile_active === '1' && config.turnstile_site_key) {
+            document.getElementById('turnstile-container').style.display = 'flex';
+            const script = document.createElement('script');
+            script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+            script.async = true; script.defer = true;
+            document.head.appendChild(script);
+            setTimeout(() => { turnstile.render('#turnstile-container', { sitekey: config.turnstile_site_key }); }, 500);
+        }
+        if (config.admin_captcha_active === '1') {
+            document.getElementById('captcha-container').style.display = 'flex';
+            loadCaptcha();
+            document.getElementById('captcha-img').onclick = loadCaptcha;
+        }
     }).catch(e => {
         document.querySelector('.login-header').innerHTML = `<h1 style="margin: 0; font-size: 24px; color: #333;">XYRJFK后台登录</h1>`;
     });
+    let currentCaptchaHash = '';
+    async function loadCaptcha() {
+        try {
+            const res = await fetch('/api/admin/captcha');
+            const data = await res.json();
+            document.getElementById('captcha-img').innerHTML = data.svg;
+            currentCaptchaHash = data.hash;
+        } catch (e) { console.error('验证码加载失败'); }
+    }
+
     async function login() {
         const user = document.getElementById('user').value;
         const pass = document.getElementById('pass').value;
+        const captchaText = document.getElementById('captcha') ? document.getElementById('captcha').value : '';
+        const turnstileToken = typeof turnstile !== 'undefined' ? turnstile.getResponse() : '';
         const btn = document.querySelector('.xyrj-login');
         
         if(!user || !pass) { alert("请输入用户名和密码"); return; }
@@ -86,7 +117,7 @@
             const res = await fetch('/api/admin/login', { 
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({user, pass})
+                body: JSON.stringify({ user, pass, captchaText, captchaHash: currentCaptchaHash, turnstileToken })
             });
             const data = await res.json();
             
@@ -97,6 +128,8 @@
                 alert(data.error || '登录失败');
                 btn.disabled = false;
                 btn.innerText = "登录";
+                if (typeof turnstile !== 'undefined') turnstile.reset(); // 刷新 Turnstile
+                if (document.getElementById('captcha-container').style.display !== 'none') loadCaptcha(); // 刷新图形验证码
             }
         } catch(e) { 
             alert('网络错误，请稍后重试'); 
