@@ -208,7 +208,10 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Turnstile Secret Key (私钥)</label>
-                                    <input type="password" class="form-control" id="turnstile_secret_key" placeholder="仅保存在后端，用于校验">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="turnstile_secret_key" placeholder="仅保存在后端，用于校验">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="togglePass('turnstile_secret_key')"><i class="fas fa-eye"></i></button>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">前端模板风格</label>
@@ -379,7 +382,10 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">接口密钥 (Token / API Key)</label>
-                                    <input type="password" class="form-control" id="custom_api_token" placeholder="可选，如果有 Token 请填入">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="custom_api_token" placeholder="可选，如果有 Token 请填入">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="togglePass('custom_api_token')"><i class="fas fa-eye"></i></button>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">返回 JSON 链接字段名 (选填)</label>
