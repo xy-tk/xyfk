@@ -389,19 +389,22 @@ async function handleApi(request, env, url, ctx) {
                 const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
                 let text = '';
                 for(let i=0; i<4; i++) text += chars.charAt(Math.floor(Math.random() * chars.length));
-                // 使用管理员 Token 作为密钥进行单向散列签名，绝对安全
-                const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text.toLowerCase() + env.ADMIN_TOKEN));
+                
+                // 当前时间 + 180秒 (3分钟)
+                const expireTime = Math.floor(Date.now() / 1000) + 180; 
+                
+                // 将 文本 + Token + 过期时间 组合起来进行签名
+                const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text.toLowerCase() + env.ADMIN_TOKEN + expireTime));
                 const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-                // 生成纯净的 SVG 图片
+                
                 const svg = `<svg width="120" height="42" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#f4f6f8"/><text x="50%" y="50%" font-size="24" text-anchor="middle" dominant-baseline="central" font-family="monospace" font-weight="bold" fill="#409EFF" letter-spacing="4">${text}</text></svg>`;
-                return jsonRes({ svg, hash: hashHex });
+                return jsonRes({ svg, hash: hashHex, expire: expireTime });
             }
 
             // 登录接口豁免 (加入双重安全校验)
             if (path === '/api/admin/login') {
                 if (method === 'POST') {
-                    const { user, pass, turnstileToken, captchaText, captchaHash } = await request.json();
-                    
+                    const { user, pass, turnstileToken, captchaText, captchaHash, captchaExpire } = await request.json();             
                     const confRes = await db.prepare("SELECT key, value FROM site_config WHERE key IN ('admin_turnstile_active', 'turnstile_secret_key', 'admin_captcha_active')").all();
                     const conf = {}; confRes.results?.forEach(r => conf[r.key] = r.value);
 
@@ -420,8 +423,8 @@ async function handleApi(request, env, url, ctx) {
                     // 2. 校验数字+字母图形验证码
                     if (conf.admin_captcha_active === '1') {
                         if (!captchaText || !captchaHash) return errRes('请输入图形验证码', 400);
-                        // 重新计算哈希比对，验证是否正确且未被篡改
-                        const expectedBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(captchaText.toLowerCase() + env.ADMIN_TOKEN));
+                        if (Math.floor(Date.now() / 1000) > parseInt(captchaExpire)) return errRes('验证码已过期，请点击刷新', 400);
+                        const expectedBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(captchaText.toLowerCase() + env.ADMIN_TOKEN + captchaExpire));
                         const expectedHex = Array.from(new Uint8Array(expectedBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
                         if (expectedHex !== captchaHash) return errRes('图形验证码错误', 400);
                     }
