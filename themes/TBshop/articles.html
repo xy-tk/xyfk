@@ -12,7 +12,12 @@
     <script src="/themes/TBshop/files/articles-page.js" defer></script>
 
     <style>
-        /* === 移植自 xyrj 主题的文章列表样式 === */
+        .xyfk-pagination { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .xyfk-pagination button { padding: 6px 14px; border: 1px solid #f0f0f0; background: #f4f4f4; color: #666; cursor: pointer; border-radius: 2px; font-size: 14px; transition: all 0.2s; outline: none; margin: 0; }
+        .xyfk-pagination button:hover:not(:disabled) { background: #e8e8e8; }
+        .xyfk-pagination button.active { background: #409EFF; color: #fff; border-color: #409EFF; }
+        .xyfk-pagination button:disabled { color: #bbb; cursor: not-allowed; background: #fafafa; }
+        .xyfk-pagination .page-info { padding: 6px 12px; color: #888; font-size: 14px; background: #f4f4f4; border: 1px solid #f0f0f0; border-radius: 2px; }
         
         :root {
             --Maincolor: #409EFF;
