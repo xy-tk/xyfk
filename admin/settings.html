@@ -191,6 +191,13 @@
                                     <input type="text" class="form-control" id="mobile_sidebar_logo" placeholder="例如：/assets/mobile-logo.png">
                                     <div class="form-text text-muted" style="font-size: 12px;">移动端展开左侧边栏时顶部显示的独立 Logo 图片。</div>
                                 </div>
+								<div class="mb-3 pt-2 pb-2 border-bottom border-top">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="frontend_login_verify">
+                                        <label class="form-check-label fw-bold" for="frontend_login_verify">开启前台登录框随机验证</label>
+                                    </div>
+                                    <div class="form-text text-muted" style="font-size: 12px;">开启后，前台用户在查询订单等操作时需要进行简单的随机验证码校验，防止恶意撞库查询。</div>
+                                </div>
                                 <div class="mb-3">
                                     <label class="form-label">前端模板风格</label>
                                     <select class="form-select" id="theme_select">
@@ -423,6 +430,7 @@
             document.getElementById('theme_select').value = config.theme || 'default';
 			document.getElementById('site_favicon').value = config.site_favicon || '';
             document.getElementById('mobile_sidebar_logo').value = config.mobile_sidebar_logo || '';
+			document.getElementById('frontend_login_verify').checked = (config.frontend_login_verify === '0');
             document.getElementById('announce').value = config.announce || '';
             document.getElementById('contact_info').value = config.contact_info || '';
 			document.getElementById('footer_html').value = config.footer_html || '';
@@ -482,6 +490,7 @@
             contact_info: document.getElementById('contact_info').value,
 			site_favicon: document.getElementById('site_favicon').value,
             mobile_sidebar_logo: document.getElementById('mobile_sidebar_logo').value,
+			frontend_login_verify: document.getElementById('frontend_login_verify').checked ? '1' : '0',
 			footer_html: document.getElementById('footer_html').value,
 			custom_js: document.getElementById('custom_js').value,
             
