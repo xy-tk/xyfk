@@ -399,8 +399,9 @@ $(document).ready(function() {
                 // 如果有分类参数，加载特定分类商品
                 loadProducts(targetId);
                 // 手动触发布局更新：选中对应的分类按钮
+                // 手动触发布局更新：选中对应的分类按钮
                 $('#category-list button').removeClass('btn-primary shadow-sm').addClass('btn-light text-dark');
-                $(`#category-list button[data-id="${targetId}"]`).removeClass('btn-light text-dark').addClass('btn-primary shadow-sm');
+                $('#category-list button').filter(function() { return String($(this).data('id')) === String(targetId); }).removeClass('btn-light text-dark').addClass('btn-primary shadow-sm');
                 
                 $('html, body').animate({ scrollTop: $("#goods-container").offset().top - 100 }, 500);
             
