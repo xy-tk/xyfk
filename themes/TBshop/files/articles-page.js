@@ -143,16 +143,16 @@ function renderArticles() {
         `;
     }).join('');
     if (totalPages > 1) {
-        let pageHtml = '<ul class="pagination justify-content-center mt-4">';
-        pageHtml += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=1; renderArticles(); window.scrollTo(0,0);">首页</a></li>`;
-        pageHtml += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=${currentPage - 1}; renderArticles(); window.scrollTo(0,0);">上一页</a></li>`;
+        let pageHtml = '<div class="xytk-pagination" style="margin-top: 25px;">';
+        pageHtml += `<button ${currentPage === 1 ? 'disabled' : ''} onclick="window.currentArticlePage=1; renderArticles(); window.scrollTo(0,0);">首页</button>`;
+        pageHtml += `<button ${currentPage === 1 ? 'disabled' : ''} onclick="window.currentArticlePage=${currentPage - 1}; renderArticles(); window.scrollTo(0,0);">上一页</button>`;
         for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
-            pageHtml += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=${i}; renderArticles(); window.scrollTo(0,0);">${i}</a></li>`;
+            pageHtml += `<button class="${i === currentPage ? 'active' : ''}" onclick="window.currentArticlePage=${i}; renderArticles(); window.scrollTo(0,0);">${i}</button>`;
         }
-        pageHtml += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=${currentPage + 1}; renderArticles(); window.scrollTo(0,0);">下一页</a></li>`;
-        pageHtml += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=${totalPages}; renderArticles(); window.scrollTo(0,0);">尾页</a></li>`;
-        pageHtml += `<li class="page-item disabled"><a class="page-link" href="javascript:;">${currentPage}/${totalPages}</a></li>`;
-        pageHtml += '</ul>';
+        pageHtml += `<button ${currentPage === totalPages ? 'disabled' : ''} onclick="window.currentArticlePage=${currentPage + 1}; renderArticles(); window.scrollTo(0,0);">下一页</button>`;
+        pageHtml += `<button ${currentPage === totalPages ? 'disabled' : ''} onclick="window.currentArticlePage=${totalPages}; renderArticles(); window.scrollTo(0,0);">尾页</button>`;
+        pageHtml += `<span class="page-info">${currentPage}/${totalPages}</span>`;
+        pageHtml += '</div>';
         html += pageHtml;
     }
     container.innerHTML = html;
