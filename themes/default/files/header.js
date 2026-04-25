@@ -516,7 +516,7 @@ window.handleCategoryClick = function(catId) {
         loadProducts(catId);
         if ($('#category-list').length > 0) {
              $('#category-list button').removeClass('btn-primary shadow-sm').addClass('btn-light text-dark');
-             $(`#category-list button[data-id="${catId}"]`).removeClass('btn-light text-dark').addClass('btn-primary shadow-sm');
+                     $('#category-list button').filter(function() { return String($(this).data('id')) === String(catId); }).removeClass('btn-light text-dark').addClass('btn-primary shadow-sm');
         }
         $('html, body').animate({ scrollTop: $("#goods-container").offset().top - 100 }, 300);
     } else {
