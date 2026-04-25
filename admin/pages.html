@@ -7,7 +7,7 @@
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/all.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f4f7f6; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        body { display: none; background-color: #f4f7f6; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         .admin-container { display: flex; min-height: 100vh; width: 100%; }
         .admin-mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 50px; background-color: #ffffff; border-bottom: 1px solid #ddd; padding: 0 15px; z-index: 1001; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .admin-mobile-header .mobile-logo a { font-size: 18px; font-weight: bold; color: #333; text-decoration: none; }
@@ -31,9 +31,13 @@
         .card-header { background-color: #fff; border-bottom: 1px solid #f0f0f0; padding: 15px 20px; font-weight: 600; border-radius: 8px 8px 0 0; }
         @media (max-width: 800px) { .admin-mobile-header { display: flex; } .admin-sidebar { left: -240px; z-index: 1002; } .admin-sidebar.is-visible { left: 0; } .admin-content { margin-left: 0; width: 100%; padding-top: 70px; } }
     </style>
+    <script>
+        if(!localStorage.getItem('ADMIN_TOKEN')) {
+            window.location.replace('/admin/index.html');
+        }
+    </script>
 </head>
 <body>
-
 <div class="admin-mobile-header">
     <div class="mobile-logo"><a href="#">夏雨店铺系统</a></div>
     <button id="mobile-menu-toggle"><i class="fas fa-bars"></i></button>
@@ -132,14 +136,23 @@
         }
     });
     const TOKEN = localStorage.getItem('ADMIN_TOKEN');
-    if(!TOKEN) window.location.href = '/admin/index.html';
     function logout() { if(confirm('确定要退出登录吗？')) { localStorage.removeItem('ADMIN_TOKEN'); window.location.href = '/admin/index.html'; } }
-    
     async function api(path, options = {}) {
         options.headers = { 'Authorization': `Bearer ${TOKEN}`, 'Content-Type': 'application/json', ...options.headers };
-        const res = await fetch('/api/admin/' + path, options);
-        if(res.status === 401) { logout(); return {}; }
-        return res.json();
+        try { 
+            const res = await fetch('/api/admin/' + path, options); 
+            if(res.status === 401) { 
+                localStorage.removeItem('ADMIN_TOKEN'); 
+                window.location.replace('/admin/index.html'); 
+                return {}; 
+            } 
+            document.body.style.display = 'block';
+            return res.json(); 
+        } catch(e) { 
+            console.error(e); 
+            document.body.style.display = 'block';
+            return {}; 
+        }
     }
 
     let pagesData = [];
