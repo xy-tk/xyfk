@@ -143,7 +143,7 @@ function renderArticles() {
         `;
     }).join('');
     if (totalPages > 1) {
-        let pageHtml = '<div class="xytk-pagination" style="margin-top: 25px;">';
+        let pageHtml = '<div class="xyfk-pagination" style="margin-top: 25px;">';
         pageHtml += `<button ${currentPage === 1 ? 'disabled' : ''} onclick="window.currentArticlePage=1; renderArticles(); window.scrollTo(0,0);">首页</button>`;
         pageHtml += `<button ${currentPage === 1 ? 'disabled' : ''} onclick="window.currentArticlePage=${currentPage - 1}; renderArticles(); window.scrollTo(0,0);">上一页</button>`;
         for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
