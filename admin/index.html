@@ -32,7 +32,7 @@
         .xyrj-primary { color: #fff; background-color: #409EFF; border: none; }
         .xyrj-primary:hover { background-color: #3390ff; color: #fff; }
         .xyrj-login {
-            width: 100%; padding: 10px 12px; font-size: 16px; border-radius: 4px; cursor: pointer;
+            width: 100%; padding: 8px 12px; font-size: 16px; border-radius: 4px; cursor: pointer;
             transition: background-color 0.3s;
         }
         .footer-link { margin-top: 20px; font-size: 13px; color: #777; }
@@ -92,12 +92,14 @@
         document.querySelector('.login-header').innerHTML = `<h1 style="margin: 0; font-size: 24px; color: #333;">XYRJFK后台登录</h1>`;
     });
     let currentCaptchaHash = '';
+    let currentCaptchaExpire = 0; 
     async function loadCaptcha() {
         try {
             const res = await fetch('/api/admin/captcha');
             const data = await res.json();
             document.getElementById('captcha-img').innerHTML = data.svg;
             currentCaptchaHash = data.hash;
+            currentCaptchaExpire = data.expire; // 记录后端发来的过期时间
         } catch (e) { console.error('验证码加载失败'); }
     }
 
@@ -117,7 +119,7 @@
             const res = await fetch('/api/admin/login', { 
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ user, pass, captchaText, captchaHash: currentCaptchaHash, turnstileToken })
+                body: JSON.stringify({ user, pass, captchaText, captchaHash: currentCaptchaHash, captchaExpire: currentCaptchaExpire, turnstileToken })
             });
             const data = await res.json();
             
