@@ -419,7 +419,7 @@ function insertHeaderSkeleton() {
     });
 
     $('#navbarNav').on('click', function(e) {
-        e.stopPropagation(); // 防止点击菜单内部导致面板关闭
+        e.stopPropagation(); 
     });
     $('#mobile-category-arrow').on('click', function(e) {
         e.preventDefault();
@@ -434,24 +434,22 @@ function insertHeaderSkeleton() {
    $('#mobile-article-category-arrow').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        
         $(this).toggleClass('active');
-        
         const menu = $('#header-article-category-menu');
         menu.toggleClass('show');
     });
-   // === 新增：移动端搜索框点击空白处或上下滑动时自动收起 ===
+    $('#navbarNav').on('click', 'a', function() {
+        $('body').removeClass('nav-open');
+    });
     $(document).on('click', function(e) {
         const searchBox = $('#mobile-search-box');
             if ($(e.target).closest('i[onclick*="toggleClass"]').length > 0) {
                 return;
             }
-
             if (searchBox.hasClass('show') && $(e.target).closest('#mobile-search-box').length === 0) {
                 searchBox.removeClass('show');
             }
         });
-
         $(window).on('scroll', function() {
             const searchBox = $('#mobile-search-box');
             if (searchBox.hasClass('show')) {
