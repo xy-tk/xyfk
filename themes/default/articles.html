@@ -166,153 +166,165 @@
     <script src="/files/header.js"></script>
     <script src="/files/footer.js"></script>
     <script>
-        // 全局变量存储数据
-        let g_allArticles = [];
-        // 【关键】使用不同于首页的变量名，防止冲突
-        let g_articleCategories = [];
+    // 全局变量存储数据
+    let g_allArticles = [];
+    let g_articleCategories = [];
+    let currentList = []; // 当前筛选条件下的列表
+    let currentPage = 1;  // 当前页码
+    const pageSize = 10;  // 每页显示10个
 
-        $(document).ready(function() {
-            loadGlobalConfig();
-            loadPageArticleCategories();
-            loadArticles();
+    $(document).ready(function() {
+        loadGlobalConfig();
+        loadPageArticleCategories();
+        loadArticles();
+    });
+
+    // 加载全局配置并渲染页头页尾
+    function loadGlobalConfig() {
+        $.ajax({
+            url: '/api/shop/config',
+            method: 'GET',
+            success: function(res) {
+                let config = (res && res.data) ? res.data : (res || {});
+                const siteName = config.site_name || '文章教程';
+                const siteLogo = config.site_logo || '';
+                const showName = config.show_site_name;
+
+                if (typeof renderHeader === 'function') renderHeader(siteName, siteLogo, showName);
+                if (typeof renderFooter === 'function') renderFooter(siteName);
+            },
+            error: function() {
+                if (typeof renderHeader === 'function') renderHeader('文章教程');
+            }
         });
-// 新增：加载全局配置并渲染页头页尾
-        function loadGlobalConfig() {
-            $.ajax({
-                url: '/api/shop/config',
-                method: 'GET',
-                success: function(res) {
-                    // 兼容不同的返回格式
-                    let config = (res && res.data) ? res.data : (res || {});
-                    
-                    const siteName = config.site_name || '文章教程';
-                    const siteLogo = config.site_logo || '';
-                    const showName = config.show_site_name;
+    }
 
-                    // 调用 header.js 和 footer.js 提供的函数
-                    if (typeof renderHeader === 'function') renderHeader(siteName, siteLogo, showName);
-                    if (typeof renderFooter === 'function') renderFooter(siteName);
-                },
-                error: function() {
-                    // 即使加载配置失败，也显示默认页头
-                    if (typeof renderHeader === 'function') renderHeader('文章教程');
+    // 1. 加载分类
+    function loadPageArticleCategories() {
+        $.ajax({
+            url: '/api/shop/article/categories',
+            method: 'GET',
+            success: function(res) {
+                $('#cat-loading').remove();
+                const nav = $('#article-category-nav');
+                
+                if (res && Array.isArray(res)) {
+                    g_articleCategories = res;
+                    res.forEach(cat => {
+                        const html = `<a class="category-nav-link" href="javascript:void(0);" onclick="filterArticles(${cat.id}, this)">${cat.name}</a>`;
+                        nav.append(html);
+                    });
                 }
-            });
-        }
-        // 1. 加载分类
-        function loadPageArticleCategories() {
-            $.ajax({
-                url: '/api/shop/article/categories',
-                method: 'GET',
-                success: function(res) {
-                    $('#cat-loading').remove();
-                    const nav = $('#article-category-nav');
-                    
-                    if (res && Array.isArray(res)) {
-                        g_articleCategories = res;
-                        res.forEach(cat => {
-                            const html = `<a class="category-nav-link" href="javascript:void(0);" onclick="filterArticles(${cat.id}, this)">${cat.name}</a>`;
-                            nav.append(html);
-                        });
-                    }
-                },
-                error: function() {
-                    $('#cat-loading').text('分类加载失败');
-                }
-            });
-        }
-
-        // 2. 加载文章
-        function loadArticles() {
-            $.ajax({
-                url: '/api/shop/articles/list',
-                method: 'GET',
-                success: function(res) {
-                    if (res && Array.isArray(res)) {
-                        g_allArticles = res;
-                        renderArticles(g_allArticles);
-                    } else {
-                        $('#article-list-container').html('<div class="text-center py-5 text-muted">暂无文章数据</div>');
-                    }
-                },
-                error: function() {
-                    $('#article-list-container').html('<div class="text-center py-5 text-danger">加载失败，请刷新重试</div>');
-                }
-            });
-        }
-
-        // 3. 渲染文章列表 (使用 Flex 布局解决错位问题)
-        function renderArticles(articles) {
-            const container = $('#article-list-container');
-            container.empty();
-
-            if (articles.length === 0) {
-                container.html('<div class="text-center py-5 text-muted">该分类下暂无文章</div>');
-                return;
+            },
+            error: function() {
+                $('#cat-loading').text('分类加载失败');
             }
+        });
+    }
 
-            articles.forEach(article => {
-                const coverImg = article.cover_image || '/assets/noimage.jpg';
-                const date = new Date(article.created_at * 1000).toLocaleString('zh-CN', { hour12: false }); 
-                const summary = article.snippet || '暂无摘要';
-                const link = `/article?id=${article.id}`;
+    // 2. 加载文章
+    function loadArticles() {
+        $.ajax({
+            url: '/api/shop/articles/list',
+            method: 'GET',
+            success: function(res) {
+                if (res && Array.isArray(res)) {
+                    g_allArticles = res;
+                    // 【修正点】：首次加载时，初始化列表和页码
+                    currentList = res;
+                    currentPage = 1;
+                    renderArticles(currentList, currentPage);
+                } else {
+                    $('#article-list-container').html('<div class="text-center py-5 text-muted">暂无文章数据</div>');
+                }
+            },
+            error: function() {
+                $('#article-list-container').html('<div class="text-center py-5 text-danger">加载失败，请刷新重试</div>');
+            }
+        });
+    }
 
-                // --- 核心 HTML 结构修改 ---
-                // 使用 d-flex (Flexbox) 确保左右分栏，左图右文，永不错位
-                const itemHtml = `
-                    <div class="article-item d-flex mb-4 pb-4 border-bottom" style="animation: fadeIn 0.5s;">
-                        
-                        <div class="flex-shrink-0">
-                            <a href="${link}" class="d-block">
-                                <img src="${coverImg}" class="avatar-sm shadow-sm" alt="${escapeHtml(article.title)}" loading="lazy" onerror="this.src='/assets/noimage.jpg'; this.onerror=null;">
-                            </a>
-                        </div>
-                        
-                        <div class="article-content flex-grow-1 ps-4" style="min-width: 0;">
-                            <div class="blog-post-header">
-                                <a class="blog-post-title" href="${link}">
-                                    ${article.is_notice ? '<span class="badge bg-danger me-1" style="font-size:12px;vertical-align:text-bottom;">置顶</span>' : ''}
-                                    ${escapeHtml(article.title)}
-                                </a>
-                                <div class="blog-post-meta">
-                                    <i class="far fa-clock me-1"></i> ${date}
-                                    <span class="mx-2">|</span>
-                                    <i class="far fa-eye me-1"></i> ${article.view_count || 0} 阅读
-                                </div>
-                            </div>
-                            
-                            <p class="article-summary">
-                                ${escapeHtml(summary)}
-                            </p>
-                        </div>
+    // 3. 渲染文章列表
+    // 【修正点】：增加 page 参数，默认为 1
+    function renderArticles(articles, page = 1) {
+        currentPage = page;
+        const container = $('#article-list-container');
+        container.empty();
 
+        if (articles.length === 0) {
+            container.html('<div class="text-center py-5 text-muted">该分类下暂无文章</div>');
+            $('#pagination-container').empty(); // 没数据时清空分页组件
+            return;
+        }
+
+        const totalPages = Math.ceil(articles.length / pageSize);
+        const paginatedArticles = articles.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+        // 【修正点】：循环遍历切割好的 paginatedArticles，而不是所有的 articles
+        paginatedArticles.forEach(article => {
+            const coverImg = article.cover_image || '/assets/noimage.jpg';
+            const date = new Date(article.created_at * 1000).toLocaleString('zh-CN', { hour12: false }); 
+            const summary = article.snippet || '暂无摘要';
+            const link = `/article?id=${article.id}`;
+
+            const itemHtml = `
+                <div class="article-item d-flex mb-4 pb-4 border-bottom" style="animation: fadeIn 0.5s;">
+                    <div class="flex-shrink-0">
+                        <a href="${link}" class="d-block">
+                            <img src="${coverImg}" class="avatar-sm shadow-sm" alt="${escapeHtml(article.title)}" loading="lazy" onerror="this.src='/assets/noimage.jpg'; this.onerror=null;">
+                        </a>
                     </div>
-                `;
-                container.append(itemHtml);
-            });
-            
-            // 移除最后一个元素的边框
-            container.find('.article-item:last').removeClass('border-bottom pb-4');
-        }
+                    
+                    <div class="article-content flex-grow-1 ps-4" style="min-width: 0;">
+                        <div class="blog-post-header">
+                            <a class="blog-post-title" href="${link}">
+                                ${article.is_notice ? '<span class="badge bg-danger me-1" style="font-size:12px;vertical-align:text-bottom;">置顶</span>' : ''}
+                                ${escapeHtml(article.title)}
+                            </a>
+                            <div class="blog-post-meta">
+                                <i class="far fa-clock me-1"></i> ${date}
+                                <span class="mx-2">|</span>
+                                <i class="far fa-eye me-1"></i> ${article.view_count || 0} 阅读
+                            </div>
+                        </div>
+                        
+                        <p class="article-summary">
+                            ${escapeHtml(summary)}
+                        </p>
+                    </div>
+                </div>
+            `;
+            container.append(itemHtml);
+        });
+        
+        container.find('.article-item:last').removeClass('border-bottom pb-4');
 
-        // 4. 分类筛选
-        window.filterArticles = function(catId, btn) {
-            $('.category-nav-link').removeClass('active');
-            $(btn).addClass('active');
-
-            if (catId === 'all') {
-                renderArticles(g_allArticles);
-            } else {
-                const filtered = g_allArticles.filter(item => item.category_id == catId);
-                renderArticles(filtered);
+        // 【修正点】：将分页组件的渲染代码放入函数内部
+        let pageHtml = '';
+        if (totalPages > 1) {
+            pageHtml += '<ul class="pagination justify-content-center">';
+            for (let i = 1; i <= totalPages; i++) {
+                pageHtml += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="renderArticles(currentList, ${i}); window.scrollTo(0,0);">${i}</a></li>`;
             }
+            pageHtml += '</ul>';
         }
+        $('#pagination-container').html(pageHtml);
+    }
 
-        function escapeHtml(text) {
-            if (!text) return '';
-            return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-        }
-    </script>
+    // 4. 分类筛选
+    window.filterArticles = function(catId, btn) {
+        $('.category-nav-link').removeClass('active');
+        $(btn).addClass('active');
+        currentList = (catId === 'all') ? g_allArticles : g_allArticles.filter(item => item.category_id == catId);
+        currentPage = 1;
+        renderArticles(currentList, currentPage);
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+</script>
     
     <style>
         @keyframes fadeIn {
