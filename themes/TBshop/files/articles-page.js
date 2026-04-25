@@ -143,12 +143,16 @@ function renderArticles() {
         `;
     }).join('');
     if (totalPages > 1) {
-        let pageHtml = '<div class="d-flex justify-content-center mt-4">';
-        for (let i = 1; i <= totalPages; i++) {
-            const btnStyle = i === currentPage ? 'background:var(--Maincolor);color:#fff;border:none;' : 'background:#fff;border:1px solid #ddd;color:#333;';
-            pageHtml += `<button style="margin:0 5px;padding:5px 12px;border-radius:3px;cursor:pointer;${btnStyle}" onclick="window.currentArticlePage=${i}; renderArticles(); window.scrollTo(0,0);">${i}</button>`;
+        let pageHtml = '<ul class="pagination justify-content-center mt-4">';
+        pageHtml += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=1; renderArticles(); window.scrollTo(0,0);">首页</a></li>`;
+        pageHtml += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=${currentPage - 1}; renderArticles(); window.scrollTo(0,0);">上一页</a></li>`;
+        for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+            pageHtml += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=${i}; renderArticles(); window.scrollTo(0,0);">${i}</a></li>`;
         }
-        pageHtml += '</div>';
+        pageHtml += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=${currentPage + 1}; renderArticles(); window.scrollTo(0,0);">下一页</a></li>`;
+        pageHtml += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}"><a class="page-link" href="javascript:void(0);" onclick="window.currentArticlePage=${totalPages}; renderArticles(); window.scrollTo(0,0);">尾页</a></li>`;
+        pageHtml += `<li class="page-item disabled"><a class="page-link" href="javascript:;">${currentPage}/${totalPages}</a></li>`;
+        pageHtml += '</ul>';
         html += pageHtml;
     }
     container.innerHTML = html;
