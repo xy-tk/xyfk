@@ -58,7 +58,7 @@ async function initHomePage() {
 
         } else if (catId) {
             // === 情况 2: 如果是分类跳转过来的 ===
-            renderCategorizedView(catId);
+            filterCategory(catId);
             // (可选) 清除 URL 参数
             if (window.history && window.history.replaceState) {
                 window.history.replaceState({}, '', window.location.pathname);
@@ -284,10 +284,14 @@ function filterCategory(id, el) {
         document.querySelectorAll('.cat-pill').forEach(e => e.classList.remove('active'));
         el.classList.add('active');
     } else {
-        // 如果是通过移动端菜单触发或代码触发，没有 el，则重置所有状态
         document.querySelectorAll('.cat-pill').forEach(e => {
-            if (id === 'all' && e.innerText.includes('全部商品')) e.classList.add('active');
-            else if (id !== 'all') e.classList.remove('active'); // 简单处理，PC端不一定能高亮对应ID的pill，除非遍历查找
+            e.classList.remove('active');
+            const onclickStr = e.getAttribute('onclick') || '';
+            if (id === 'all' && onclickStr.includes("'all'")) {
+                e.classList.add('active');
+            } else if (id !== 'all' && onclickStr.replace(/\s/g, '').includes('filterCategory(' + id + ',')) {
+                e.classList.add('active');
+            }
         });
     }
     
