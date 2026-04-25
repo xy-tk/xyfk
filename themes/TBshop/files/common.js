@@ -305,16 +305,16 @@ async function initMobileSidebar() {
             container.innerHTML = '<div class="text-center py-3 text-white-50">暂无分类</div>';
             return;
         }
-        container.innerHTML = categories.map(c => {
+        let sidebarHtml = `<a href="javascript:void(0)" onclick="handleMobileCategoryClick('all')">
+            <i class="fa fa-th-large" style="margin-right:10px;width:20px;text-align:center;flex-shrink:0;"></i> <span>所有商品</span>
+        </a>`;
+        sidebarHtml += categories.map(c => {
             const iconHtml = c.image_url 
                 ? `<img src="${c.image_url}">`
                 : `<i class="fa fa-angle-right" style="margin-right:10px;width:20px;text-align:center;flex-shrink:0;"></i>`;
-            return `
-                <a href="javascript:void(0)" onclick="handleMobileCategoryClick(${c.id})">
-                    ${iconHtml} <span>${c.name}</span>
-                </a>
-            `;
+            return `<a href="javascript:void(0)" onclick="handleMobileCategoryClick('${c.id}')">${iconHtml} <span>${c.name}</span></a>`;
         }).join('');
+        container.innerHTML = sidebarHtml;
     } catch (e) {
         console.error('Sidebar categories load error:', e);
         container.innerHTML = '<div class="text-center py-3 text-white-50">加载失败</div>';
