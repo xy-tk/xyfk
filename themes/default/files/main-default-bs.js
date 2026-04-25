@@ -341,8 +341,9 @@ function loadGlobalConfig() {
         method: 'GET',
         success: function(config) {
             if (config && typeof config === 'object') {
-                const siteName = config.site_name || '夏雨发卡'; 
-                const siteLogo = config.site_logo || ''; 
+                const siteName = config.site_name || 'XYRJ夏雨发卡'; 
+                const showSiteLogo = (config.show_site_logo !== '0' && config.show_site_logo !== 0 && config.show_site_logo !== false && config.show_site_logo !== 'false');
+                const siteLogo = showSiteLogo ? (config.site_logo || '') : ''; 
                 const showSiteName = config.show_site_name; 
                 if (config.site_favicon) {
                     let link = document.querySelector("link[rel~='icon']");
