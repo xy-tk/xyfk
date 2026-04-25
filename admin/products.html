@@ -10,6 +10,7 @@
     <style>
         /* ================== 全局样式 ================== */
         body { 
+            display: none;
             background-color: #f4f7f6; 
             margin: 0; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
@@ -146,6 +147,11 @@
             .admin-content { margin-left: 0; width: 100%; padding-top: 70px; }
         }
     </style>
+    <script>
+        if(!localStorage.getItem('ADMIN_TOKEN')) {
+            window.location.replace('/admin/index.html');
+        }
+    </script>
 </head>
 <body>
 
@@ -299,7 +305,6 @@
 <script>
     // 权限与配置
     const TOKEN = localStorage.getItem('ADMIN_TOKEN');
-    if(!TOKEN) window.location.href = '/admin/index.html';
     if (window.SITE_CONFIG && window.SITE_CONFIG.version) {
         document.getElementById('app-version').innerText = window.SITE_CONFIG.version;
     } else {
@@ -308,7 +313,20 @@
     function logout() { if(confirm('确定要退出登录吗？')) { localStorage.removeItem('ADMIN_TOKEN'); window.location.href = '/admin/index.html'; } }
     async function api(path, options = {}) {
         options.headers = { ...options.headers, 'Authorization': `Bearer ${TOKEN}`, 'Content-Type': 'application/json' };
-        try { const res = await fetch('/api/admin/' + path, options); if(res.status === 401) { logout(); return {}; } return res.json(); } catch(e) { console.error(e); return {}; }
+        try { 
+            const res = await fetch('/api/admin/' + path, options); 
+            if(res.status === 401) { 
+                localStorage.removeItem('ADMIN_TOKEN'); 
+                window.location.replace('/admin/index.html'); 
+                return {}; 
+            } 
+            document.body.style.display = 'block';
+            return res.json(); 
+        } catch(e) { 
+            console.error(e); 
+            document.body.style.display = 'block';
+            return {}; 
+        }
     }
 
     // 页面逻辑
