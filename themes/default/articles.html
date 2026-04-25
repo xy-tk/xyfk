@@ -187,7 +187,8 @@
             success: function(res) {
                 let config = (res && res.data) ? res.data : (res || {});
                 const siteName = config.site_name || '文章教程';
-                const siteLogo = config.site_logo || '';
+                const showSiteLogo = (config.show_site_logo == '1' || config.show_site_logo === true);
+                const siteLogo = showSiteLogo ? (config.site_logo || '') : '';
                 const showName = config.show_site_name;
 
                 if (typeof renderHeader === 'function') renderHeader(siteName, siteLogo, showName);
