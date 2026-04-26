@@ -92,15 +92,13 @@
                      document.getElementById('article-content').innerHTML = `<div class="text-center py-5 text-muted">${data.error}</div>`;
                      return;
                 }
-
                 // 填充左上角分类路径
                 const catName = data.category_name || '默认分类';
                 const pathCatEl = document.getElementById('article-path-cat');
                 if (pathCatEl) {
                     pathCatEl.innerText = catName;
                 }
-
-                document.title = data.title + ' - TB Shop';
+                document.title = data.title;
                 document.getElementById('article-title').innerText = data.title;
                 document.getElementById('article-time').innerText = new Date(data.created_at * 1000).toLocaleDateString();
                 document.getElementById('article-cat').innerText = catName;
