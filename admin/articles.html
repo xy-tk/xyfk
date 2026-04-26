@@ -225,6 +225,11 @@
                     <label class="form-label">封面图片 URL (Cover Image)</label>
                     <input type="text" class="form-control" id="a-cover" placeholder="https://example.com/cover.jpg">
                 </div>
+
+                <div class="mb-3">
+                    <label class="form-label">SEO 描述 (SEO Description)</label>
+                    <textarea class="form-control" id="a-seo-desc" rows="2" placeholder="用于搜索引擎优化的简短描述..."></textarea>
+                </div>
                 
                 <div class="mb-3 d-flex gap-4">
                     <div class="form-check form-switch">
@@ -372,7 +377,7 @@
         // 默认值
         let article = { 
             id: '', title: '', category_id: (allCategories[0]?.id || 1), 
-            is_notice: 0, active: 1, view_count: 0, cover_image: '', content: '' 
+            is_notice: 0, active: 1, view_count: 0, cover_image: '', seo_description: '', content: '' 
         };
 
         if (id) {
@@ -390,6 +395,7 @@
         document.getElementById('a-active').checked = (article.active !== 0); // 默认为1(true)
         document.getElementById('a-views').value = article.view_count || 0;
         document.getElementById('a-cover').value = article.cover_image || '';
+        document.getElementById('a-seo-desc').value = article.seo_description || '';
         
         // 设置 TinyMCE 内容
         const content = article.content || '';
@@ -409,6 +415,11 @@
         } else {
             content = document.getElementById('a-content').value;
         }
+        let seoDescValue = document.getElementById('a-seo-desc').value.trim();
+        if (!seoDescValue) {
+            let plainText = tinymce.get('a-content') ? tinymce.get('a-content').getContent({format: 'text'}) : content.replace(/<[^>]+>/g, '');
+            seoDescValue = plainText.replace(/[\r\n]+/g, ' ').trim().substring(0, 150);
+        }
 
         const data = {
             id: document.getElementById('a-id').value || null,
@@ -418,6 +429,7 @@
             active: document.getElementById('a-active').checked ? 1 : 0,
             view_count: parseInt(document.getElementById('a-views').value) || 0,
             cover_image: document.getElementById('a-cover').value,
+            seo_description: seoDescValue,
             content: content
         };
 
