@@ -208,9 +208,9 @@ export default {
                     const id = url.searchParams.get('id');
                     if (id) {
                         try {
-                            const item = await db.prepare("SELECT name, description, image_url FROM products WHERE id = ?").bind(id).first();
+                            const item = await db.prepare("SELECT name, description, image_url, seo_description FROM products WHERE id = ?").bind(id).first();
                             if (item) {
-                                let desc = (item.description || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
+                                let desc = item.seo_description || (item.description || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
                                 if(!desc || desc === '...') desc = '自动发货，安全快捷，夏雨自动发货系统';
                                 let image = item.image_url || '/assets/xyrjlogo.webp';
                                 if (image.startsWith('/')) image = `${url.origin}${image}`;
@@ -231,10 +231,10 @@ export default {
                     const id = url.searchParams.get('id');
                     if (id) {
                         try {
-                            const item = await db.prepare("SELECT title, content, cover_image FROM articles WHERE id = ?").bind(id).first();
+                            const item = await db.prepare("SELECT title, content, cover_image, seo_description FROM articles WHERE id = ?").bind(id).first();
                             if (item) {
-                                // 提取纯文本摘要
-                                let desc = (item.content || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
+                                // 提取纯文本摘要 (优先使用 SEO 描述)
+                                let desc = item.seo_description || (item.content || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
                                 // 优先用封面图，没有则尝试提取文章内第一张图
                                 let image = item.cover_image;
                                 if (!image && item.content) {
@@ -269,9 +269,9 @@ export default {
                     const alias = url.searchParams.get('alias');
                     if (alias) {
                         try {
-                            const item = await db.prepare("SELECT title, content FROM pages WHERE alias = ?").bind(alias).first();
+                            const item = await db.prepare("SELECT title, content, seo_description FROM pages WHERE alias = ?").bind(alias).first();
                             if (item) {
-                                let desc = (item.content || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
+                                let desc = item.seo_description || (item.content || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
                                 response = await injectMetaTags(response, {
                                     url: request.url,
                                     title: item.title,
@@ -542,13 +542,13 @@ async function handleApi(request, env, url, ctx) {
                 let productId = data.id;
                 const now = time();
 
-                // 1. 保存主商品 (增加 tags 字段)
+                // 1. 保存主商品 (增加 tags 和 seo_description 字段)
                 if (productId) {
-                    await db.prepare("UPDATE products SET name=?, description=?, category_id=?, sort=?, active=?, image_url=?, tags=? WHERE id=?")
-                        .bind(data.name, data.description, data.category_id, data.sort, data.active, data.image_url, data.tags, productId).run();
+                    await db.prepare("UPDATE products SET name=?, description=?, category_id=?, sort=?, active=?, image_url=?, tags=?, seo_description=? WHERE id=?")
+                        .bind(data.name, data.description, data.category_id, data.sort, data.active, data.image_url, data.tags, data.seo_description, productId).run();
                 } else {
-                    const res = await db.prepare("INSERT INTO products (category_id, sort, active, created_at, name, description, image_url, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-                        .bind(data.category_id, data.sort, data.active, now, data.name, data.description, data.image_url, data.tags).run();
+                    const res = await db.prepare("INSERT INTO products (category_id, sort, active, created_at, name, description, image_url, tags, seo_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+                        .bind(data.category_id, data.sort, data.active, now, data.name, data.description, data.image_url, data.tags, data.seo_description).run();
                     productId = res.meta.last_row_id;
                 }
 
@@ -876,14 +876,14 @@ async function handleApi(request, env, url, ctx) {
             }
             // [修复] 文章保存逻辑：增加了 cover_image, active, view_count 字段
             if (path === '/api/admin/article/save' && method === 'POST') {
-                const { id, title, content, is_notice, category_id, cover_image, active, view_count } = await request.json();
+                const { id, title, content, is_notice, category_id, cover_image, active, view_count, seo_description } = await request.json();
                 const now = time();
                 if (id) {
-                    await db.prepare("UPDATE articles SET title=?, content=?, is_notice=?, category_id=?, updated_at=?, cover_image=?, active=?, view_count=? WHERE id=?")
-                        .bind(title, content, is_notice, category_id, now, cover_image, active, view_count, id).run();
+                    await db.prepare("UPDATE articles SET title=?, content=?, is_notice=?, category_id=?, updated_at=?, cover_image=?, active=?, view_count=?, seo_description=? WHERE id=?")
+                        .bind(title, content, is_notice, category_id, now, cover_image, active, view_count, seo_description, id).run();
                 } else {
-                    await db.prepare("INSERT INTO articles (title, content, is_notice, category_id, created_at, updated_at, cover_image, active, view_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
-                        .bind(title, content, is_notice, category_id, now, now, cover_image, active, view_count).run();
+                    await db.prepare("INSERT INTO articles (title, content, is_notice, category_id, created_at, updated_at, cover_image, active, view_count, seo_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+                        .bind(title, content, is_notice, category_id, now, now, cover_image, active, view_count, seo_description).run();
                 }
                 return jsonRes({ success: true });
             }
@@ -899,12 +899,12 @@ async function handleApi(request, env, url, ctx) {
                 return jsonRes(results);
             }
             if (path === '/api/admin/page/save' && method === 'POST') {
-                const { id, title, alias, content } = await request.json();
+                const { id, title, alias, content, seo_description } = await request.json();
                 const now = time();
                 if (id) {
-                    await db.prepare("UPDATE pages SET title=?, alias=?, content=?, updated_at=? WHERE id=?").bind(title, alias, content, now, id).run();
+                    await db.prepare("UPDATE pages SET title=?, alias=?, content=?, seo_description=?, updated_at=? WHERE id=?").bind(title, alias, content, seo_description, now, id).run();
                 } else {
-                    await db.prepare("INSERT INTO pages (title, alias, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)").bind(title, alias, content, now, now).run();
+                    await db.prepare("INSERT INTO pages (title, alias, content, seo_description, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)").bind(title, alias, content, seo_description, now, now).run();
                 }
                 return jsonRes({ success: true });
             }
@@ -1351,7 +1351,7 @@ async function handleApi(request, env, url, ctx) {
         if (path === '/api/shop/articles/list') {
             // 修改点：增加查询 a.cover_image 字段
             const { results } = await db.prepare(`
-                SELECT a.id, a.title, a.content, a.created_at, a.is_notice, a.view_count, a.category_id, a.cover_image, ac.name as category_name
+                SELECT a.id, a.title, a.content, a.created_at, a.is_notice, a.view_count, a.category_id, a.cover_image, a.seo_description, ac.name as category_name
                 FROM articles a
                 LEFT JOIN article_categories ac ON a.category_id = ac.id
                 ORDER BY a.is_notice DESC, a.view_count DESC, a.created_at DESC
@@ -1376,7 +1376,7 @@ async function handleApi(request, env, url, ctx) {
                     // 修改点：返回后台设置的封面图，如果没有设置，则自动使用文章内第一张图
                     cover_image: r.cover_image || (imgMatch ? imgMatch[1] : null),
                     // 修改点：返回后端处理好的摘要 snippet
-                    snippet: text.substring(0, 100) + (text.length > 100 ? '...' : '')
+                    snippet: r.seo_description || (text.substring(0, 100) + (text.length > 100 ? '...' : ''))
                 };
             });
             return jsonRes(processed);
@@ -1397,7 +1397,7 @@ async function handleApi(request, env, url, ctx) {
         // [新增] 获取自定义单页内容
         if (path === '/api/shop/page/get') {
             const alias = url.searchParams.get('alias');
-            const page = await db.prepare("SELECT title, content, updated_at FROM pages WHERE alias = ?").bind(alias).first();
+            const page = await db.prepare("SELECT title, content, seo_description, updated_at FROM pages WHERE alias = ?").bind(alias).first();
             return jsonRes(page || { error: 'Not Found' });
         }
 
