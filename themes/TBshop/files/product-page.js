@@ -43,7 +43,7 @@ async function initProductPage() {
             }
             currentProduct = data;
             renderProductDetail(data);
-            document.title = `${data.name} - TB Shop`;
+            document.title = data.name;
             loadSidebarRecommendations();
         }
     } catch (e) {
