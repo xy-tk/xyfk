@@ -164,8 +164,8 @@ export default {
 
                      const siteName = (config.site_name || '夏雨自动发货系统').replace(/"/g, '&quot;');
                      const siteDesc = (config.site_description || '自动发货，安全快捷，夏雨自动发货系统').replace(/"/g, '&quot;');
-                     let siteImage = config.site_logo || '/assets/xyrjlogo.webp';
-                     if (siteImage.startsWith('/')) siteImage = `${url.origin}${siteImage}`;
+                     let siteImage = config.seo_image || '';
+                     if (siteImage && siteImage.startsWith('/')) siteImage = `${url.origin}${siteImage}`;
 
                      response = await injectMetaTags(response, {
                          url: request.url,
@@ -194,6 +194,14 @@ export default {
             // SEO 注入
             if (response.status === 200) {
                 const db = env.xyfk;
+                // 获取后台单独设置的 SEO 封面图 (无保底机制)
+                let globalSeoImage = '';
+                try {
+                    const seoRes = await db.prepare("SELECT value FROM site_config WHERE key = 'seo_image'").first();
+                    if (seoRes && seoRes.value) {
+                        globalSeoImage = seoRes.value.startsWith('/') ? `${url.origin}${seoRes.value}` : seoRes.value;
+                    }
+                } catch(e) {}
 
                 // --- 情况1：商品详情页 (product.html) ---
                 if (path === '/product' || path === '/product.html') {
@@ -253,7 +261,7 @@ export default {
                         url: request.url,
                         title: '文章中心-教程与公告',
                         desc: '查看最新的店铺公告、使用教程和行业资讯。',
-                        image: `${url.origin}/assets/xyrjlogo.webp`
+                        image: globalSeoImage
                     });
                 }
                 // --- 情况4：自定义单页 (custom.html) ---
@@ -268,7 +276,7 @@ export default {
                                     url: request.url,
                                     title: item.title,
                                     desc: desc,
-                                    image: `${url.origin}/assets/xyrjlogo.webp`
+                                    image: globalSeoImage
                                 });
                             }
                         } catch(e) {}
