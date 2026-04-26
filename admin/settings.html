@@ -216,17 +216,19 @@
                                     <label class="form-check-label fw-bold" for="admin_turnstile_active">开启 Cloudflare Turnstile 人机验证</label>
                                     <div class="form-text text-muted" style="font-size: 12px;">比传统验证码更安全、更无感，防机器狗暴力破解神器。</div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Turnstile Site Key (站点密钥)</label>
-                                    <input type="text" class="form-control" id="turnstile_site_key" placeholder="例如：0x4AAAAAA... ">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Turnstile Secret Key (私钥)</label>
-                                    <div class="input-group">
-                                        <input type="password" class="form-control" id="turnstile_secret_key" placeholder="仅保存在后端，用于校验">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="togglePass('turnstile_secret_key')"><i class="fas fa-eye"></i></button>
-                                    </div>
-                                </div>
+                                <div class="row">
+		                            <div class="col-md-6 mb-3">
+		                                <label class="form-label">Turnstile Site Key (站点密钥)</label>
+										<input type="text" class="form-control" id="turnstile_site_key" placeholder="例如：0x4AAAAAA... ">
+		                            </div>
+		                            <div class="col-md-6 mb-3">
+		                                <label class="form-label">Turnstile Secret Key (私钥)</label>
+										<div class="input-group">
+											<input type="password" class="form-control" id="turnstile_secret_key" placeholder="仅保存在后端，用于校验">
+											<button class="btn btn-outline-secondary" type="button" onclick="togglePass('turnstile_secret_key')"><i class="fas fa-eye"></i></button>
+										</div>
+		                            </div>
+		                        </div>
                                 <div class="mb-3">
                                     <label class="form-label">前端模板风格</label>
                                     <select class="form-select" id="theme_select">
