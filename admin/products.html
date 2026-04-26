@@ -244,6 +244,11 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">SEO 描述 (SEO Description)</label>
+                        <textarea class="form-control" id="p-seo-desc" rows="2" placeholder="用于搜索引擎优化的简短描述..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">商品标签 (格式: b1#边框色 b2#背景色 标签名#文字色, ...)</label>
                         <input type="text" class="form-control" id="p-tags" placeholder="例如: b1#ff0000 b2#ffecec 热销#ff0000, b1#0000ff b2#e0e0ff 推荐#0000ff">
                         <div class="form-text text-muted small" style="font-size: 12px;">
@@ -397,11 +402,12 @@
     }
 
     function openModal(id = null) {
-        const p = allProducts.find(x => x.id === id) || { name:'', description:'', sort:0, active:1, category_id: 1, variants:[{}], tags: '' };
+        const p = allProducts.find(x => x.id === id) || { name:'', description:'', seo_description: '', sort:0, active:1, category_id: 1, variants:[{}], tags: '' };
         document.getElementById('p-id').value = p.id || '';
         document.getElementById('p-name').value = p.name;
         document.getElementById('p-sort').value = p.sort;
         document.getElementById('p-image').value = p.image_url || '';
+        document.getElementById('p-seo-desc').value = p.seo_description || '';
         document.getElementById('p-tags').value = p.tags || '';
         document.getElementById('p-active').checked = !!p.active;
         
@@ -529,7 +535,12 @@
         } else {
             descContent = document.getElementById('p-desc').value;
         }
-        // ------------------------------
+        let seoDescValue = document.getElementById('p-seo-desc').value.trim();
+        if (!seoDescValue) {
+            // 提取纯文本，去除换行，截取前150个字符
+            let plainText = tinymce.get('p-desc') ? tinymce.get('p-desc').getContent({format: 'text'}) : descContent.replace(/<[^>]+>/g, '');
+            seoDescValue = plainText.replace(/[\r\n]+/g, ' ').trim().substring(0, 150);
+        }
 
         const data = {
             id: document.getElementById('p-id').value || null,
@@ -539,6 +550,7 @@
             active: document.getElementById('p-active').checked ? 1 : 0,
             category_id: document.getElementById('p-category').value,
             image_url: document.getElementById('p-image').value,
+            seo_description: seoDescValue,
             tags: document.getElementById('p-tags').value,
             variants: []
         };
