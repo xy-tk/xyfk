@@ -162,8 +162,8 @@ export default {
                          configRes.results.forEach(r => config[r.key] = r.value);
                      }
 
-                     const siteName = (config.site_name || '夏雨店铺').replace(/"/g, '&quot;');
-                     const siteDesc = (config.site_description || '自动发货，安全快捷').replace(/"/g, '&quot;');
+                     const siteName = (config.site_name || '夏雨自动发货系统').replace(/"/g, '&quot;');
+                     const siteDesc = (config.site_description || '自动发货，安全快捷，夏雨自动发货系统').replace(/"/g, '&quot;');
                      let siteImage = config.site_logo || '/assets/noimage.jpg';
                      if (siteImage.startsWith('/')) siteImage = `${url.origin}${siteImage}`;
 
@@ -2021,7 +2021,7 @@ ${contentBody}
                         notifications.push(fetch("https://api.brevo.com/v3/smtp/email", {
                             method: "POST", headers: { "accept": "application/json", "api-key": systemConfig.brevo_key, "content-type": "application/json" },
                             body: JSON.stringify({
-                                "sender": { "email": systemConfig.brevo_sender, "name": "夏雨店铺" },
+                                "sender": { "email": systemConfig.brevo_sender, "name": "夏雨自动发货系统" },
                                 "to": [{ "email": systemConfig.mail_to }],
                                 "subject": `新订单通知：${order.id}`,
                                 "htmlContent": msgText.replace(/\n/g, '<br>')
