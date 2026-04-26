@@ -164,7 +164,7 @@ export default {
 
                      const siteName = (config.site_name || '夏雨自动发货系统').replace(/"/g, '&quot;');
                      const siteDesc = (config.site_description || '自动发货，安全快捷，夏雨自动发货系统').replace(/"/g, '&quot;');
-                     let siteImage = config.site_logo || '/assets/noimage.jpg';
+                     let siteImage = config.site_logo || '/assets/xyrjlogo.webp';
                      if (siteImage.startsWith('/')) siteImage = `${url.origin}${siteImage}`;
 
                      response = await injectMetaTags(response, {
@@ -203,8 +203,8 @@ export default {
                             const item = await db.prepare("SELECT name, description, image_url FROM products WHERE id = ?").bind(id).first();
                             if (item) {
                                 let desc = (item.description || '').replace(/<[^>]+>/g, '').substring(0, 150) + '...';
-                                if(!desc || desc === '...') desc = '自动发货，安全快捷';
-                                let image = item.image_url || '/assets/noimage.jpg';
+                                if(!desc || desc === '...') desc = '自动发货，安全快捷，夏雨自动发货系统';
+                                let image = item.image_url || '/assets/xyrjlogo.webp';
                                 if (image.startsWith('/')) image = `${url.origin}${image}`;
                                 
                                 response = await injectMetaTags(response, {
@@ -233,7 +233,7 @@ export default {
                                     const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/);
                                     if (imgMatch) image = imgMatch[1];
                                 }
-                                if (!image) image = '/assets/noimage.jpg';
+                                if (!image) image = '/assets/xyrjlogo.webp';
                                 if (image.startsWith('/')) image = `${url.origin}${image}`;
 
                                 response = await injectMetaTags(response, {
@@ -251,9 +251,9 @@ export default {
                 else if (path === '/articles' || path === '/articles.html') {
                     response = await injectMetaTags(response, {
                         url: request.url,
-                        title: '资讯中心 - 教程与公告',
+                        title: '文章中心-教程与公告',
                         desc: '查看最新的店铺公告、使用教程和行业资讯。',
-                        image: `${url.origin}/assets/noimage.jpg`
+                        image: `${url.origin}/assets/xyrjlogo.webp`
                     });
                 }
                 // --- 情况4：自定义单页 (custom.html) ---
@@ -268,7 +268,7 @@ export default {
                                     url: request.url,
                                     title: item.title,
                                     desc: desc,
-                                    image: `${url.origin}/assets/noimage.jpg`
+                                    image: `${url.origin}/assets/xyrjlogo.webp`
                                 });
                             }
                         } catch(e) {}
