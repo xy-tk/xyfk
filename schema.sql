@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS articles (
     updated_at  INTEGER,
     cover_image TEXT,
     active      INTEGER DEFAULT 1,
+    seo_description TEXT,
     FOREIGN KEY (category_id) REFERENCES article_categories(id) ON DELETE SET DEFAULT
 );
 
@@ -40,7 +41,8 @@ CREATE TABLE IF NOT EXISTS products (
     active      INTEGER DEFAULT 1,
     created_at  INTEGER,
     image_url   TEXT,
-    tags        TEXT
+    tags        TEXT,
+    seo_description TEXT
 );
 
 -- 5. 商品规格表
@@ -118,6 +120,7 @@ CREATE TABLE IF NOT EXISTS pages (
     title      TEXT NOT NULL,
     alias      TEXT UNIQUE NOT NULL,
     content    TEXT,
+    seo_description TEXT,
     created_at INTEGER,
     updated_at INTEGER
 );
