@@ -184,7 +184,7 @@
                     <td class="text-muted small">${formatTime(item.updated_at)}</td>
                     <td>
                         <button class="btn btn-sm btn-outline-primary me-1" onclick='editItem(${JSON.stringify(item).replace(/'/g, "&#39;")})'><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(${item.id})"><i class="fas fa-trash"></i></button>
+                        ${['about-us', 'terms', 'privacy'].includes(item.alias) ? '' : `<button class="btn btn-sm btn-outline-danger" onclick="deleteItem(${item.id})"><i class="fas fa-trash"></i></button>`}
                     </td>
                 </tr>
             `;
