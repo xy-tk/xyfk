@@ -144,4 +144,6 @@ CREATE TABLE IF NOT EXISTS site_config (
 INSERT OR IGNORE INTO site_config (key, value) VALUES 
 ('site_name', '系统'), 
 ('theme', 'default'),
+('site_logo', '/assets/xyrjlogo.webp'),
+('site_favicon', '/assets/xyrjico.webp'),
 ('default_upload_provider', 'custom');
