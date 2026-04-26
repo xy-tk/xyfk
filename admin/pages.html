@@ -115,6 +115,10 @@
                     </div>
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">SEO 描述 (SEO Description)</label>
+                    <textarea class="form-control" id="page_seo_desc" rows="2" placeholder="用于搜索引擎优化的简短描述..."></textarea>
+                </div>
+                <div class="mb-3">
                     <label class="form-label">页面内容</label>
                     <textarea id="page_content"></textarea>
                 </div>
@@ -231,6 +235,7 @@
         document.getElementById('page_id').value = '';
         document.getElementById('page_title').value = '';
         document.getElementById('page_alias').value = '';
+        document.getElementById('page_seo_desc').value = '';
         if(editorInited) tinymce.get('page_content').setContent('');
         document.getElementById('modalTitle').innerText = '新建单页';
         new bootstrap.Modal(document.getElementById('editModal')).show();
@@ -245,6 +250,7 @@
         
         // 由于列表中没有拉取完整的content，需要调用API重新获取（复用前台接口或修改后台接口）
         const res = await fetch(`/api/shop/page/get?alias=${item.alias}`).then(r => r.json());
+        document.getElementById('page_seo_desc').value = res.seo_description || '';
         
         new bootstrap.Modal(document.getElementById('editModal')).show();
         initEditor();
@@ -258,11 +264,14 @@
         const title = document.getElementById('page_title').value.trim();
         const alias = document.getElementById('page_alias').value.trim();
         const content = tinymce.get('page_content').getContent();
-
+        let seo_description = document.getElementById('page_seo_desc').value.trim();
+        if (!seo_description) {
+            let plainText = tinymce.get('page_content') ? tinymce.get('page_content').getContent({format: 'text'}) : content.replace(/<[^>]+>/g, '');
+            seo_description = plainText.replace(/[\r\n]+/g, ' ').trim().substring(0, 150);
+        }
         if (!title || !alias) return alert('标题和路径别名不能为空');
         if (!/^[a-zA-Z0-9\-]+$/.test(alias)) return alert('路径别名只能包含字母、数字和连字符(-)');
-
-        const res = await api('page/save', { method: 'POST', body: JSON.stringify({ id, title, alias, content }) });
+        const res = await api('page/save', { method: 'POST', body: JSON.stringify({ id, title, alias, seo_description, content }) });
         if (res.success) {
             bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
             loadData();
