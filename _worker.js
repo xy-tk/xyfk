@@ -1831,7 +1831,7 @@ async function handleApi(request, env, url, ctx) {
                     // --- 1. 读取配置 (新增客户通知配置) ---
                     const adminConfigKeys = [
                         'tg_active', 'tg_bot_token', 'tg_chat_id', 
-                        'brevo_active', 'brevo_key', 'brevo_sender', 'mail_to',
+                        'brevo_active', 'brevo_key', 'brevo_sender', 'mail_to', 'site_name',
                         'outlook_active', 'outlook_client_id', 'outlook_client_secret', 'outlook_refresh_token'
                     ];
                     // [新增] 客户通知的配置键
@@ -2021,7 +2021,7 @@ ${contentBody}
                         notifications.push(fetch("https://api.brevo.com/v3/smtp/email", {
                             method: "POST", headers: { "accept": "application/json", "api-key": systemConfig.brevo_key, "content-type": "application/json" },
                             body: JSON.stringify({
-                                "sender": { "email": systemConfig.brevo_sender, "name": "夏雨自动发货系统" },
+                                "sender": { "email": systemConfig.brevo_sender, "name": systemConfig.site_name || "夏雨自动发货系统" },
                                 "to": [{ "email": systemConfig.mail_to }],
                                 "subject": `新订单通知：${order.id}`,
                                 "htmlContent": msgText.replace(/\n/g, '<br>')
