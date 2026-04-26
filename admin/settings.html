@@ -186,16 +186,18 @@
                                     <input type="text" class="form-control" id="site_favicon" placeholder="例如：/assets/favicon.ico">
                                     <div class="form-text text-muted" style="font-size: 12px;">浏览器标签页上显示的小图标，推荐 32x32 大小的 .ico 或 .png。</div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">移动端侧滑栏顶部 Logo</label>
-                                    <input type="text" class="form-control" id="mobile_sidebar_logo" placeholder="例如：/assets/mobile-logo.png">
-                                    <div class="form-text text-muted" style="font-size: 12px;">移动端展开左侧边栏时顶部显示的独立 Logo 图片。</div>
-                                </div>
-								<div class="mb-3">
-                                    <label class="form-label">移动端侧滑栏 Logo 跳转链接</label>
-                                    <input type="text" class="form-control" id="mobile_sidebar_logo_link" placeholder="例如：/ 或 https://xxx.com">
-                                    <div class="form-text text-muted" style="font-size: 12px;">点击移动端侧滑栏顶部 Logo 后的跳转地址，留空则默认跳转首页。</div>
-                                </div>
+                                <div class="row">
+		                            <div class="col-md-6 mb-3">
+		                                <label class="form-label">移动端侧滑栏顶部 Logo</label>
+		                                <input type="text" class="form-control" id="mobile_sidebar_logo" placeholder="例如：/assets/mobile-logo.png">
+		                                <div class="form-text text-muted" style="font-size: 12px;">移动端展开左侧边栏时顶部显示的独立 Logo 图片。</div>
+		                            </div>
+		                            <div class="col-md-6 mb-3">
+		                                <label class="form-label">移动端侧滑栏 Logo 跳转链接</label>
+		                                <input type="text" class="form-control" id="mobile_sidebar_logo_link" placeholder="例如：/ 或 https://xxx.com">
+		                                <div class="form-text text-muted" style="font-size: 12px;">点击移动端侧滑栏顶部 Logo 后的跳转地址，留空则默认跳转首页。</div>
+		                            </div>
+		                        </div>
 								<h6 class="mb-3 border-bottom pb-2 mt-4"><i class="fas fa-shield-alt text-danger"></i> 后台登录安全验证</h6>
                                 <div class="mb-3 form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="admin_captcha_active">
