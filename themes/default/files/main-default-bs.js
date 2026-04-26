@@ -131,8 +131,9 @@ function generateProductCardHtml(product) {
     return `
         <div class="col-12">
             <div class="product-card-item">
-                <div class="product-img">
+                <div class="product-img" style="position: relative;">
                     <img src="${productImg}" alt="${product.name}" loading="lazy" />
+                    ${!isAvailable ? `<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; letter-spacing: 2px; z-index: 2;">售罄</div>` : ''}
                 </div>
                 
                 <div class="product-info">
