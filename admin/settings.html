@@ -186,6 +186,11 @@
                                     <input type="text" class="form-control" id="site_favicon" placeholder="例如：/assets/favicon.ico">
                                     <div class="form-text text-muted" style="font-size: 12px;">浏览器标签页上显示的小图标，推荐 32x32 大小的 .ico 或 .png。</div>
                                 </div>
+								<div class="mb-3">
+								    <label class="form-label">网站描述 (SEO Description)</label>
+								    <textarea class="form-control" id="site_description" rows="2" placeholder="自动发货，安全快捷"></textarea>
+								    <div class="form-text text-muted" style="font-size: 12px;">用于搜索引擎收录和社交媒体分享时的简介。</div>
+								</div>
                                 <div class="row">
 		                            <div class="col-md-6 mb-3">
 		                                <label class="form-label">移动端侧滑栏顶部 Logo</label>
@@ -454,6 +459,7 @@
             document.getElementById('show_site_logo').checked = (config.show_site_logo === '1');
             document.getElementById('theme_select').value = config.theme || 'default';
 			document.getElementById('site_favicon').value = config.site_favicon || '';
+			document.getElementById('site_description').value = config.site_description || '';
             document.getElementById('mobile_sidebar_logo').value = config.mobile_sidebar_logo || '';
 			document.getElementById('mobile_sidebar_logo_link').value = config.mobile_sidebar_logo_link || '';
             document.getElementById('announce').value = config.announce || '';
@@ -518,6 +524,7 @@
             announce: document.getElementById('announce').value,
             contact_info: document.getElementById('contact_info').value,
 			site_favicon: document.getElementById('site_favicon').value,
+			site_description: document.getElementById('site_description').value,
             mobile_sidebar_logo: document.getElementById('mobile_sidebar_logo').value,
 			mobile_sidebar_logo_link: document.getElementById('mobile_sidebar_logo_link').value.trim(),
 			footer_html: document.getElementById('footer_html').value,
