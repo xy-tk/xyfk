@@ -343,7 +343,9 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     font-weight: bold !important;
     font-size: 15px !important;
 }
-
+.sku-oos-text {
+    color: #bbbbbb !important;
+}
 /* 支付方式图标 */
 .payment-option {
     position: relative; display: inline-flex;
