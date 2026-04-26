@@ -183,11 +183,21 @@
                                     <div class="form-text text-muted" style="font-size: 12px;">建议使用透明背景的 PNG 图片，推荐高度 50px 左右。</div>
 		                            </div>
 		                        </div>
-								<div class="mb-3">
-                                    <label class="form-label">网站图标 (Favicon URL)</label>
-                                    <input type="text" class="form-control" id="site_favicon" placeholder="例如：/assets/favicon.ico">
-                                    <div class="form-text text-muted" style="font-size: 12px;">浏览器标签页上显示的小图标，推荐 32x32 大小的 .ico 或 .png。</div>
-                                </div>
+								<div class="row">
+		                            <div class="col-md-6 mb-3">
+		                                <label class="form-label">网站图标 (Favicon URL)</label>
+										<input type="text" class="form-control" id="site_favicon" placeholder="例如：/assets/favicon.ico">
+										<div class="form-text text-muted" style="font-size: 12px;">浏览器标签页上显示的小图标，推荐 32x32 大小的 .ico 或 .png。</div>
+		                            </div>
+		                            <div class="col-md-6 mb-3">
+		                                <label class="form-label">SEO 分享封面图 (OG Image)</label>
+										<div class="input-group">
+											<input type="text" class="form-control" id="seo_image" name="seo_image" placeholder="例如: https://example.com/seo-card.png">
+											<button class="btn btn-outline-secondary" type="button" onclick="uploadImage('seo_image')">上传</button>
+										</div>
+										<div class="form-text">专门用于 Telegram、微信、Twitter 等社交平台抓取显示的图片。建议使用 .png 或 .jpg 格式，尺寸建议为 1200x630 或 600x315。如果不填写，将为空白。</div>
+		                            </div>
+		                        </div>
 								<div class="mb-3">
 								    <label class="form-label">网站描述 (SEO Description)</label>
 								    <textarea class="form-control" id="site_description" rows="2" placeholder="自动发货，安全快捷"></textarea>
