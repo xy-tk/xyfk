@@ -170,7 +170,7 @@ function getProductCardHtml(p) {
         <a href="/product?id=${p.id}" class="tb-card">
             <div class="tb-img-wrap" style="position: relative;">
                 <img src="${imgUrl}" alt="${p.name}" class="tb-img" loading="lazy">
-                ${totalStock <= 0 ? `<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: bold; letter-spacing: 2px; border-radius: inherit; z-index: 2;">售罄</div>` : ''}
+                ${totalStock <= 0 ? `<div class="sold-out-overlay">售罄</div>` : ''}
             </div>
             <div class="tb-info">
                 <div class="tb-title">${p.name}</div>
