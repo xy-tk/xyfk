@@ -560,7 +560,8 @@ function renderSkuButtons(variants, selectedIdx = -1) {
         const name = v.name || v.specs || `规格${index+1}`;
         const badgeHtml = isOOS ? '<span class="sku-oos-badge">缺货</span>' : '';    
         // 2. [修改] 在名称后面显示价格 (￥...)
-        return `<button class="btn btn-sm ${btnClass} me-2 mb-2 sku-btn" data-idx="${index}" onclick="${isOOS ? '' : `selectSku(${index}, this)`}" ${isOOS ? 'disabled' : ''}>${name} (￥${priceStr})${badgeHtml}</button>`;
+        const textClass = isOOS ? 'sku-oos-text' : '';
+        return `<button class="btn btn-sm ${btnClass} ${textClass} me-2 mb-2 sku-btn" data-idx="${index}" onclick="${isOOS ? '' : `selectSku(${index}, this)`}" ${isOOS ? 'disabled' : ''}>${name} (￥${priceStr})${badgeHtml}</button>`;
     }).join('');
 }
 
