@@ -493,8 +493,19 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 function renderGlobalHeaders(config) {
-    if (!document.title.includes("商品详情")) document.title = config.site_name || '商店首页';
-    
+    const siteName = config.site_name || '';
+    const path = window.location.pathname;
+    const isProductPage = path.includes('/product') && !path.includes('/products');
+    const isArticleDetailPage = path.includes('/article') && !path.includes('/articles');
+    // 如果不是商品详情和文章详情页，拼接店铺名称
+    if (!isProductPage && !isArticleDetailPage) {
+        let baseTitle = document.title.split('-')[0].trim();
+        if (siteName) {
+            document.title = baseTitle ? (baseTitle + '-' + siteName) : siteName;
+        } else {
+            document.title = baseTitle;
+        }
+    }
     const setText = (id, txt) => { const el = document.getElementById(id); if(el) el.innerText = txt; };
     setText('header-site-name', config.site_name);
     setText('mobile-header-site-name', config.site_name);
