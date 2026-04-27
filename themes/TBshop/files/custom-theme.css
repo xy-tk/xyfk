@@ -451,7 +451,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 
     /* --- 3.2 布局调整 --- */
     .container {
-        margin-top: 10px !important; padding-left: 10px; padding-right: 10px;
+        margin-top: 10px !important; padding-left: 6px; padding-right: 6px;
     }
     .row { --bs-gutter-x: 10px; }
     .module-box { padding: 8px; margin-bottom: 15px; border-radius: 8px; }
