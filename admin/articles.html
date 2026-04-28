@@ -500,13 +500,18 @@
                 const file = e.target.files[0];
                 if(!file) return;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                smartUpload(file, (url) => {
+                if (typeof window.smartUpload === 'function') {
+                    window.smartUpload(file, (url) => {
                         imgInput.value = url;
                         btn.innerHTML = '<i class="fas fa-upload"></i>';
                     }, (error) => {
                         alert(error);
                         btn.innerHTML = '<i class="fas fa-upload"></i>';
                     });
+                } else {
+                    alert('全局上传组件未加载');
+                    btn.innerHTML = '<i class="fas fa-upload"></i>';
+                }
             };
             input.click();
         };
@@ -559,12 +564,16 @@
         promotion: false,
         images_upload_handler: function (blobInfo, success, failure) {
             const file = blobInfo.blob();
-            file.name = blobInfo.filename(); // 补充文件名以便后续转换为 webp 后缀
-            smartUpload(file, (url) => {
-                success(url);
-            }, (err) => {
-                failure('上传失败: ' + err);
-            });
+            if (!file.name) file.name = blobInfo.filename() || 'image.png'; // 补充文件名防止报错
+            if (typeof window.smartUpload === 'function') {
+                window.smartUpload(file, (url) => {
+                    success(url);
+                }, (err) => {
+                    failure('上传失败: ' + err);
+                });
+            } else {
+                failure('全局上传组件未加载，请刷新页面重试');
+            }
         },
         paste_data_images: true,
         setup: function (editor) {
