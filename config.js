@@ -13,3 +13,53 @@ window.SITE_CONFIG = {
     // 版本号
     version: "1.0.0"
 };
+// 全局图片压缩、缩略图生成及上传函数
+window.smartUpload = function(file, successCallback, errorCallback) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width; 
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+            
+            // --- [新增] 生成最大宽度为 250px 的缩略图 ---
+            const thumbCanvas = document.createElement('canvas');
+            const thumbCtx = thumbCanvas.getContext('2d');
+            let thumbWidth = img.width;
+            let thumbHeight = img.height;
+            if (thumbWidth > 250) {
+                thumbHeight = Math.floor(thumbHeight * (250 / thumbWidth));
+                thumbWidth = 250;
+            }
+            thumbCanvas.width = thumbWidth;
+            thumbCanvas.height = thumbHeight;
+            thumbCtx.drawImage(img, 0, 0, thumbWidth, thumbHeight);
+            const thumbnailBase64 = thumbCanvas.toDataURL('image/jpeg', 0.6); 
+            // ------------------------------------------
+
+            canvas.toBlob(async (blob) => {
+                const formData = new FormData();
+                const newName = file.name.replace(/\.[^/.]+$/, ".webp"); 
+                formData.append('file', blob, newName);
+                formData.append('thumbnail', thumbnailBase64);
+                formData.append('dim', `${img.width}x${img.height}`);
+                
+                try {
+                    const res = await fetch('/api/admin/image/upload', { 
+                        method: 'POST', 
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('ADMIN_TOKEN')}` }, 
+                        body: formData 
+                    }).then(r => r.json());
+                    if (res.location) successCallback(res.location);
+                    else errorCallback ? errorCallback(res.error) : alert(res.error || '上传失败');
+                } catch (err) { errorCallback ? errorCallback(err) : alert('上传错误'); }
+            }, 'image/webp', 0.85);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+};
