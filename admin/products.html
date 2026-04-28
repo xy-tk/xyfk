@@ -576,10 +576,14 @@
     }
     async function uploadFile(file) {
         return new Promise((resolve) => {
-            window.smartUpload(file, 
-                (url) => resolve({ location: url }), 
-                (err) => resolve({ error: err })
-            );
+            if (typeof window.smartUpload === 'function') {
+                window.smartUpload(file, 
+                    (url) => resolve({ location: url }), 
+                    (err) => resolve({ error: err })
+                );
+            } else {
+                resolve({ error: '全局上传组件未加载，请刷新页面重试' });
+            }
         });
     }
     document.addEventListener('DOMContentLoaded', () => {
@@ -645,13 +649,17 @@
         images_upload_handler: function (blobInfo, success, failure) {
             let file = blobInfo.blob();
             if (!file.name) file.name = blobInfo.filename() || 'image.png';
-            window.smartUpload(file, 
-                (url) => success(url), 
-                (err) => failure(err)
-            );
+            
+            if (typeof window.smartUpload === 'function') {
+                window.smartUpload(file, 
+                    (url) => success(url), 
+                    (err) => failure(err)
+                );
+            } else {
+                failure('全局上传组件未加载，请刷新页面重试');
+            }
         },
         paste_data_images: true, // 允许粘贴图片
-
         setup: function (editor) {
             editor.on('change', function () {
                 editor.save();
