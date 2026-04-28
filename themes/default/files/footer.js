@@ -26,7 +26,7 @@ function insertFooterSkeleton() {
             @media (max-width:767px){       
                 .footer{
                     padding:15px 0;
-                    margin-top:-20px;
+                    margin-top:-5px;
                 }
                 .footer .container{
                     font-size:12px;
@@ -37,7 +37,7 @@ function insertFooterSkeleton() {
         <footer class="footer">
             <div class="container" id="custom-footer-container">
             </div>
-            <div id="back-to-top" class="back-to-top"><i class="far fa-chevron-up"></i></div>
+            <div id="back-to-top" class="back-to-top"><i class="fal fa-chevron-up"></i></div>
         </footer>
         <nav class="mobile-bottom-nav d-lg-none" id="global-mobile-nav">
             <a href="/" class="mbn-item"><i class="fas fa-home"></i>商城</a>
