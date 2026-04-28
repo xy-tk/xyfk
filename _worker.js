@@ -1097,8 +1097,6 @@ async function handleApi(request, env, url, ctx) {
                 const conf = {};
                 (await db.prepare("SELECT key, value FROM site_config WHERE key IN ('gh_token','gh_user','gh_repo')").all()).results.forEach(r => conf[r.key] = r.value);
                 if (!conf.gh_token || !conf.gh_repo || !conf.gh_user) return errRes('请先在系统设置配置 gh_token, gh_user, gh_repo');
-
-                // 1. 上传图片
                 if (path === '/api/admin/gh/upload' && method === 'POST') {
                     const formData = await request.formData();
                     const file = formData.get('file');
@@ -1118,46 +1116,33 @@ async function handleApi(request, env, url, ctx) {
                     const ghData = await ghRes.json();
                     if (ghRes.status !== 201 && ghRes.status !== 200) return errRes(ghData.message || '上传失败');
                     const downloadUrl = `/gh_image/${filename}`;
-                    // 顺便入库 image 表以便管理
                     try { await db.prepare("INSERT INTO images (category_id, url, name, created_at) VALUES (1, ?, ?, ?)").bind(downloadUrl, file.name, time()).run(); } catch(e){}
                     
                     return jsonRes({ location: downloadUrl });
                 }
 
-                // 2. 删除图片 (需要传入文件路径和SHA，这里简化为只从库删除或尝试API删除)
-                // 为简化操作，此处建议只做数据库清理，GitHub物理删除比较复杂需要先获取SHA
             }
             // ====== [新增] Telegram 图床接口 ======
             if (path === '/api/admin/tg/upload' && method === 'POST') {
                 const conf = {};
                 (await db.prepare("SELECT key, value FROM site_config WHERE key IN ('tg_upload_bot_token','tg_upload_chat_id')").all()).results.forEach(r => conf[r.key] = r.value);
                 if (!conf.tg_upload_bot_token || !conf.tg_upload_chat_id) return errRes('请先在系统设置配置 Telegram 图床的 Token 和 Chat ID');
-
                 const formData = await request.formData();
                 const file = formData.get('file');
                 if (!file) return errRes('未选择文件');
-
                 const tgForm = new FormData();
                 tgForm.append('chat_id', conf.tg_upload_chat_id);
-                tgForm.append('photo', file);
-
-                // 1. 上传图片到 TG
-                const upRes = await fetch(`https://api.telegram.org/bot${conf.tg_upload_bot_token}/sendPhoto`, { method: 'POST', body: tgForm });
+                tgForm.append('document', file);
+                const upRes = await fetch(`https://api.telegram.org/bot${conf.tg_upload_bot_token}/sendDocument`, { method: 'POST', body: tgForm });
                 const upData = await upRes.json();
                 if (!upData.ok) return errRes('TG上传失败: ' + (upData.description || '未知错误'));
-
-                // 2. 获取最大尺寸图片的 file_id
-                const photos = upData.result.photo;
-                const fileId = photos[photos.length - 1].file_id;
-
+                const fileId = upData.result.document.file_id;
                 // 3. 获取文件路径 file_path
                 const pathRes = await fetch(`https://api.telegram.org/bot${conf.tg_upload_bot_token}/getFile?file_id=${fileId}`);
                 const pathData = await pathRes.json();
                 if (!pathData.ok) return errRes('获取TG路径失败');
-
                 const downloadUrl = `/tg_image/${pathData.result.file_path}`;
                 try { await db.prepare("INSERT INTO images (category_id, url, name, created_at) VALUES (1, ?, ?, ?)").bind(downloadUrl, file.name, time()).run(); } catch(e){}
-                
                 return jsonRes({ location: downloadUrl });
             }
             // ====== [新增] 万能外部图床通用接口 ======
