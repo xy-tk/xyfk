@@ -500,24 +500,13 @@
                 const file = e.target.files[0];
                 if(!file) return;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = img.width; canvas.height = img.height;
-                        canvas.getContext('2d').drawImage(img, 0, 0);
-                        canvas.toBlob(async blob => {
-                            const formData = new FormData(); 
-                            formData.append('file', blob, file.name.replace(/\.[^/.]+$/, ".webp"));
-                            const res = await fetch('/api/admin/image/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
-                            if(res.location) imgInput.value = res.location; else alert(res.error||'上传失败');
-                            btn.innerHTML = '<i class="fas fa-upload"></i>';
-                        }, 'image/webp', 0.85);
-                    };
-                    img.src = ev.target.result;
-                };
-                reader.readAsDataURL(file);
+                smartUpload(file, (url) => {
+                        imgInput.value = url;
+                        btn.innerHTML = '<i class="fas fa-upload"></i>';
+                    }, (error) => {
+                        alert(error);
+                        btn.innerHTML = '<i class="fas fa-upload"></i>';
+                    });
             };
             input.click();
         };
@@ -569,25 +558,13 @@
         branding: false,
         promotion: false,
         images_upload_handler: function (blobInfo, success, failure) {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width; canvas.height = img.height;
-                canvas.getContext('2d').drawImage(img, 0, 0);
-                canvas.toBlob(blob => {
-                    const formData = new FormData();
-                    formData.append('file', blob, blobInfo.filename().replace(/\.[^/.]+$/, ".webp"));
-                    fetch('/api/admin/image/upload', {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${localStorage.getItem('ADMIN_TOKEN')}` },
-                        body: formData
-                    }).then(r => r.json()).then(res => {
-                        if (res.location) success(res.location); else failure(res.error || '上传失败');
-                    }).catch(e => failure(e.message || '网络请求异常'));
-                }, 'image/webp', 0.85);
-            };
-            img.onerror = () => failure('图片格式读取失败');
-            img.src = 'data:' + blobInfo.blob().type + ';base64,' + blobInfo.base64();
+            const file = blobInfo.blob();
+            file.name = blobInfo.filename(); // 补充文件名以便后续转换为 webp 后缀
+            smartUpload(file, (url) => {
+                success(url);
+            }, (err) => {
+                failure('上传失败: ' + err);
+            });
         },
         paste_data_images: true,
         setup: function (editor) {
