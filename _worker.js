@@ -1165,9 +1165,10 @@ async function handleApi(request, env, url, ctx) {
                         headers['Token'] = conf.custom_api_token; 
                     }
                     const uploadForm = new FormData();
-                    // 直接透传前端处理好的 WebP 文件和文件名
                     uploadForm.append('file', file);
                     uploadForm.append('title', file.name);
+                    if (formData.has('thumbnail')) uploadForm.append('thumbnail', formData.get('thumbnail'));
+                    if (formData.has('dim')) uploadForm.append('dim', formData.get('dim'));
                     try {
                         const upRes = await fetch(conf.custom_api_url, { method: 'POST', headers, body: uploadForm });
                         const upText = await upRes.text();
