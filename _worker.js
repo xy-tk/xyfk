@@ -1136,7 +1136,11 @@ async function handleApi(request, env, url, ctx) {
                 const upRes = await fetch(`https://api.telegram.org/bot${conf.tg_upload_bot_token}/sendDocument`, { method: 'POST', body: tgForm });
                 const upData = await upRes.json();
                 if (!upData.ok) return errRes('TG上传失败: ' + (upData.description || '未知错误'));
-                const fileId = upData.result.document.file_id;
+                const resData = upData.result;
+                const fileId = (resData.document && resData.document.file_id) || 
+                               (resData.sticker && resData.sticker.file_id) || 
+                               (resData.photo && resData.photo[resData.photo.length - 1].file_id);
+                if (!fileId) return errRes('TG返回数据异常，无法获取 file_id');
                 // 3. 获取文件路径 file_path
                 const pathRes = await fetch(`https://api.telegram.org/bot${conf.tg_upload_bot_token}/getFile?file_id=${fileId}`);
                 const pathData = await pathRes.json();
