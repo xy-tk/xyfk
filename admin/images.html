@@ -438,14 +438,24 @@
                     canvas.width = img.width; 
                     canvas.height = img.height;
                     ctx.drawImage(img, 0, 0, img.width, img.height);
-                    
-                    // 核心：强制将图片转为 WebP 格式，0.85 为压缩质量（画质与体积的完美平衡）
+                    const thumbCanvas = document.createElement('canvas');
+                    const thumbCtx = thumbCanvas.getContext('2d');
+                    let thumbWidth = img.width;
+                    let thumbHeight = img.height;
+                    if (thumbWidth > 250) {
+                        thumbHeight = Math.floor(thumbHeight * (250 / thumbWidth));
+                        thumbWidth = 250;
+                    }
+                    thumbCanvas.width = thumbWidth;
+                    thumbCanvas.height = thumbHeight;
+                    thumbCtx.drawImage(img, 0, 0, thumbWidth, thumbHeight);
+                    const thumbnailBase64 = thumbCanvas.toDataURL('image/jpeg', 0.6); 
                     canvas.toBlob(async (blob) => {
                         const formData = new FormData();
-                        // 将原来的后缀名替换为 .webp
                         const newName = file.name.replace(/\.[^/.]+$/, ".webp"); 
                         formData.append('file', blob, newName);
-                        
+                        formData.append('thumbnail', thumbnailBase64);
+                        formData.append('dim', `${img.width}x${img.height}`);
                         try {
                             const res = await fetch('/api/admin/image/upload', { method: 'POST', headers: { 'Authorization': `Bearer ${TOKEN}` }, body: formData }).then(r=>r.json());
                             if(res.location) {
