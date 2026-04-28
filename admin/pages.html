@@ -208,8 +208,10 @@
             fontsize_formats: '12px 13px 14px 15px 16px 17px 18px 19px 20px 24px 28px 36px 48px',
             content_style: "body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif; font-size: 14px; line-height: 1.8; }",
             images_upload_handler: function (blobInfo, success, failure) {
-                if (typeof smartUpload === 'function') {
-                    smartUpload(blobInfo.blob(), url => success(url), err => failure('上传失败: ' + err));
+                let file = blobInfo.blob();
+                if (!file.name) file.name = blobInfo.filename() || 'image.png'; // 补充文件名防止报错
+                if (typeof window.smartUpload === 'function') {
+                    window.smartUpload(file, url => success(url), err => failure('上传失败: ' + err));
                 } else {
                     failure('全局上传组件未加载');
                 }
