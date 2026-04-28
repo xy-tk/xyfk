@@ -63,3 +63,28 @@ window.smartUpload = function(file, successCallback, errorCallback) {
     };
     reader.readAsDataURL(file);
 };
+// --- 公共图片转换 WebP 函数 ---
+window.utils = {
+    convertToWebp: (file, quality = 0.8) => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    canvas.toBlob((blob) => {
+                        // 强制修改后缀为 .webp
+                        const newName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+                        resolve(new File([blob], newName, { type: "image/webp" }));
+                    }, 'image/webp', quality);
+                };
+            };
+        });
+    }
+};
