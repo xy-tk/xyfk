@@ -429,8 +429,8 @@
             btn.innerHTML = '压缩并上传中...'; 
             btn.disabled = true;
             // 使用全局 smartUpload 统一处理压缩、缩略图生成和上传
-            if (typeof smartUpload === 'function') {
-                smartUpload(file, (url) => {
+            if (typeof window.smartUpload === 'function') {
+                window.smartUpload(file, (url) => {
                     alert('上传成功');
                     loadImages(1);
                     btn.innerHTML = oldText;
