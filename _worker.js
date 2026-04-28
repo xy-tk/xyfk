@@ -1170,16 +1170,16 @@ async function handleApi(request, env, url, ctx) {
                     const formData = await request.formData();
                     const file = formData.get('file');
                     if (!file) return errRes('未选择文件');
-
                     const headers = {};
                     if (conf.custom_api_token) {
                         headers['Authorization'] = `Bearer ${conf.custom_api_token}`;
                         headers['Token'] = conf.custom_api_token; 
                     }
-
                     const uploadForm = new FormData();
                     uploadForm.append('file', file);
-
+                    if (formData.has('thumbnail')) uploadForm.append('thumbnail', formData.get('thumbnail'));
+                    if (formData.has('dim')) uploadForm.append('dim', formData.get('dim'));
+                    uploadForm.append('title', formData.get('title') || file.name); 
                     try {
                         const upRes = await fetch(conf.custom_api_url, { method: 'POST', headers, body: uploadForm });
                         const upText = await upRes.text();
