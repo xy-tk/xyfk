@@ -616,8 +616,9 @@
         fileInput.accept = 'image/*';
         fileInput.onchange = async function() {
             if (!this.files.length) return;
+            const webpFile = await window.utils.convertToWebp(this.files[0]);
             const formData = new FormData();
-            formData.append('file', this.files[0]);
+            formData.append('file', webpFile);
             try {
                 const res = await fetch('/api/admin/image/upload', {
                     method: 'POST',
