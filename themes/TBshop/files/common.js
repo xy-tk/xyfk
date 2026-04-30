@@ -57,7 +57,7 @@ const TB_LAYOUT = {
                 <a href="/" class="nav-link-item ${activePage === 'home' ? 'active' : ''}" style="${activePage==='home'?'color:var(--tb-orange);':''}"><i class="fas fa-home" style="margin-right: 5px;"></i>商城首页</a>
                 
                 <div class="tb-nav-dropdown">
-                    <a href="/#category-container" class="nav-link-item" onmouseenter="this.style.color='var(--tb-orange)'" onmouseleave="this.style.color='red'" style="color: red;"><i class="fas fa-list-ul" style="margin-right: 5px;"></i>商品分类 <span class="category-arrow"><i class="far fa-angle-right"></i></span></a>
+                    <a href="/#category-container" class="nav-link-item"><i class="fas fa-list-ul" style="margin-right: 5px;"></i>商品分类 <span class="category-arrow"><i class="far fa-angle-right"></i></span></a>
                     <ul class="dropdown-menu" id="pc-header-category-menu">
                         <li><span class="dropdown-item text-muted">加载中...</span></li>
                     </ul>
