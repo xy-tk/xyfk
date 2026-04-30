@@ -27,7 +27,7 @@
 .product-description-content ol img, .product-desc ol img, .custom-page-content ol img, #article-content ol img, .prose ol img {
     margin: 1em auto !important;
     position: relative;
-    left: -1em;
+    left: -2em;
 }
 .product-description-content table, .product-desc table, .custom-page-content table, #article-content table, .prose table { width: 100%; border-collapse: collapse; border: 1px solid #dee2e6; margin-bottom: 1rem; }
 .product-description-content table td, .product-desc table td, .custom-page-content table td, #article-content table td, .prose table td { padding: 0.75rem; border: 1px solid #dee2e6; }
