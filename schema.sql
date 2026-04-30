@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS site_config (
     value TEXT
 );
 INSERT OR IGNORE INTO site_config (key, value) VALUES 
-('site_name', '系统'), 
+('site_name', '夏雨自动发卡系统'), 
 ('theme', 'default'),
 ('site_logo', '/assets/xyrjlogo.webp'),
 ('site_favicon', '/assets/xyrjico.webp'),
