@@ -23,6 +23,13 @@
 /* 列表、表格、引用等通用样式 */
 .product-description-content ul, .product-desc ul, .custom-page-content ul, #article-content ul, .prose ul { padding-left: 2em; margin-bottom: 1em; list-style-type: disc; }
 .product-description-content ol, .product-desc ol, .custom-page-content ol, #article-content ol, .prose ol { padding-left: 2em; margin-bottom: 1em; list-style-type: decimal; }
+/* 强制 ul 和 ol 中的图片居中，并抵消列表内边距带来的视觉偏右 */
+.product-description-content ul img, .product-desc ul img, .custom-page-content ul img, #article-content ul img, .prose ul img,
+.product-description-content ol img, .product-desc ol img, .custom-page-content ol img, #article-content ol img, .prose ol img {
+    margin: 1em auto !important;
+    position: relative;
+    left: -1em;
+}
 .product-description-content table, .product-desc table, .custom-page-content table, #article-content table, .prose table { width: 100%; border-collapse: collapse; border: 1px solid #dee2e6; margin-bottom: 1rem; }
 .product-description-content table td, .product-desc table td, .custom-page-content table td, #article-content table td, .prose table td { padding: 0.75rem; border: 1px solid #dee2e6; }
 .product-description-content blockquote, .product-desc blockquote, .custom-page-content blockquote, #article-content blockquote, .prose blockquote { border-left: 5px solid #0d6efd; padding: 1rem 1.5rem; background: #f8f9fa; margin: 1.5rem 0; }
