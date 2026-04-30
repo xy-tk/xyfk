@@ -207,7 +207,7 @@ function renderProductList(products, categoryId) {
                 });
 
                 // 如果分类有图标，也可以在这里加
-                const iconHtml = cat.image_url ? `<img src="${cat.image_url}" style="width:20px;height:20px;margin-right:8px;vertical-align:middle;">` : `<i class="fas fa-layer-group" style="color:var(--luna-primary-blue)"></i>`;
+                const iconHtml = cat.image_url ? `<img src="${cat.image_url}" style="width:20px;height:20px;margin-right:8px;border-radius: 50px;vertical-align:middle;">` : `<i class="fas fa-layer-group" style="color:var(--luna-primary-blue)"></i>`;
 
                 const sectionHtml = `
                     <div class="main-box">
