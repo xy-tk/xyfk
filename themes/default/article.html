@@ -69,7 +69,13 @@
     <div class="container my-4" style="min-height: 60vh;">
         <div class="product-detail-grid" style="grid-template-columns: 3fr 1fr;">
                 <article class="detail-left main-box p-4">           
-					<div class="article-header mx-auto max-w-4xl">       
+					<div class="article-header mx-auto max-w-4xl">
+						<div class="d-flex align-items-center text-muted mb-3" style="font-size: 13px;">
+							 <i class="fa fa-home me-1"></i> 
+							 <a href="/articles" class="text-decoration-none text-muted me-1">文章中心</a> 
+							 <span class="mx-1">/</span> 
+							 <span id="article-path-cat">加载中...</span>
+						</div>
 						<h1 class="custom-page-title" id="article-title">
 							<span class="loading-skeleton">正在加载文章...</span>
 						</h1>
@@ -191,7 +197,7 @@
 
             const catName = data.category_name || '默认分类';
             $('#article-category').text(catName);
-            
+            $('#article-path-cat').text(catName);
             const date = new Date(data.created_at * 1000);
             const dateStr = date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
             $('#article-time').text(dateStr);
