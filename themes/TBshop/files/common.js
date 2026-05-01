@@ -18,7 +18,7 @@ const TB_LAYOUT = {
             <a href="/" class="d-flex align-items-center justify-content-center h-100">
                 <img id="mobile-logo-img" class="d-none" alt="Logo" style="height: 43px;">
                 <span id="mobile-site-name-wrap" class="d-none">
-                    <span id="mobile-header-site-name">TB Shop</span>
+                    <span id="mobile-header-site-name"></span>
                 </span>
             </a>
         </div>
@@ -26,14 +26,12 @@ const TB_LAYOUT = {
             <i class="fa fa-search"></i>
         </div>
     `,
-
-    // PC端头部 (已修复：移除 font-weight:bold)
     pcHeader: (activePage) => `
         <div class="container header-inner">
             <a href="/" class="site-brand">
                 <img id="site-logo" class="d-none" style="max-height: 45px; width: auto; margin-right: 10px;" alt="Logo">
                 <span id="site-name-wrap" class="d-flex align-items-center d-none">
-                    <span id="header-site-name">TB Shop</span>
+                    <span id="header-site-name"></span>
                 </span>
             </a>
             <style>
