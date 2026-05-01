@@ -6,6 +6,7 @@
     word-wrap: break-word;
     font-size: 14px; 
 }
+.product-description-content code, .product-desc code, .custom-page-content code, #article-content code, .prose code { border-radius: 2px; background-color: #dbe5f5; padding: 1px 6px; }
 /* 段落间距对齐编辑器 */
 .product-description-content p, .product-desc p, .custom-page-content p, #article-content p, .prose p {
     margin-top: 0;
