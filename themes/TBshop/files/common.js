@@ -382,7 +382,7 @@ function loadGlobalConfig() {
             renderSidebarNoticeContact(config);
             const footerEl = document.getElementById('global-footer');
             if (footerEl) {
-                footerEl.innerHTML = config.custom_footer || config.footer_content || config.footer || TB_LAYOUT.footer;
+                footerEl.innerHTML = config.footer_html || config.custom_footer || config.footer_content || config.footer || TB_LAYOUT.footer;
             }
         })
         .catch(e => {
