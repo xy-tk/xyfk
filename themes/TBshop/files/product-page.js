@@ -87,13 +87,13 @@ function renderProductDetail(p) {
             <div class="row g-0">
                 <div class="col-md-5">
                     <div class="p-3">
-                        <div class="main-img-wrap border rounded mb-2" style="position:relative; padding-bottom:calc(100% - 2px); overflow:hidden;">
-                            <img id="p-main-img" src="${p.image_url}" class="position-absolute w-100 h-100" style="object-fit:contain; top:0; left:0; z-index: 1;">
+                        <div class="main-img-wrap border mb-2" style="border-radius:10px;position:relative;padding-bottom:calc(100% - 2px);overflow:hidden;">
+                            <img id="p-main-img" src="${p.image_url}" class="position-absolute w-100 h-100" style="object-fit:contain; top:0; left:0; z-index: 1;border-radius: 10px;">
                             
                             <div class="d-flex d-lg-none align-items-center justify-content-center position-absolute w-100" 
                                  style="bottom:0; left:0; background: rgb(255 255 255 / 55%); backdrop-filter:blur(3px); padding:2px 0; z-index: 10; border-top:1px solid rgba(0,0,0,0.05);">
                                 
-                                <div class="action-icon-wrap d-flex align-items-center me-4" style="margin-right: 25px; color:#555; font-size:13px;">
+                                <div class="action-icon-wrap d-flex align-items-center me-2" style="color:#555;">
                                     <i class="fas fa-qrcode fs-5 me-2"></i> 手机购买
                                     <div class="qr-popup text-center" style="width: 140px; top:auto; bottom:100%; margin-bottom:12px; margin-top:0;">
                                         <div id="page-qrcode-mobile" style="margin-bottom: 5px;"></div>
@@ -101,7 +101,7 @@ function renderProductDetail(p) {
                                     </div>
                                 </div>
                                 
-                                <div class="action-icon-wrap d-flex align-items-center" style="color:#555; font-size:13px;">
+                                <div class="action-icon-wrap d-flex align-items-center" style="color:#555;">
                                     <i class="fas fa-share-alt fs-5 me-2"></i> 分享商品
                                     <div class="share-popup" style="width: 240px; top:auto; bottom:100%; margin-bottom:12px; margin-top:0;"> 
                                         <div class="d-flex justify-content-center flex-wrap p-1">
@@ -116,7 +116,7 @@ function renderProductDetail(p) {
                             </div>
                         </div>
 
-                        <div class="d-none d-lg-flex align-items-center mt-3 text-secondary" style="font-size: 13px;">
+                        <div class="d-none d-lg-flex align-items-center mt-3 text-secondary">
                             <div class="action-icon-wrap d-flex align-items-center">
                                 <i class="fas fa-qrcode fs-5 me-2"></i> 手机购买
                                 <div class="qr-popup text-center" style="width: 140px;">
