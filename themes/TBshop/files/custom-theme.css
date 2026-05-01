@@ -682,7 +682,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
     }
 	.action-icon-wrap {
 	font-size: 12px !important;
-    margin-right: 0 5px !important;
+    margin: 0 5px !important;
 }
 }
 
