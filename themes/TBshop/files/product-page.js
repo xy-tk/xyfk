@@ -86,8 +86,8 @@ function renderProductDetail(p) {
         <div class="module-box product-showcase">
             <div class="row g-0">
                 <div class="col-md-5">
-                    <div class="p-3">
-                        <div class="main-img-wrap border mb-2" style="border-radius:10px;position:relative;padding-bottom:calc(100% - 2px);overflow:hidden;">
+                    <div class="p-3 border rounded bg-light">
+                        <div class="main-img-wrap mb-2" style=" position:relative;padding-bottom:calc(100% - 2px);overflow:hidden;">
                             <img id="p-main-img" src="${p.image_url}" class="position-absolute w-100 h-100" style="object-fit:contain; top:0; left:0; z-index: 1;border-radius: 10px;">
                             
                             <div class="d-flex d-lg-none align-items-center justify-content-center position-absolute w-100" 
