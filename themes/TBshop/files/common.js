@@ -523,19 +523,23 @@ function renderGlobalHeaders(config) {
         if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
         link.href = config.site_favicon;
     }
-    if (config.mobile_sidebar_logo) {
-        const el = document.getElementById('tb-mobile-sidebar-logo');
-        if (el) { 
-            el.src = config.mobile_sidebar_logo; 
-            el.classList.remove('d-none'); 
+    const mobileLogoEl = document.getElementById('tb-mobile-sidebar-logo');
+    if (mobileLogoEl) {
+        if (config.mobile_sidebar_logo) {
+            mobileLogoEl.src = config.mobile_sidebar_logo; 
             if (config.mobile_sidebar_logo_link) {
-                el.style.cursor = 'pointer';
-                el.onclick = function() { window.location.href = config.mobile_sidebar_logo_link; };
+                mobileLogoEl.style.cursor = 'pointer';
+                mobileLogoEl.onclick = function() { window.location.href = config.mobile_sidebar_logo_link; };
             } else {
-                el.style.cursor = 'default';
-                el.onclick = null;
+                mobileLogoEl.style.cursor = 'default';
+                mobileLogoEl.onclick = null;
             }
+        } else {
+            mobileLogoEl.src = '/assets/noimage.jpg';
+            mobileLogoEl.style.cursor = 'default';
+            mobileLogoEl.onclick = null;
         }
+        mobileLogoEl.classList.remove('d-none'); 
     }
     if (config.custom_js) {
         const div = document.createElement('div');
