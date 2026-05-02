@@ -222,11 +222,11 @@ function renderRightSidebar(product) {
             </div>
         </div>
 
-        <div class="mb-3">
+       <div class="mb-3">
             <div class="fw-bold mb-2 small text-muted">联系信息</div>
-            <div class="d-flex gap-2">
-                <input type="text" class="form-control form-control-sm flex-grow-1" id="p-contact" placeholder="Email / QQ (用于查单)">
-                <input type="text" class="form-control form-control-sm" id="p-password" placeholder="设置查单密码" style="width: 110px; flex-shrink: 0;">
+            <div class="d-flex">
+                <input type="text" class="form-control form-control-sm flex-grow-1 me-2" id="p-contact" placeholder="Email / QQ (用于查单)">
+                <input type="text" class="form-control form-control-sm" id="p-password" placeholder="设置查单密码" style="50%; flex-shrink: 0;">
             </div>
         </div>
 
