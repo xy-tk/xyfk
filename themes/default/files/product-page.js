@@ -225,7 +225,7 @@ function renderRightSidebar(product) {
        <div class="mb-3">
             <div class="fw-bold mb-2 small text-muted">联系信息</div>
             <div class="d-flex w-100">
-                <input type="text" class="form-control form-control-sm" style="width: calc(50% - 3px); margin-right: 3px;" id="p-contact" placeholder="Email/QQ (接卡密)">
+                <input type="text" class="form-control form-control-sm" style="width: calc(50% - 3px); margin-right: 3px;" id="p-contact" placeholder="Email/QQ (用于查单)">
                 <input type="text" class="form-control form-control-sm" style="width: calc(50% - 3px); margin-left: 3px;" id="p-password" placeholder="设置查单密码">
             </div>
         </div>
@@ -236,13 +236,13 @@ function renderRightSidebar(product) {
                 </div>
         </div>
 
-        <div class="d-flex gap-2 align-items-center">
-            <a href="/cart" class="text-secondary position-relative me-2 text-decoration-none" title="前往购物车" style="font-size: 22px;">
+        <div class="d-flex align-items-center">
+            <a href="/cart" class="text-secondary position-relative me-3 text-decoration-none" title="前往购物车" style="font-size: 22px;">
                 <i class="far fa-shopping-cart"></i>
                 <span class="common-cart-badge" id="product-page-cart-badge" style="top: -6px; right: -8px; display: none;">0</span>
             </a>
             
-            <button class="btn btn-warning text-white flex-grow-1 fw-bold shadow-sm" onclick="addToCart()">
+            <button class="btn btn-warning text-white flex-grow-1 fw-bold shadow-sm me-2" onclick="addToCart()">
                 <i class="fas fa-cart-plus me-1"></i> 加购物车
             </button>
             <button class="btn btn-primary flex-grow-1 fw-bold shadow-sm" onclick="buyNow()">
