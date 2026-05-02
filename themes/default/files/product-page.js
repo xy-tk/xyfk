@@ -224,9 +224,9 @@ function renderRightSidebar(product) {
 
        <div class="mb-3">
             <div class="fw-bold mb-2 small text-muted">联系信息</div>
-            <div class="d-flex">
-                <input type="text" class="form-control form-control-sm flex-grow-1 me-2" id="p-contact" placeholder="Email / QQ (用于查单)">
-                <input type="text" class="form-control form-control-sm" id="p-password" placeholder="设置查单密码" style="50%; flex-shrink: 0;">
+            <div class="d-flex w-100">
+                <input type="text" class="form-control form-control-sm" style="width: calc(50% - 3px); margin-right: 3px;" id="p-contact" placeholder="Email/QQ (接卡密)">
+                <input type="text" class="form-control form-control-sm" style="width: calc(50% - 3px); margin-left: 3px;" id="p-password" placeholder="设置查单密码">
             </div>
         </div>
 
