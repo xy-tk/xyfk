@@ -39,8 +39,8 @@ const TB_LAYOUT = {
                 .tb-nav-dropdown { position: relative; height: 100%; display: flex; align-items: center; cursor: pointer; }
                 .tb-nav-dropdown .dropdown-menu {
                     visibility: hidden; opacity: 0; transform: translateY(10px); transition: all 0.3s ease;
-                    display: block; margin-top: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-                    border-radius: 4px; padding: 5px 0; min-width: 140px; position: absolute; top: 100%; left: 0; z-index: 1050; background-color: #fff;
+                    display: block; margin-top: 3px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+                    border-radius: 4px; padding: 13px 0; min-width: 140px; position: absolute; top: 100%; left: 0; z-index: 1050; background-color: #fff;
                 }
                 .tb-nav-dropdown:hover .dropdown-menu { visibility: visible; opacity: 1; transform: translateY(0); }
                 .tb-nav-dropdown .nav-link-item { display: flex; align-items: center; }
