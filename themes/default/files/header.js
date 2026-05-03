@@ -40,10 +40,10 @@ function insertHeaderSkeleton() {
                 color: #333 !important;
                 display: flex;
                 align-items: center;
-                margin-right: 30px;
+                margin-right: 20px;
             }
             header.custom-header .site-logo {
-                height: 47px; /* 要求：Logo高度 47px */
+                height: 50px; /* 要求：Logo高度 47px */
                 width: auto;
                 margin-right: 10px;
                 object-fit: contain;
