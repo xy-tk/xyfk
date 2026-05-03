@@ -163,14 +163,17 @@ function getProductCardHtml(p) {
         const prices = p.variants.map(v => parseFloat(v.price || 0));
         price = Math.min(...prices).toFixed(2);
     }
-    // [修改] 使用本地增强版的 renderTagsLocal，确保颜色正确解析
+    // 使用本地增强版的 renderTagsLocal，确保颜色正确解析
     const tagsHtml = renderTagsLocal(p.tags); 
+
+    // [核心修复] 如果商品售罄(存在遮罩层)，则取消该图的懒加载以避开老内核的遮挡Bug；正常商品保留懒加载性能
+    const lazyAttr = totalStock <= 0 ? '' : 'loading="lazy"';
 
     return `
         <a href="/product?id=${p.id}" class="tb-card">
-            <div class="tb-img-wrap" style="display: grid;">
-                <img src="${imgUrl}" alt="${p.name}" class="tb-img" loading="lazy" style="grid-area: 1 / 1; width: 100%; height: 100%; object-fit: cover;">
-                ${totalStock <= 0 ? `<div class="sold-out-overlay" style="grid-area: 1 / 1; position: relative; z-index: 2; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; margin: 0;">售罄</div>` : ''}
+            <div class="tb-img-wrap">
+                <img src="${imgUrl}" alt="${p.name}" class="tb-img" ${lazyAttr}>
+                ${totalStock <= 0 ? `<div class="sold-out-overlay">售罄</div>` : ''}
             </div>
             <div class="tb-info">
                 <div class="tb-title">${p.name}</div>
