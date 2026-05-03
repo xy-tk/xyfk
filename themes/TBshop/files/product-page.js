@@ -181,7 +181,7 @@ function renderProductDetail(p) {
                             </div>
                         </div>
 
-                        <div class="sku-section mb-4">
+                        <div class="sku-section mb-3">
                             <div class="mb-2 text-secondary small">选择规格 <span class="fw-normal text-muted" style="font-size: 0.9em;">(共${p.variants ? p.variants.length : 0}个)</span>：</div>
                             <div class="sku-list d-flex flex-wrap" id="sku-btn-list">
                                 ${renderSkuButtons(p.variants, -1)} 
