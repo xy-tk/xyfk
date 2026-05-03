@@ -156,7 +156,7 @@ function renderRightSidebar(product) {
         
         <div class="mb-2">${tagsHtml}</div>
 
-        <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 13px;">
+        <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 13px;">
             <div class="text-muted">
                 <span class="me-3">库存: <span id="p-stock">${totalStock}</span></span>
                 <span>销量: ${product.variants.reduce((a,b)=>a+(b.sales_count||0), 0)}</span>
@@ -175,7 +175,7 @@ function renderRightSidebar(product) {
             </div>
         </div>
 
-        <div class="bg-light p-3 rounded mb-3">
+        <div class="bg-light p-3 rounded mb-1">
             <div class="d-flex align-items-baseline" style="color: #1678ff;">
                 <span class="fw-bold me-1" style="font-size: 16px;">¥</span>
                 <span class="fw-bold" id="p-display-price" style="font-size: 24px; line-height: 1;">${priceDisplay}</span>
@@ -186,16 +186,16 @@ function renderRightSidebar(product) {
             </div>
         </div>
 
-        <div class="mb-3">
-            <div class="fw-bold mb-2 small text-muted">选择规格 <span class="fw-normal" style="font-size:12px">(共${product.variants.length}个)</span></div>
+        <div class="mb-1">
+            <div class="fw-bold mb-1 small text-muted">选择规格 <span class="fw-normal" style="font-size:12px">(共${product.variants.length}个)</span></div>
             <div class="d-flex flex-wrap" id="sku-btn-list" style="align-content: flex-start;">
                 ${variantsHtml}
             </div>
             <div id="spec-pagination-area" class="spec-pagination-container"></div>
         </div>
 
-        <div class="mb-3" id="buy-method-wrapper">
-            <div class="fw-bold mb-2 small text-muted">购买方式</div>
+        <div class="mb-2" id="buy-method-wrapper">
+            <div class="fw-bold mb-1 small text-muted">购买方式</div>
             <div class="d-flex flex-wrap position-relative" id="buy-method-container">
                 <span class="text-muted small py-1">请先选择规格</span>
             </div>
@@ -213,8 +213,8 @@ function renderRightSidebar(product) {
             </div>
         </div>
 
-        <div class="mb-3">
-            <div class="fw-bold mb-2 small text-muted">购买数量</div>
+        <div class="mb-2">
+            <div class="fw-bold mb-1 small text-muted">购买数量</div>
             <div class="input-group" style="width: 130px;">
                 <button class="btn btn-outline-secondary btn-sm" type="button" onclick="changeQty(-1)">-</button>
                 <input type="text" class="form-control form-control-sm text-center" id="buy-qty" value="1" onchange="manualChangeQty(this)">
@@ -222,8 +222,8 @@ function renderRightSidebar(product) {
             </div>
         </div>
 
-       <div class="mb-3">
-            <div class="fw-bold mb-2 small text-muted">联系信息</div>
+       <div class="mb-2">
+            <div class="fw-bold mb-1 small text-muted">联系信息</div>
             <div class="d-flex w-100">
                 <input type="text" class="form-control form-control-sm" style="width: calc(50% - 3px); margin-right: 3px;" id="p-contact" placeholder="Email/QQ (用于查单)">
                 <input type="text" class="form-control form-control-sm" style="width: calc(50% - 3px); margin-left: 3px;" id="p-password" placeholder="设置查单密码">
