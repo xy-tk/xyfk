@@ -145,63 +145,91 @@ window.renderFooter = function() {
         }
     });
 };
-// === 原生 jQuery 幻灯片放大组件 (全局公共代码) ===
-$(document).ready(function() {
+// === 纯原生 JS 幻灯片放大组件 (兼容所有主题，无依赖) ===
+document.addEventListener('DOMContentLoaded', function() {
     // 1. 动态注入 CSS
-    var xyStyle = `<style>
-    #xy-lightbox { display: none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); user-select: none; }
-    #xy-lightbox-img { max-width: 90%; max-height: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-radius: 4px; }
-    #xy-lightbox-close { position: absolute; top: 15px; right: 25px; color: #fff; font-size: 40px; cursor: pointer; z-index: 100000; font-weight: bold; line-height: 1; }
-    .xy-lb-nav { position: absolute; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.6); font-size: 50px; cursor: pointer; padding: 20px; z-index: 100000; transition: color 0.3s; user-select: none; }
+    const style = document.createElement('style');
+    style.innerHTML = `
+    #xy-lightbox { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); user-select: none; }
+    #xy-lightbox.show { display: block; }
+    #xy-lightbox-img { max-width: 90%; max-height: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-radius: 4px; transition: opacity 0.2s; }
+    #xy-lightbox-close { position: absolute; top: 15px; right: 25px; color: #fff; font-size: 40px; cursor: pointer; z-index: 1000000; font-weight: bold; line-height: 1; }
+    .xy-lb-nav { position: absolute; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.6); font-size: 50px; cursor: pointer; padding: 20px; z-index: 1000000; transition: color 0.3s; user-select: none; }
     .xy-lb-nav:hover { color: #fff; }
     #xy-lb-prev { left: 10px; }
     #xy-lb-next { right: 10px; }
     #article-content img, #detail-left-content img, #detail-right-content img, #product-content img { cursor: zoom-in; transition: transform 0.2s; }
     #article-content img:hover, #detail-left-content img:hover, #detail-right-content img:hover, #product-content img:hover { transform: scale(1.02); }
-    </style>`;
-    $('head').append(xyStyle);
+    `;
+    document.head.appendChild(style);
 
     // 2. 动态注入 HTML 框架
-    var xyHtml = `
-    <div id="xy-lightbox">
+    const lb = document.createElement('div');
+    lb.id = 'xy-lightbox';
+    lb.innerHTML = `
         <span id="xy-lightbox-close">&times;</span>
         <div id="xy-lb-prev" class="xy-lb-nav">&#10094;</div>
         <img id="xy-lightbox-img" src="">
         <div id="xy-lb-next" class="xy-lb-nav">&#10095;</div>
-    </div>`;
-    $('body').append(xyHtml);
+    `;
+    document.body.appendChild(lb);
 
-    // 3. 绑定点击与切换事件 (事件委托机制)
+    // 3. 事件委托绑定与核心逻辑
     let xyImages = [];
     let xyCurrentIdx = 0;
-    // 仅针对这4个特定容器内的图片生效
-    let imgSelector = '#article-content img, #detail-left-content img, #detail-right-content img, #product-content img';
+    const lbImg = document.getElementById('xy-lightbox-img');
+    const lbWrap = document.getElementById('xy-lightbox');
 
-    $(document).on('click', imgSelector, function() {
-        xyImages = [];
-        let container = $(this).closest('#article-content, #detail-left-content, #detail-right-content, #product-content');
-        container.find('img').each(function(){ xyImages.push($(this).attr('src')); });
-
-        xyCurrentIdx = xyImages.indexOf($(this).attr('src'));
-        if(xyCurrentIdx !== -1) {
-            $('#xy-lightbox-img').attr('src', xyImages[xyCurrentIdx]);
-            $('#xy-lightbox').fadeIn(200);
+    // 监听全局点击事件
+    document.body.addEventListener('click', function(e) {
+        const target = e.target;
+        // 如果点击的是图片
+        if (target.tagName === 'IMG') {
+            // 检查图片是否在我们需要放大的容器内
+            const container = target.closest('#article-content, #detail-left-content, #detail-right-content, #product-content');
+            if (container) {
+                xyImages = [];
+                const imgs = container.querySelectorAll('img');
+                imgs.forEach(img => xyImages.push(img.src));
+                
+                xyCurrentIdx = xyImages.indexOf(target.src);
+                if (xyCurrentIdx !== -1) {
+                    lbImg.src = xyImages[xyCurrentIdx];
+                    lbWrap.classList.add('show');
+                }
+            }
         }
     });
 
+    // 切换图片过渡效果
     function showXyImage() {
-        $('#xy-lightbox-img').fadeOut(100, function() {
-            $(this).attr('src', xyImages[xyCurrentIdx]).fadeIn(150);
-        });
+        lbImg.style.opacity = 0;
+        setTimeout(() => {
+            lbImg.src = xyImages[xyCurrentIdx];
+            lbImg.style.opacity = 1;
+        }, 150);
     }
 
-    $('#xy-lb-prev').click(function(e) { e.stopPropagation(); xyCurrentIdx = (xyCurrentIdx > 0) ? xyCurrentIdx - 1 : xyImages.length - 1; showXyImage(); });
-    $('#xy-lb-next').click(function(e) { e.stopPropagation(); xyCurrentIdx = (xyCurrentIdx < xyImages.length - 1) ? xyCurrentIdx + 1 : 0; showXyImage(); });
+    // 上一张
+    document.getElementById('xy-lb-prev').addEventListener('click', function(e) {
+        e.stopPropagation();
+        if(xyImages.length === 0) return;
+        xyCurrentIdx = (xyCurrentIdx > 0) ? xyCurrentIdx - 1 : xyImages.length - 1;
+        showXyImage();
+    });
 
-    $('#xy-lightbox, #xy-lightbox-close').click(function(e) {
-        if(e.target.id !== 'xy-lightbox-img' && e.target.id !== 'xy-lb-prev' && e.target.id !== 'xy-lb-next') {
-            $('#xy-lightbox').fadeOut(200);
+    // 下一张
+    document.getElementById('xy-lb-next').addEventListener('click', function(e) {
+        e.stopPropagation();
+        if(xyImages.length === 0) return;
+        xyCurrentIdx = (xyCurrentIdx < xyImages.length - 1) ? xyCurrentIdx + 1 : 0;
+        showXyImage();
+    });
+
+    // 点击空白处或关闭按钮关闭幻灯片
+    lbWrap.addEventListener('click', function(e) {
+        if (e.target.id !== 'xy-lightbox-img' && e.target.id !== 'xy-lb-prev' && e.target.id !== 'xy-lb-next') {
+            lbWrap.classList.remove('show');
         }
     });
 });
-// === 幻灯片组件结束 ===
