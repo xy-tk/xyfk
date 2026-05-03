@@ -145,91 +145,38 @@ window.renderFooter = function() {
         }
     });
 };
-// === 纯原生 JS 幻灯片放大组件 (兼容所有主题，无依赖) ===
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. 动态注入 CSS
-    const style = document.createElement('style');
-    style.innerHTML = `
-    #xy-lightbox { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); user-select: none; }
-    #xy-lightbox.show { display: block; }
-    #xy-lightbox-img { max-width: 90%; max-height: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-radius: 4px; transition: opacity 0.2s; }
-    #xy-lightbox-close { position: absolute; top: 15px; right: 25px; color: #fff; font-size: 40px; cursor: pointer; z-index: 1000000; font-weight: bold; line-height: 1; }
-    .xy-lb-nav { position: absolute; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.6); font-size: 50px; cursor: pointer; padding: 20px; z-index: 1000000; transition: color 0.3s; user-select: none; }
-    .xy-lb-nav:hover { color: #fff; }
-    #xy-lb-prev { left: 10px; }
-    #xy-lb-next { right: 10px; }
-    #article-content img, #detail-left-content img, #detail-right-content img, #product-content img { cursor: zoom-in; transition: transform 0.2s; }
-    #article-content img:hover, #detail-left-content img:hover, #detail-right-content img:hover, #product-content img:hover { transform: scale(1.02); }
-    `;
-    document.head.appendChild(style);
+// === 极简版原生 JS 幻灯片组件 ===
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. 注入极简 CSS 和 HTML 结构 (极细字体 font-weight:100)
+    document.body.insertAdjacentHTML('beforeend', `<style>
+    #xy-lb { display:none; position:fixed; z-index:999999; inset:0; background:rgba(0,0,0,.85); user-select:none; }
+    #xy-lb.show { display:block; }
+    #xy-lb-img { max-width:90%; max-height:90%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); box-shadow:0 4px 15px rgba(0,0,0,.5); }
+    .xy-nav { position:absolute; color:rgba(255,255,255,.6); font-size:45px; cursor:pointer; font-weight:100; font-family:sans-serif; z-index:1000000; }
+    .xy-nav:hover { color:#fff; }
+    #xy-close { top:15px; right:25px; }
+    #xy-prev { top:50%; left:15px; transform:translateY(-50%); }
+    #xy-next { top:50%; right:15px; transform:translateY(-50%); }
+    </style>
+    <div id="xy-lb"><div id="xy-close" class="xy-nav">&times;</div><div id="xy-prev" class="xy-nav">&lt;</div><img id="xy-lb-img"><div id="xy-next" class="xy-nav">&gt;</div></div>`);
 
-    // 2. 动态注入 HTML 框架
-    const lb = document.createElement('div');
-    lb.id = 'xy-lightbox';
-    lb.innerHTML = `
-        <span id="xy-lightbox-close">&times;</span>
-        <div id="xy-lb-prev" class="xy-lb-nav">&#10094;</div>
-        <img id="xy-lightbox-img" src="">
-        <div id="xy-lb-next" class="xy-lb-nav">&#10095;</div>
-    `;
-    document.body.appendChild(lb);
+    let imgs = [], idx = 0;
+    const lb = document.getElementById('xy-lb'), imgEl = document.getElementById('xy-lb-img');
 
-    // 3. 事件委托绑定与核心逻辑
-    let xyImages = [];
-    let xyCurrentIdx = 0;
-    const lbImg = document.getElementById('xy-lightbox-img');
-    const lbWrap = document.getElementById('xy-lightbox');
-
-    // 监听全局点击事件
-    document.body.addEventListener('click', function(e) {
-        const target = e.target;
-        // 如果点击的是图片
-        if (target.tagName === 'IMG') {
-            // 检查图片是否在我们需要放大的容器内
-            const container = target.closest('#article-content, #detail-left-content, #detail-right-content, #product-content');
-            if (container) {
-                xyImages = [];
-                const imgs = container.querySelectorAll('img');
-                imgs.forEach(img => xyImages.push(img.src));
-                
-                xyCurrentIdx = xyImages.indexOf(target.src);
-                if (xyCurrentIdx !== -1) {
-                    lbImg.src = xyImages[xyCurrentIdx];
-                    lbWrap.classList.add('show');
-                }
-            }
-        }
-    });
-
-    // 切换图片过渡效果
-    function showXyImage() {
-        lbImg.style.opacity = 0;
-        setTimeout(() => {
-            lbImg.src = xyImages[xyCurrentIdx];
-            lbImg.style.opacity = 1;
-        }, 150);
-    }
-
-    // 上一张
-    document.getElementById('xy-lb-prev').addEventListener('click', function(e) {
-        e.stopPropagation();
-        if(xyImages.length === 0) return;
-        xyCurrentIdx = (xyCurrentIdx > 0) ? xyCurrentIdx - 1 : xyImages.length - 1;
-        showXyImage();
-    });
-
-    // 下一张
-    document.getElementById('xy-lb-next').addEventListener('click', function(e) {
-        e.stopPropagation();
-        if(xyImages.length === 0) return;
-        xyCurrentIdx = (xyCurrentIdx < xyImages.length - 1) ? xyCurrentIdx + 1 : 0;
-        showXyImage();
-    });
-
-    // 点击空白处或关闭按钮关闭幻灯片
-    lbWrap.addEventListener('click', function(e) {
-        if (e.target.id !== 'xy-lightbox-img' && e.target.id !== 'xy-lb-prev' && e.target.id !== 'xy-lb-next') {
-            lbWrap.classList.remove('show');
+    // 2. 全局点击事件委托（高度浓缩逻辑）
+    document.body.addEventListener('click', e => {
+        const t = e.target, cid = t.id;
+        if (t.tagName === 'IMG' && t.closest('#article-content, #detail-left-content, #detail-right-content, #product-content')) {
+            imgs = Array.from(t.closest('#article-content, #detail-left-content, #detail-right-content, #product-content').querySelectorAll('img')).map(i => i.src);
+            idx = imgs.indexOf(t.src);
+            if (idx > -1) { imgEl.src = imgs[idx]; lb.classList.add('show'); }
+        } else if (cid === 'xy-close' || cid === 'xy-lb') {
+            lb.classList.remove('show'); // 点击关闭或背景
+        } else if (cid === 'xy-prev' && imgs.length) {
+            idx = idx > 0 ? idx - 1 : imgs.length - 1; imgEl.src = imgs[idx]; // 上一张
+        } else if (cid === 'xy-next' && imgs.length) {
+            idx = idx < imgs.length - 1 ? idx + 1 : 0; imgEl.src = imgs[idx]; // 下一张
         }
     });
 });
+// === 极简版结束 ===
