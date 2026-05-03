@@ -204,6 +204,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
 	margin-right: 3px;
     border: 1px solid transparent; 
 	white-space: nowrap;
+	line-height: 16px;
 }
 
 /* --- 2.6 右侧模块 (热门文章/标签/通知) --- */
