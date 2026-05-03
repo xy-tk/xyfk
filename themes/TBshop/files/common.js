@@ -304,7 +304,7 @@ async function initMobileSidebar() {
             return;
         }
         let sidebarHtml = `<a href="javascript:void(0)" onclick="handleMobileCategoryClick('all')">
-            <i class="fa fa-th-large" style="margin-right:10px;width:20px;text-align:center;flex-shrink:0;"></i> <span>所有商品</span>
+            <i class="fa fa-th-large" style="margin-right:3px;width:20px;text-align:center;flex-shrink:0;"></i> <span>所有商品</span>
         </a>`;
         sidebarHtml += categories.map(c => {
             const iconHtml = c.image_url 
