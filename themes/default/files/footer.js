@@ -33,10 +33,8 @@ function insertFooterSkeleton() {
                     font-size:12px;
                 }
             }
-            .product-description-content img, .product-desc img, .custom-page-content img, #article-content img, .prose img {
-                cursor: zoom-in;
-            }
         </style>
+
         <footer class="footer">
             <div class="container" id="custom-footer-container">
             </div>
@@ -98,15 +96,6 @@ function insertFooterSkeleton() {
 
     $('#back-to-top').click(function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-    $(document).on('click', '.product-description-content img, .product-desc img, .custom-page-content img, #article-content img, .prose img', function() {
-        if ($('#img-lightbox-modal').length === 0) {
-            const modalHtml = '<div id="img-lightbox-modal" style="display:none; position:fixed; z-index:10000; top:0; left:0; width:100%; height:100%; background:transparent; cursor:zoom-out;"><img src="" style="max-width:90%; max-height:90%; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); border-radius:6px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);"></div>';
-            $('body').append(modalHtml);
-            $('#img-lightbox-modal').click(function() { $(this).fadeOut(200); });
-        }
-        $('#img-lightbox-modal img').attr('src', $(this).attr('src'));
-        $('#img-lightbox-modal').fadeIn(200);
     });
 }
 
