@@ -477,7 +477,7 @@ header, .tb-header, .mobile-header, .container, .main-content { flex-shrink: 0; 
         flex: 1; text-align: center; height: 40px;
         display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-    #mobile-logo-img { height: 40px; width: auto; object-fit: contain; }
+    #mobile-logo-img { height: 41px; width: auto; object-fit: contain; }
     #mobile-site-name-wrap { font-size: 18px; font-weight: bold; color: var(--tb-orange); }
     #mobile-site-name-wrap i { font-size: 20px; margin-right: 6px; }
 
