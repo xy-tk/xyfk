@@ -630,3 +630,37 @@ function handleTagClick(tag) {
         window.location.href = '/?q=' + encodeURIComponent(tag);
     }
 }
+// === 极简版原生 JS 幻灯片组件 ===
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. 注入极简 CSS 和 HTML 结构 (极细字体 font-weight:100)
+    document.body.insertAdjacentHTML('beforeend', `<style>
+    #xy-lb { display:none; position:fixed; z-index:999999; inset:0; background:rgba(0,0,0,.85); user-select:none; }
+    #xy-lb.show { display:block; }
+    #xy-lb-img { max-width:90%; max-height:90%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); box-shadow:0 4px 15px rgba(0,0,0,.5); }
+    .xy-nav { position:absolute; color:rgba(255,255,255,.6); font-size:45px; cursor:pointer; font-weight:100; font-family:sans-serif; z-index:1000000; }
+    .xy-nav:hover { color:#fff; }
+    #xy-close { top:15px; right:25px; }
+    #xy-prev { top:50%; left:15px; transform:translateY(-50%); }
+    #xy-next { top:50%; right:15px; transform:translateY(-50%); }
+    </style>
+    <div id="xy-lb"><div id="xy-close" class="xy-nav">&times;</div><div id="xy-prev" class="xy-nav">&lt;</div><img id="xy-lb-img"><div id="xy-next" class="xy-nav">&gt;</div></div>`);
+
+    let imgs = [], idx = 0;
+    const lb = document.getElementById('xy-lb'), imgEl = document.getElementById('xy-lb-img');
+
+    // 2. 全局点击事件委托（高度浓缩逻辑）
+    document.body.addEventListener('click', e => {
+        const t = e.target, cid = t.id;
+        if (t.tagName === 'IMG' && t.closest('#article-content, #detail-left-content, #detail-right-content, #product-content')) {
+            imgs = Array.from(t.closest('#article-content, #detail-left-content, #detail-right-content, #product-content').querySelectorAll('img')).map(i => i.src);
+            idx = imgs.indexOf(t.src);
+            if (idx > -1) { imgEl.src = imgs[idx]; lb.classList.add('show'); }
+        } else if (cid === 'xy-close' || cid === 'xy-lb') {
+            lb.classList.remove('show'); // 点击关闭或背景
+        } else if (cid === 'xy-prev' && imgs.length) {
+            idx = idx > 0 ? idx - 1 : imgs.length - 1; imgEl.src = imgs[idx]; // 上一张
+        } else if (cid === 'xy-next' && imgs.length) {
+            idx = idx < imgs.length - 1 ? idx + 1 : 0; imgEl.src = imgs[idx]; // 下一张
+        }
+    });
+});
