@@ -16,7 +16,7 @@ const TB_LAYOUT = {
         </div>
         <div class="mh-center">
             <a href="/" class="d-flex align-items-center justify-content-center h-100">
-                <img id="mobile-logo-img" class="d-none" alt="Logo" style="height: 43px;">
+                <img id="mobile-logo-img" class="d-none" alt="Logo" style="height: 41px;">
                 <span id="mobile-site-name-wrap" class="d-none">
                     <span id="mobile-header-site-name"></span>
                 </span>
