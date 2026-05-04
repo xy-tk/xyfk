@@ -475,7 +475,7 @@ CardABCDEF #[推荐号码]"></textarea>
             const isSold = c.status === 1;
             const statusHtml = isSold ? '<span class="status-sold">已售出</span>' : '<span class="status-unsold">未售出</span>';
             const createTime = c.created_at ? new Date(c.created_at * 1000).toLocaleString() : '-';
-            const deleteDisabled = isSold ? 'disabled title="已售出卡密不可删除"' : '';
+            const deleteDisabled = '';
             
             // 组装商品信息 (如果API返回了联表数据)
             let productInfo = '-';
