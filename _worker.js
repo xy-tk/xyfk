@@ -814,7 +814,6 @@ async function handleApi(request, env, url, ctx) {
                 const { id } = await request.json();
                 const card = await db.prepare("SELECT variant_id, status FROM cards WHERE id=?").bind(id).first();
                 if (!card) return errRes('卡密不存在');
-                if (card.status !== 0) return errRes('只能删除未售出的卡密');
                 
                 await db.prepare("DELETE FROM cards WHERE id=?").bind(id).run();
                 // 更新库存
