@@ -487,7 +487,7 @@ CardABCDEF #[推荐号码]"></textarea>
             return `
             <tr>
                 <td style="text-align: center;">
-                    <input class="form-check-input c-check" type="checkbox" value="${c.id}" ${isSold ? 'disabled' : ''} onchange="updateBatchBtn()">
+                    <input class="form-check-input c-check" type="checkbox" value="${c.id}" onchange="updateBatchBtn()">
                 </td>
                 <td><small>${c.id}</small></td>
                 <td><div class="card-code-text">${c.content}</div></td>
