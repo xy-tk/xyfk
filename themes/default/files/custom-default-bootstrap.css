@@ -382,7 +382,7 @@ a:hover {
     }
 /* 移动端专属缩减 */
     .goods .title-2 { font-size: 13px; margin-bottom: 6px; }
-    .badge-tag { font-size: 10px; }
+    .badge-tag { font-size: 10px; margin-right: 3px; margin-bottom: 3px; }
     .main-box { margin-bottom: 10px; }
     .category-bar {gap: 0px;}
     .my-4 { margin-top: 1rem !important; margin-bottom: 1rem !important; }
