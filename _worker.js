@@ -115,6 +115,17 @@ export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url);
         const path = url.pathname;
+        if (path === '/favicon.ico') {
+            try {
+                const db = env.xyfk;
+                const faviconConf = await db.prepare("SELECT value FROM site_config WHERE key='site_favicon'").first();
+                if (faviconConf && faviconConf.value) {
+                     const targetUrl = faviconConf.value.startsWith('http') ? faviconConf.value : url.origin + faviconConf.value;
+                     return Response.redirect(targetUrl, 302);
+                }
+            } catch(e) {}
+            return Response.redirect(url.origin + '/assets/xyrjico.webp', 302);
+        }
 
         // === 1. API 路由处理 ===
         if (path.startsWith('/api/')) {
@@ -289,8 +300,10 @@ export default {
         // ====== [新增] GitHub 图片代理 (支持私有仓库) ======
         if (path.startsWith('/gh_image/')) {
             const filename = path.replace('/gh_image/', '');
-            // 【安全修复】白名单校验：只允许图片格式，防止读取源码或敏感文件
             if (!/\.(jpg|jpeg|png|gif|webp|ico|svg)$/i.test(filename)) {
+                return new Response('Forbidden', { status: 403 });
+            }
+            if (filename.includes('..') || filename.includes('?')) {
                 return new Response('Forbidden', { status: 403 });
             }
             let conf = {};
@@ -301,7 +314,6 @@ export default {
 
             if (!conf.gh_user || !conf.gh_repo) return new Response('Config missing', { status: 404 });
 
-            // 构造 GitHub Raw URL (私有仓库需 Token)
             const rawUrl = `https://raw.githubusercontent.com/${conf.gh_user}/${conf.gh_repo}/main/${filename}`;
             const headers = { 'User-Agent': 'Cloudflare-Worker' };
             if (conf.gh_token) headers['Authorization'] = `token ${conf.gh_token}`;
@@ -320,7 +332,9 @@ export default {
         if (path.startsWith('/tg_image/')) {
             const filePath = path.replace('/tg_image/', '');
             if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(filePath)) return new Response('Forbidden', { status: 403 });
-            
+            if (filePath.includes('..') || filePath.includes('?')) {
+                return new Response('Forbidden', { status: 403 });
+            }
             let token = '';
             try {
                 const db = env.xyfk;
@@ -748,7 +762,10 @@ async function handleApi(request, env, url, ctx) {
                 const cards = content.split('\n').filter(c => c.trim()).map(c => c.trim());
                 if (cards.length > 0) {
                     const stmt = db.prepare("INSERT INTO cards (variant_id, content, status, created_at) VALUES (?, ?, 0, ?)");
-                    await db.batch(cards.map(c => stmt.bind(variant_id, c, time())));
+                    const stmts = cards.map(c => stmt.bind(variant_id, c, time()));
+                    for (let i = 0; i < stmts.length; i += 100) {
+                        await db.batch(stmts.slice(i, i + 100));
+                    }
                     // 更新库存
                     await db.prepare("UPDATE variants SET stock = (SELECT COUNT(*) FROM cards WHERE variant_id=? AND status=0) WHERE id = ?")
                         .bind(variant_id, variant_id).run();
@@ -1087,8 +1104,9 @@ async function handleApi(request, env, url, ctx) {
                     // 直接加入队列，无需在 JS 层判断是否存在
                     batch.push(stmt.bind(url, joinedName, now));
                 }
-
-                if (batch.length > 0) await db.batch(batch);
+                for (let i = 0; i < batch.length; i += 100) {
+                    await db.batch(batch.slice(i, i + 100));
+                }
                 return jsonRes({ success: true, count: batch.length });
             }
 
@@ -1117,7 +1135,10 @@ async function handleApi(request, env, url, ctx) {
                     const formData = await request.formData();
                     const file = formData.get('file');
                     if (!file) return errRes('未选择文件');
-                    const filename = 'image/' + Date.now() + '_' + file.name;
+                    const extMatch = file.name.match(/\.(jpg|jpeg|png|gif|webp|ico|svg)$/i);
+                    if (!extMatch) return errRes('由于安全策略，仅允许上传合法图片格式');
+                    const safeFilename = crypto.randomUUID().replace(/-/g, '') + extMatch[0].toLowerCase();
+                    const filename = 'image/' + Date.now() + '_' + safeFilename;
                     const u8 = new Uint8Array(await file.arrayBuffer());
                     let binary = '';
                     for (let i = 0; i < u8.length; i += 32768) {
@@ -1529,6 +1550,10 @@ async function handleApi(request, env, url, ctx) {
             // 1. 接收 query_password
             const { variant_id, quantity, contact, payment_method, card_id, query_password } = await request.json();
             if (quantity <= 0 || !Number.isInteger(quantity)) return errRes('购买数量必须是大于0的整数', 400);
+            const contactRegex = /^[a-zA-Z0-9@._\-\u4e00-\u9fa5]+$/;
+            if (!contact || !contactRegex.test(contact)) {
+                return errRes('联系方式格式不合法，仅允许输入邮箱、手机号、QQ、微信号或中文，严禁包含特殊符号', 400);
+            }
             // --- 新增限制逻辑 START ---
             // 检查该联系人下的未支付订单数量
             const unpaidCount = (await db.prepare("SELECT COUNT(*) as c FROM orders WHERE contact=? AND status=0").bind(contact).first()).c;
@@ -1614,7 +1639,11 @@ async function handleApi(request, env, url, ctx) {
             const { items, contact, query_password, payment_method } = await request.json();
             
             if (!items || items.length === 0) return errRes('购物车为空');
-            // [修改] 验证查单密码 (1位)
+            if (items.length > 30) return errRes('购物车商品种类过多，请分批下单', 400);
+            const contactRegex = /^[a-zA-Z0-9@._\-\u4e00-\u9fa5]+$/;
+            if (!contact || !contactRegex.test(contact)) {
+                return errRes('联系方式格式不合法，仅允许输入邮箱、手机号、QQ、微信号或中文，严禁包含特殊符号', 400);
+            }
             if (!query_password || query_password.length < 1) {
                 return errRes('请设置1位以上的查单密码');
             }
@@ -1634,7 +1663,8 @@ async function handleApi(request, env, url, ctx) {
                 // 假设前端传来的 ID 正确，查库验证
                 // 注意：前端 cart-page.js 已修复为传 variantId
                 const variant = await db.prepare("SELECT * FROM variants WHERE id=?").bind(item.variantId).first();
-                if (!variant) throw new Error(`商品 ${item.variantName} 规格不存在`);
+                if (!variant) throw new Error('商品规格不存在');
+                const product = await db.prepare("SELECT name FROM products WHERE id=?").bind(variant.product_id).first();
 
                 let stock = 0;
                 let finalPrice = variant.price; // 从数据库重新计算
@@ -1681,8 +1711,8 @@ async function handleApi(request, env, url, ctx) {
                 // 存储验证后的信息
                 validatedItems.push({
                     variantId: variant.id,
-                    productName: item.productName,
-                    variantName: item.variantName,
+                    productName: product ? product.name : '未知商品',
+                    variantName: variant.name,
                     quantity: item.quantity,
                     price: finalPrice, // 使用后端计算的单价
                     buyMode: item.buyMode,
@@ -1768,7 +1798,7 @@ async function handleApi(request, env, url, ctx) {
                      biz_content: JSON.stringify({
                          out_trade_no: order.id,
                          total_amount: order.total_amount,
-                         subject: `JM166订单号：${order.id}` // 合并订单会显示 “购物车合并订单” 商品名称是：subject: `${order.product_name}`
+                         subject: `hltx订单号：${order.id}` // 合并订单会显示 “购物车合并订单” 商品名称是：subject: `${order.product_name}`
                      })
                  };
                  params.sign = await signAlipay(params, config.private_key);
@@ -1830,10 +1860,18 @@ async function handleApi(request, env, url, ctx) {
             if (params.trade_status === 'TRADE_SUCCESS') {
                 const out_trade_no = params.out_trade_no;
                 const trade_no = params.trade_no;
-                
-                // 【修复点1】删除 BEGIN TRANSACTION，直接执行更新
-                await db.prepare("UPDATE orders SET status=1, paid_at=?, trade_no=? WHERE id=? AND status=0")
+                // 【安全修复】新增支付金额与应用ID的严格校验防篡改
+                const checkOrder = await db.prepare("SELECT * FROM orders WHERE id=? AND status=0").bind(out_trade_no).first();
+                if (!checkOrder) return new Response('fail');
+                if (parseFloat(params.total_amount) !== parseFloat(checkOrder.total_amount) || params.app_id !== config.app_id) {
+                    console.error('Alipay Notify: Amount or AppId mismatch');
+                    return new Response('fail');
+                }
+                const updateRes = await db.prepare("UPDATE orders SET status=1, paid_at=?, trade_no=? WHERE id=? AND status=0")
                         .bind(time(), trade_no, out_trade_no).run();
+                if (!updateRes.success || updateRes.meta.changes !== 1) {
+                    return new Response('success'); 
+                }
                 try {
                     await db.prepare("DELETE FROM site_config WHERE key=?").bind('qr_' + out_trade_no).run();
                 } catch(e) { console.error('Clear QR cache error:', e); }
@@ -1921,7 +1959,12 @@ async function handleApi(request, env, url, ctx) {
                                     }
                                 } else {
                                     // 手动发货
-                                    stmts.push(db.prepare("UPDATE variants SET stock = stock - ?, sales_count = sales_count + ? WHERE id=?").bind(item.quantity, item.quantity, item.variantId));
+                                    const cartUpdateRes = await db.prepare("UPDATE variants SET stock = stock - ?, sales_count = sales_count + ? WHERE id=? AND stock >= ?").bind(item.quantity, item.quantity, item.variantId, item.quantity).run();
+                                    if(cartUpdateRes.meta.changes === 0) {
+                                        contentBody += `\n• ${item.productName} - ${item.variantName} (并发售罄，需手动处理) × ${item.quantity}`;
+                                        newOrderStatus = 1;
+                                        continue;
+                                    }
                                     const finalStock = Math.max(0, (variant.stock || 0) - item.quantity);
                                     contentBody += `\n• ${item.productName} - ${item.variantName} (手动发货) × ${item.quantity} (库存：${finalStock})`;
                                     newOrderStatus = 1; 
@@ -1968,7 +2011,10 @@ async function handleApi(request, env, url, ctx) {
                                 }
                             } else {
                                 // 手动发货
-                                stmts.push(db.prepare("UPDATE variants SET stock = stock - ?, sales_count = sales_count + ? WHERE id=?").bind(order.quantity, order.quantity, order.variant_id));
+                                const stockUpdateRes = await db.prepare("UPDATE variants SET stock = stock - ?, sales_count = sales_count + ? WHERE id=? AND stock >= ?").bind(order.quantity, order.quantity, order.variant_id, order.quantity).run();
+                                if(stockUpdateRes.meta.changes === 0) {
+                                    throw new Error("手动发货库存不足，并发扣除失败");
+                                }
                                 modeLine = '类型：手动发货';
                                 newOrderStatus = 1; // 标记状态为待发货
                             }
@@ -2108,7 +2154,6 @@ ${cardContentForCustomer}
                         }
                     }
 
-
                     // 异步发送
                     if (notifications.length > 0 && ctx && ctx.waitUntil) {
                         ctx.waitUntil(Promise.all(notifications));
@@ -2119,12 +2164,10 @@ ${cardContentForCustomer}
             }
             return new Response('success');
         }
-
     } catch (e) {
         console.error('API Error:', e);
-        return errRes('API Error: ' + e.message, 500);
+        return errRes('服务器内部处理异常，请稍后再试或联系系统管理员', 500);
     }
-
     return errRes('API Not Found', 404);
 }
 
