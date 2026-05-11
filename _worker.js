@@ -622,7 +622,7 @@ async function handleApi(request, env, url, ctx) {
                 await db.prepare(`
                 UPDATE variants 
                 SET stock = (SELECT COUNT(*) FROM cards WHERE variant_id = variants.id AND status = 0) 
-                WHERE product_id = ? AND auto_delivery = 1
+                WHERE product_id = ? AND (auto_delivery = 1 OR (SELECT COUNT(*) FROM cards WHERE variant_id = variants.id AND status = 0) > 0)
                 `).bind(productId).run();
                 
                 return jsonRes({ success: true, productId: productId });
